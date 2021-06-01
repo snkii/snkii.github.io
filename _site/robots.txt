@@ -1,1 +1,1 @@
-Sitemap: /sitemap.xml
+Sitemap: http://snkii.github.io/sitemap.xml
