@@ -1,0 +1,22 @@
+name: Deploy to NAS
+
+on:
+  push:
+    branches:
+      - main  # 혹은 너의 기본 브랜치
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull from GitHub to NAS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: 7777               # ← 여기에 포트를 명시
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ~/volume1/web/snkii.github.io   # NAS 안의 레포지토리 경로
+            git pull origin main
+
