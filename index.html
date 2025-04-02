@@ -59,6 +59,17 @@
       cursor: pointer;
     }
 
+    .welcome {
+      position: absolute;
+      top: 20px;
+      width: 100%;
+      text-align: center;
+      font-size: 0.8rem;
+      color: inherit;
+      pointer-events: none;
+      font-family: 'DM Sans', sans-serif;
+    }
+
     .instruction {
       position: absolute;
       bottom: 20px;
@@ -88,7 +99,7 @@
     }
   </style>
 
-  <!-- 🎯 동적 색상 변경 스크립트 -->
+  <!-- 🎯 색상 랜덤 변경 스크립트 -->
   <script>
     const gruvboxColors = [
       "#282828", "#3c3836", "#504945", "#665c54", "#7c6f64",
@@ -133,9 +144,11 @@
       document.body.style.color = text;
 
       const a = document.querySelector("a");
+      const welcome = document.querySelector(".welcome");
       const instruction = document.querySelector(".instruction");
 
       if (a) a.style.color = link;
+      if (welcome) welcome.style.color = link;
       if (instruction) instruction.style.color = link;
     }
 
@@ -151,6 +164,8 @@
   </script>
 </head>
 <body>
+  <div class="welcome">This is seon.uk</div>
+
   <div class="center">
     <a href="mailto:hello@seonuk.kim"
        class="fade-in"
@@ -159,6 +174,7 @@
       hello@seonuk.kim
     </a>
   </div>
+
   <div class="instruction">Tap or click anywhere</div>
 </body>
 </html>
