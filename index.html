@@ -29,8 +29,8 @@
     html, body {
       margin: 0;
       padding: 0;
-      background-color: var(--bg) !important;
-      color: var(--fg) !important;
+      background-color: var(--bg);
+      color: var(--fg);
       height: 100%;
       width: 100%;
       font-family: 'DM Sans', sans-serif;
@@ -51,22 +51,11 @@
     }
 
     a {
-      color: var(--accent) !important;
       text-decoration: none;
       font-size: 2.5rem;
-      transition: color 0.3s ease;
       user-select: none;
       -webkit-user-select: none;
-    }
-
-    a:visited,
-    a:focus,
-    a:hover,
-    a:active {
-      color: var(--hover) !important;
-    }
-
-    a:hover {
+      transition: color 0.3s ease;
       cursor: pointer;
     }
 
@@ -129,6 +118,11 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
+      // 초기 색상 한 번 설정
+      const initial = getReadableColors();
+      applyColors(initial.bg, initial.text, initial.link);
+
+      // 클릭 시 색상 변경
       document.body.addEventListener("click", () => {
         const { bg, text, link } = getReadableColors();
         applyColors(bg, text, link);
