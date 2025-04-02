@@ -59,9 +59,26 @@
       cursor: pointer;
     }
 
+    .instruction {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+      font-size: 0.8rem;
+      color: inherit;
+      pointer-events: none;
+      font-family: 'DM Sans', sans-serif;
+      animation: blink 2s infinite alternate;
+    }
+
     @keyframes fadeIn {
       0% { opacity: 0; transform: translateY(20px); }
       100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes blink {
+      0% { opacity: 0.2; }
+      100% { opacity: 1; }
     }
 
     @media (max-width: 600px) {
@@ -71,6 +88,7 @@
     }
   </style>
 
+  <!-- 🎯 동적 색상 변경 스크립트 -->
   <script>
     const gruvboxColors = [
       "#282828", "#3c3836", "#504945", "#665c54", "#7c6f64",
@@ -113,16 +131,18 @@
     function applyColors(bg, text, link) {
       document.body.style.backgroundColor = bg;
       document.body.style.color = text;
+
       const a = document.querySelector("a");
+      const instruction = document.querySelector(".instruction");
+
       if (a) a.style.color = link;
+      if (instruction) instruction.style.color = link;
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-      // 초기 색상 한 번 설정
       const initial = getReadableColors();
       applyColors(initial.bg, initial.text, initial.link);
 
-      // 클릭 시 색상 변경
       document.body.addEventListener("click", () => {
         const { bg, text, link } = getReadableColors();
         applyColors(bg, text, link);
@@ -139,5 +159,6 @@
       hello@seonuk.kim
     </a>
   </div>
+  <div class="instruction">Tap or click anywhere</div>
 </body>
 </html>
