@@ -17,6 +17,9 @@
   <!-- 🔤 폰트 -->
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500&display=swap" rel="stylesheet">
 
+  <!-- Font Awesome 아이콘 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
   <!-- icon -->
   <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -75,7 +78,6 @@
       font-size: 0.8rem;
       color: inherit;
       pointer-events: none;
-      font-family: 'DM Sans', sans-serif;
     }
 
     .instruction {
@@ -86,7 +88,6 @@
       font-size: 0.8rem;
       color: inherit;
       pointer-events: none;
-      font-family: 'DM Sans', sans-serif;
       animation: blink 2s infinite alternate;
     }
 
@@ -104,6 +105,28 @@
       a {
         font-size: 1.8rem;
       }
+
+      .social-links a {
+        font-size: 1.2rem;
+      }
+    }
+
+    /* 👇 소셜 아이콘 스타일 */
+    .social-links {
+      margin-top: 20px;
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .social-links a {
+      color: var(--accent);
+      font-size: 1.5rem;
+      transition: color 0.3s ease;
+    }
+
+    .social-links a:hover {
+      color: var(--hover);
     }
   </style>
 
@@ -154,10 +177,12 @@
       const a = document.querySelector("a");
       const welcome = document.querySelector(".welcome");
       const instruction = document.querySelector(".instruction");
+      const socialLinks = document.querySelectorAll(".social-links a");
 
       if (a) a.style.color = link;
       if (welcome) welcome.style.color = link;
       if (instruction) instruction.style.color = link;
+      socialLinks.forEach(icon => icon.style.color = link);
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -175,12 +200,29 @@
   <div class="welcome">This is seon.uk</div>
 
   <div class="center">
-    <a href="mailto:hello@seonuk.kim"
-       class="fade-in"
-       onmousedown="return false"
-       onselectstart="return false">
-      hello@seonuk.kim
-    </a>
+    <div class="fade-in" style="text-align: center;">
+      <a href="mailto:hello@seonuk.kim"
+         onmousedown="return false"
+         onselectstart="return false">
+        hello@seonuk.kim
+      </a>
+
+      <!-- 소셜 링크 -->
+      <div class="social-links fade-in">
+        <a href="https://instagram.com/snkiilog" target="_blank" aria-label="Instagram">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://github.com/snkii" target="_blank" aria-label="GitHub">
+          <i class="fab fa-github"></i>
+        </a>
+        <a href="https://x.com/snkii35" target="_blank" aria-label="X (Twitter)">
+          <i class="fab fa-x-twitter"></i>
+        </a>
+        <a href="https://linkedin.com/in/seonuk-kim-026aa1359" target="_blank" aria-label="LinkedIn">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </div>
+    </div>
   </div>
 
   <div class="instruction">Tap or click anywhere</div>
