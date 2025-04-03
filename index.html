@@ -88,24 +88,32 @@
       font-size: 0.8rem;
       color: inherit;
       pointer-events: none;
+      animation: blink 2s infinite alternate;
     }
 
     .credit {
       position: absolute;
-      right: 10px;
+      left: 10px;
       top: 50%;
       transform: translateY(-50%);
       writing-mode: vertical-rl;
       text-orientation: mixed;
       font-size: 0.7rem;
-      color: inherit;
-      opacity: 0.5;
+      color: var(--fg);
+      letter-spacing: 0.05em;
+      opacity: 0.3; 
       pointer-events: none;
     }
+
 
     @keyframes fadeIn {
       0% { opacity: 0; transform: translateY(20px); }
       100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes blink {
+      0% { opacity: 0.2; }
+      100% { opacity: 1; }
     }
 
     @media (max-width: 600px) {
@@ -118,7 +126,6 @@
       }
     }
 
-    /* 👇 소셜 아이콘 스타일 */
     .social-links {
       margin-top: 20px;
       display: flex;
