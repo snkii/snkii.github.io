@@ -88,17 +88,24 @@
       font-size: 0.8rem;
       color: inherit;
       pointer-events: none;
-      animation: blink 2s infinite alternate;
+    }
+
+    .credit {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      font-size: 0.7rem;
+      color: inherit;
+      opacity: 0.5;
+      pointer-events: none;
     }
 
     @keyframes fadeIn {
       0% { opacity: 0; transform: translateY(20px); }
       100% { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes blink {
-      0% { opacity: 0.2; }
-      100% { opacity: 1; }
     }
 
     @media (max-width: 600px) {
@@ -177,11 +184,13 @@
       const a = document.querySelector("a");
       const welcome = document.querySelector(".welcome");
       const instruction = document.querySelector(".instruction");
+      const credit = document.querySelector(".credit");
       const socialLinks = document.querySelectorAll(".social-links a");
 
       if (a) a.style.color = link;
       if (welcome) welcome.style.color = link;
       if (instruction) instruction.style.color = link;
+      if (credit) credit.style.color = link;
       socialLinks.forEach(icon => icon.style.color = link);
     }
 
@@ -226,5 +235,6 @@
   </div>
 
   <div class="instruction">Tap or click anywhere</div>
+  <div class="credit">Co-designed with ChatGPT</div>
 </body>
 </html>
