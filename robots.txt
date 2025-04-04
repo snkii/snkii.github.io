@@ -1,4 +1,3 @@
-# /robots.txt
 User-agent: *
-Disallow:
+Disallow: /gallery/
 Sitemap: https://seon.uk/sitemap.xml

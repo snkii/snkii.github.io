@@ -8,10 +8,15 @@
 
   <meta property="og:title" content="seon.uk" />
   <meta property="og:description" content="hello@seonuk.kim — Contact me here." />
-  <meta property="og:image" content="https://snkii.github.io/preview.png" />
-  <meta property="og:url" content="https://snkii.github.io" />
+  <meta property="og:image" content="preview.png">
+  <meta property="og:url" content="https://seon.uk">
   <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="seon.uk">
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="seon.uk">
+  <meta name="twitter:description" content="hello@seonuk.kim — Contact me here.">
+  <meta name="twitter:image" content="preview.png">
+  <meta name="robots" content="index, follow">
 
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500&display=swap" rel="stylesheet" />
 
@@ -30,6 +35,8 @@
   <!-- 보안 향상을 위한 메타태그 -->
   <meta http-equiv="Content-Security-Policy" content="
   default-src 'self';
+  base-uri 'self';
+  object-src 'none';
   img-src 'self' https:;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;
@@ -38,8 +45,8 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
-  <meta http-equiv="Cache-Control" content="no-store">
+  <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=(), fullscreen=()">
+  <meta http-equiv="Cache-Control" content="no-store, max-age=0, must-revalidate">
 
   <style>
     :root {

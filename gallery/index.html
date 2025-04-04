@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Gallery – Shot on GR3x</title>
+  <title>gallery</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -22,6 +22,8 @@
   <!-- 보안 향상을 위한 메타태그 -->
   <meta http-equiv="Content-Security-Policy" content="
   default-src 'self';
+  base-uri 'self';
+  object-src 'none';
   img-src 'self' https:;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;
@@ -30,8 +32,8 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
-  <meta http-equiv="Cache-Control" content="no-store">
+  <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=(), fullscreen=()">
+  <meta http-equiv="Cache-Control" content="no-store, max-age=0, must-revalidate">
 
   <style>
     :root {
