@@ -216,6 +216,33 @@
       pointer-events: none;
       letter-spacing: 0.03em;
     }
+
+    .about {
+  position: absolute;
+  right: 10px;
+  top: 20px; /* 👉 오른쪽 '위쪽' 위치 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: auto;
+  font-size: 0.9rem;
+  color: var(--fg);
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.about-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  white-space: nowrap;
+}
+
+.about-blink {
+  animation: blink 2s infinite alternate;
+  margin-bottom: 6px;
+}
+
   </style>
 
   <script src="script.js" defer></script>
@@ -257,6 +284,11 @@
   </a>
 
   <div class="copyright">© 2025 Seonuk Kim. All rights reserved.</div>
+
+  <a href="about" class="about">
+    <div class="about-blink">&gt;</div>
+    <div class="about-text">About</div>
+  </a>
 
 </body>
 

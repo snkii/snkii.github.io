@@ -47,19 +47,26 @@ const gruvboxColors = [
     const welcome = document.querySelector(".welcome");
     const instruction = document.querySelector(".instruction");
     const credit = document.querySelector(".credit");
-    const vision = document.querySelector(".vision");
-    const visionText = document.querySelector(".vision-text");
-    const visionBlink = document.querySelector(".vision-blink");
+    const gallery = document.querySelector(".gallery");
+    const galleryText = document.querySelector(".gallery-text");
+    const galleryBlink = document.querySelector(".gallery-blink");
     const socialLinks = document.querySelectorAll(".social-links a");
     const copyright = document.querySelector(".copyright");
+    const about = document.querySelector(".about");
+    const aboutText = document.querySelector(".about-text");
+    const aboutBlink = document.querySelector(".about-blink");
   
     if (welcome) welcome.style.color = link;
     if (instruction) instruction.style.color = link;
     if (credit) credit.style.color = link;
-    if (vision) vision.style.color = link;
-    if (visionText) visionText.style.color = link;
-    if (visionBlink) visionBlink.style.color = link;
+    if (gallery) gallery.style.color = link;
+    if (galleryText) galleryText.style.color = link;
+    if (galleryBlink) galleryBlink.style.color = link;
     if (copyright) copyright.style.color = link;
+    if (about) about.style.color = link;
+    if (aboutText) aboutText.style.color = link;
+    if (aboutBlink) aboutBlink.style.color = link;
+    
     socialLinks.forEach((icon) => (icon.style.color = link));
   }
   
