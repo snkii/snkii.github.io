@@ -78,7 +78,6 @@
       margin: 0 auto;
       pointer-events: none;
       user-select: none;
-
       opacity: 0;
       animation: fadeOnly 1s ease-in-out forwards;
     }
@@ -109,6 +108,18 @@
       }
     }
 
+    @keyframes fadeInDim {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      100% {
+        opacity: 0.7;
+        transform: translateY(0);
+      }
+    }
+
     .copyright {
       font-size: 0.4rem;
       color: var(--fg);
@@ -118,11 +129,25 @@
       text-align: center;
       padding-bottom: 25px;
     }
+
+    .subtitle-alt {
+      text-align: center;
+      font-size: 0.9rem;
+      margin-top: -10px;
+      margin-bottom: 30px;
+      opacity: 0;
+      font-style: italic;
+    }
   </style>
 </head>
 
 <body oncontextmenu="return false">
-  <div class="top-banner">The GR3x Photobook</div>
+  <div class="top-banner">
+    Photobook
+  </div>
+  <div class="subtitle-alt" style="animation: fadeInDim 1.2s ease-in-out forwards;">
+    A visual journal taken with GR3x and iPhone
+  </div>
 
   <div class="gallery">
     <img src="images/photo1.jpg" alt="Photo 1" style="animation-delay: 1.4s" />
