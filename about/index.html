@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>About – Seonuk Kim</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg: #282828;
+      --fg: #ebdbb2;
+      --divider: rgba(235, 219, 178, 0.1);
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--fg);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      line-height: 1.45;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 32px 16px 0;
+      animation: fadeIn 1.2s ease-in-out forwards;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.4rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 0.95rem;
+      margin-top: 0;
+      opacity: 0.8;
+    }
+
+    section {
+      margin-top: 36px;
+      padding-top: 24px;
+      border-top: 1px solid var(--divider);
+    }
+
+    section:first-of-type {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .indent {
+      margin-left: 1rem;
+      margin-bottom: 10px;
+    }
+
+    .contact a {
+      color: var(--fg);
+      text-decoration: none;
+    }
+
+    .contact a:hover {
+      text-decoration: underline;
+    }
+
+    .no-link-style {
+      color: inherit;
+      text-decoration: none;
+      font-weight: inherit;
+    }
+
+    .copyright {
+      font-size: 0.4rem;
+      color: var(--fg);
+      opacity: 0.6;
+      pointer-events: none;
+      letter-spacing: 0.03em;
+      text-align: center;
+      margin-top: auto;
+      padding-bottom: 25px;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        font-size: 0.95rem;
+      }
+
+      .container {
+        padding: 24px 14px 0;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .section-title {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Seonuk Kim <span style="font-size: 1.4rem; opacity: 0.7;">(김선욱)</span></h1>
+    <p class="subtitle">From Seoul, Korea</p>
+
+    <section>
+      <div class="section-title">🎓 Education</div>
+      <p class="indent" style="font-size: 1rem;">
+        Integrated M.S.–Ph.D., 
+        <a href="https://hi.snu.ac.kr" target="_blank" class="no-link-style">Human Interface Lab</a>, 
+        <a href="https://ece.snu.ac.kr" target="_blank" class="no-link-style">ECE</a>, 
+        <a href="https://www.snu.ac.kr" target="_blank" class="no-link-style">SNU</a> (2024–)
+      </p>
+      <p class="indent" style="font-size: 0.95rem;">
+        B.S., 
+        <a href="https://ece.snu.ac.kr" target="_blank" class="no-link-style">ECE</a>, 
+        <a href="https://www.snu.ac.kr" target="_blank" class="no-link-style">SNU</a> (2018–2024)
+      </p>
+    </section>
+
+    <section>
+      <div class="section-title">💻 Research Interests</div>
+      <p class="indent" style="font-size: 0.95rem;">HCI with voice-based interfaces</p>
+      <p class="indent" style="font-size: 0.95rem;">AI-driven Speech Processing</p>
+      <p class="indent" style="font-size: 0.95rem;">Speech understanding with LLMs</p>
+    </section>
+
+    <section class="contact">
+      <div class="section-title">📱 Contact</div>
+      <p class="indent" style="font-size: 0.95rem;">Email: <a href="mailto:hello@seonuk.kim" class="no-link-style">hello@seonuk.kim</a></p>
+      <p class="indent" style="font-size: 0.95rem;">Website: <a href="https://seon.uk" target="_blank" class="no-link-style">seon.uk</a></p>
+      <p class="indent" style="font-size: 0.95rem;">Phone: <a href="tel:+821097073737" class="no-link-style">+82-10-9707-3737</a></p>
+    </section>
+
+    <div class="copyright">© 2025 Seonuk Kim. All rights reserved.</div>
+  </div>
+</body>
+
+</html>
