@@ -1,277 +1,334 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>seon.uk</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>seon.uk</title>
 
-  <meta property="og:title" content="seon.uk">
-  <meta property="og:description" content="hello@seonuk.kim — Contact me here.">
-  <meta property="og:image" content="https://snkii.github.io/preview.png">
-  <meta property="og:url" content="https://snkii.github.io">
-  <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:title" content="seon.uk" />
+    <meta
+      property="og:description"
+      content="hello@seonuk.kim — Contact me here."
+    />
+    <meta property="og:image" content="https://snkii.github.io/preview.png" />
+    <meta property="og:url" content="https://snkii.github.io" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
 
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500&display=swap"
+      rel="stylesheet"
+    />
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
 
-  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="shortcut icon" href="/favicon.ico" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-  <meta name="apple-mobile-web-app-title" content="seon.uk" />
-  <link rel="manifest" href="/site.webmanifest" />
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="seon.uk" />
+    <link rel="manifest" href="/site.webmanifest" />
 
-  <style>
-    :root {
-      --bg: #282828;
-      --fg: #ebdbb2;
-      --accent: #fabd2f;
-      --hover: #fe8019;
-    }
+    <style>
+      :root {
+        --bg: #282828;
+        --fg: #ebdbb2;
+        --accent: #fabd2f;
+        --hover: #fe8019;
+      }
 
-    html, body {
-      margin: 0;
-      padding: 0;
-      background-color: var(--bg);
-      color: var(--fg);
-      height: 100%;
-      width: 100%;
-      font-family: 'DM Sans', sans-serif;
-      overflow: hidden;
-      transition: background-color 0.6s ease, color 0.6s ease;
-    }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: var(--bg);
+        color: var(--fg);
+        height: 100%;
+        width: 100%;
+        font-family: "DM Sans", sans-serif;
+        overflow: hidden;
+        transition: background-color 0.6s ease, color 0.6s ease;
+      }
 
-    .center {
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+      .center {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
 
-    .fade-in {
-      opacity: 0;
-      animation: fadeIn 2s ease-in-out forwards;
-    }
+      .fade-in {
+        opacity: 0;
+        animation: fadeIn 2s ease-in-out forwards;
+      }
 
-    a {
-      text-decoration: none;
-      font-size: 3.0rem;
-      user-select: none;
-      -webkit-user-select: none;
-      transition: color 0.3s ease;
-      cursor: pointer;
-    }
-
-    .welcome {
-      position: absolute;
-      top: 20px;
-      width: 100%;
-      text-align: center;
-      font-size: 1.0rem;
-      color: inherit;
-      pointer-events: none;
-    }
-
-    .instruction {
-      position: absolute;
-      bottom: 20px;
-      width: 100%;
-      text-align: center;
-      font-size: 1.0rem;
-      color: inherit;
-      pointer-events: none;
-      animation: blink 2s infinite alternate;
-    }
-
-    .credit {
-      position: absolute;
-      left: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      writing-mode: vertical-rl;
-      text-orientation: mixed;
-      font-size: 0.6rem;
-      color: var(--fg);
-      letter-spacing: 0.05em;
-      pointer-events: none;
-    }
-
-    .vision {
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-58%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      pointer-events: none;
-    }
-
-    .vision-text {
-      writing-mode: vertical-rl;
-      text-orientation: mixed;
-      font-size: 0.9rem;
-      color: var(--fg);
-      letter-spacing: 0.05em;
-    }
-
-    .vision-blink {
-      animation: blink 2s infinite alternate;
-      font-size: 0.9rem;
-      color: var(--fg);
-      margin-bottom: 6px;
-    }
-
-    @keyframes fadeIn {
-      0% { opacity: 0; transform: translateY(20px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes blink {
-      0% { opacity: 0.2; }
-      100% { opacity: 1; }
-    }
-
-    @media (max-width: 600px) {
       a {
-        font-size: 1.8rem;
+        text-decoration: none;
+        font-size: 3rem;
+        user-select: none;
+        -webkit-user-select: none;
+        transition: color 0.3s ease;
+        cursor: pointer;
+      }
+
+      .welcome {
+        position: absolute;
+        top: 20px;
+        width: 100%;
+        text-align: center;
+        font-size: 1rem;
+        color: inherit;
+        pointer-events: none;
+      }
+
+      .instruction {
+        position: absolute;
+        bottom: 20px;
+        width: 100%;
+        text-align: center;
+        font-size: 1rem;
+        color: inherit;
+        pointer-events: none;
+        animation: blink 2s infinite alternate;
+      }
+
+      .credit {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        font-size: 0.6rem;
+        color: var(--fg);
+        letter-spacing: 0.05em;
+        pointer-events: none;
+      }
+
+      .vision {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-60%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        pointer-events: auto;
+        font-size: 0.9rem;
+        color: var(--fg);
+        letter-spacing: 0.05em;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .vision-text {
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+      }
+
+      .vision-blink {
+        animation: blink 2s infinite alternate;
+        margin-bottom: 6px;
+      }
+
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes blink {
+        0% {
+          opacity: 0.2;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 600px) {
+        a {
+          font-size: 1.8rem;
+        }
+
+        .social-links a {
+          font-size: 1.2rem;
+        }
+      }
+
+      .social-links {
+        margin-top: 20px;
+        display: flex;
+        gap: 20px;
+        justify-content: center;
       }
 
       .social-links a {
-        font-size: 1.2rem;
+        color: var(--accent);
+        font-size: 1.5rem;
+        transition: color 0.3s ease;
       }
-    }
 
-    .social-links {
-      margin-top: 20px;
-      display: flex;
-      gap: 20px;
-      justify-content: center;
-    }
+      .social-links a:hover {
+        color: var(--hover);
+      }
+    </style>
 
-    .social-links a {
-      color: var(--accent);
-      font-size: 1.5rem;
-      transition: color 0.3s ease;
-    }
+    <script>
+      const gruvboxColors = [
+        "#282828",
+        "#3c3836",
+        "#504945",
+        "#665c54",
+        "#7c6f64",
+        "#b8bb26",
+        "#fabd2f",
+        "#fe8019",
+        "#fb4934",
+        "#d3869b",
+        "#8ec07c",
+        "#ebdbb2",
+        "#d5c4a1",
+        "#928374",
+        "#83a598",
+        "#458588",
+      ];
 
-    .social-links a:hover {
-      color: var(--hover);
-    }
+      function luminance(hex) {
+        const rgb = hex
+          .replace("#", "")
+          .match(/.{2}/g)
+          .map((c) => parseInt(c, 16) / 255);
+        const linear = rgb.map((c) =>
+          c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)
+        );
+        return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2];
+      }
 
-  </style>
+      function contrastRatio(c1, c2) {
+        const L1 = luminance(c1);
+        const L2 = luminance(c2);
+        return (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05);
+      }
 
-  <script>
-    const gruvboxColors = [
-      "#282828", "#3c3836", "#504945", "#665c54", "#7c6f64",
-      "#b8bb26", "#fabd2f", "#fe8019", "#fb4934", "#d3869b",
-      "#8ec07c", "#ebdbb2", "#d5c4a1", "#928374",
-      "#83a598", "#458588"
-    ];
+      function getReadableColors() {
+        let bg, text, link;
+        const MAX_TRIES = 100;
+        for (let i = 0; i < MAX_TRIES; i++) {
+          bg = gruvboxColors[Math.floor(Math.random() * gruvboxColors.length)];
+          text =
+            gruvboxColors[Math.floor(Math.random() * gruvboxColors.length)];
+          link =
+            gruvboxColors[Math.floor(Math.random() * gruvboxColors.length)];
 
-    function luminance(hex) {
-      const rgb = hex.replace("#", "").match(/.{2}/g).map(c => parseInt(c, 16) / 255);
-      const linear = rgb.map(c => (c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)));
-      return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2];
-    }
+          const contrastText = contrastRatio(bg, text);
+          const contrastLink = contrastRatio(bg, link);
+          const distinct = new Set([bg, text, link]).size === 3;
 
-    function contrastRatio(c1, c2) {
-      const L1 = luminance(c1);
-      const L2 = luminance(c2);
-      return (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05);
-    }
-
-    function getReadableColors() {
-      let bg, text, link;
-      const MAX_TRIES = 100;
-      for (let i = 0; i < MAX_TRIES; i++) {
-        bg = gruvboxColors[Math.floor(Math.random() * gruvboxColors.length)];
-        text = gruvboxColors[Math.floor(Math.random() * gruvboxColors.length)];
-        link = gruvboxColors[Math.floor(Math.random() * gruvboxColors.length)];
-
-        const contrastText = contrastRatio(bg, text);
-        const contrastLink = contrastRatio(bg, link);
-        const distinct = new Set([bg, text, link]).size === 3;
-
-        if (distinct && contrastText >= 4.5 && contrastLink >= 4.5) {
-          return { bg, text, link };
+          if (distinct && contrastText >= 4.5 && contrastLink >= 4.5) {
+            return { bg, text, link };
+          }
         }
+        return { bg: "#282828", text: "#ebdbb2", link: "#fabd2f" };
       }
-      return { bg: "#282828", text: "#ebdbb2", link: "#fabd2f" };
-    }
 
-    function applyColors(bg, text, link) {
-      document.body.style.backgroundColor = bg;
-      document.body.style.color = text;
+      function applyColors(bg, text, link) {
+        document.body.style.backgroundColor = bg;
+        document.body.style.color = text;
 
-      const a = document.querySelector("a");
-      const welcome = document.querySelector(".welcome");
-      const instruction = document.querySelector(".instruction");
-      const credit = document.querySelector(".credit");
-      const vision = document.querySelector(".vision");
-      const visionText = document.querySelector(".vision-text");
-      const visionBlink = document.querySelector(".vision-blink");
-      const socialLinks = document.querySelectorAll(".social-links a");
+        const a = document.querySelector("a");
+        const welcome = document.querySelector(".welcome");
+        const instruction = document.querySelector(".instruction");
+        const credit = document.querySelector(".credit");
+        const vision = document.querySelector(".vision");
+        const visionText = document.querySelector(".vision-text");
+        const visionBlink = document.querySelector(".vision-blink");
+        const socialLinks = document.querySelectorAll(".social-links a");
 
-      if (a) a.style.color = link;
-      if (welcome) welcome.style.color = link;
-      if (instruction) instruction.style.color = link;
-      if (credit) credit.style.color = link;
-      if (vision) vision.style.color = link;
-      if (visionText) visionText.style.color = link;
-      if (visionBlink) visionBlink.style.color = link;
-      socialLinks.forEach(icon => icon.style.color = link);
-    }
+        if (a) a.style.color = link;
+        if (welcome) welcome.style.color = link;
+        if (instruction) instruction.style.color = link;
+        if (credit) credit.style.color = link;
+        if (vision) vision.style.color = link;
+        if (visionText) visionText.style.color = link;
+        if (visionBlink) visionBlink.style.color = link;
+        socialLinks.forEach((icon) => (icon.style.color = link));
+      }
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const initial = getReadableColors();
-      applyColors(initial.bg, initial.text, initial.link);
+      document.addEventListener("DOMContentLoaded", () => {
+        const initial = getReadableColors();
+        applyColors(initial.bg, initial.text, initial.link);
 
-      document.body.addEventListener("click", () => {
-        const { bg, text, link } = getReadableColors();
-        applyColors(bg, text, link);
+        document.body.addEventListener("click", () => {
+          const { bg, text, link } = getReadableColors();
+          applyColors(bg, text, link);
+        });
       });
-    });
-  </script>
-</head>
-<body>
-  <div class="welcome">This is seon.uk</div>
+    </script>
+  </head>
+  <body>
+    <div class="welcome">This is seon.uk</div>
 
-  <div class="center">
-    <div class="fade-in" style="text-align: center;">
-      <a href="mailto:hello@seonuk.kim"
-         onmousedown="return false"
-         onselectstart="return false">
-        hello@seonuk.kim
-      </a>
+    <div class="center">
+      <div class="fade-in" style="text-align: center">
+        <a
+          href="mailto:hello@seonuk.kim"
+          onmousedown="return false"
+          onselectstart="return false"
+        >
+          hello@seonuk.kim
+        </a>
 
-      <div class="social-links fade-in">
-        <a href="https://instagram.com/snkiilog" target="_blank" aria-label="Instagram">
-          <i class="fab fa-instagram"></i>
-        </a>
-        <a href="https://x.com/snkii35" target="_blank" aria-label="X (Twitter)">
-          <i class="fab fa-x-twitter"></i>
-        </a>
-        <a href="https://github.com/snkii" target="_blank" aria-label="GitHub">
-          <i class="fab fa-github"></i>
-        </a>
-        <a href="https://linkedin.com/in/seonuk-kim-026aa1359" target="_blank" aria-label="LinkedIn">
-          <i class="fab fa-linkedin-in"></i>
-        </a>
+        <div class="social-links fade-in">
+          <a
+            href="https://instagram.com/snkiilog"
+            target="_blank"
+            aria-label="Instagram"
+          >
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a
+            href="https://x.com/snkii35"
+            target="_blank"
+            aria-label="X (Twitter)"
+          >
+            <i class="fab fa-x-twitter"></i>
+          </a>
+          <a
+            href="https://github.com/snkii"
+            target="_blank"
+            aria-label="GitHub"
+          >
+            <i class="fab fa-github"></i>
+          </a>
+          <a
+            href="https://linkedin.com/in/seonuk-kim-026aa1359"
+            target="_blank"
+            aria-label="LinkedIn"
+          >
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="instruction">Tap or click anywhere</div>
-  <div class="credit">Co-designed with ChatGPT</div>
+    <div class="instruction">Tap or click anywhere</div>
+    <div class="credit">Co-designed with ChatGPT</div>
 
-  <div class="vision">
-    <div class="vision-blink">&gt;</div>
-    <div class="vision-text">Shot on GR3x</div>
-  </div>
-
-</body>
+    <a href="gallery.html" class="vision">
+      <div class="vision-blink">&gt;</div>
+      <div class="vision-text">Shot on GR3x</div>
+    </a>
+  </body>
 </html>

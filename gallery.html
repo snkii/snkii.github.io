@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gallery – Shot on GR3x</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #282828;
+        --fg: #ebdbb2;
+      }
+
+      body {
+        margin: 0;
+        background-color: var(--bg);
+        color: var(--fg);
+        font-family: "DM Sans", sans-serif;
+      }
+
+      .top-banner {
+        text-align: center;
+        font-size: 3rem;
+        color: var(--fg);
+        margin-top: 40px;
+        margin-bottom: 20px;
+        user-select: none;
+        animation: fadeIn 2s ease-in-out forwards;
+      }
+
+      .gallery {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+        padding: 0 20px 80px;
+        max-width: 700px;
+        margin: 0 auto;
+      }
+
+      .gallery img {
+        max-width: 100%;
+        width: auto;
+        height: auto;
+        border-radius: 6px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+        margin: 0 auto;
+        pointer-events: none;
+        user-select: none;
+      }
+
+      .gallery img:hover {
+        transform: scale(1.03);
+      }
+
+      .vision {
+        position: fixed;
+        top: 50%;
+        transform: translateY(-60%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        pointer-events: auto;
+        font-size: 0.9rem;
+        color: var(--fg);
+        letter-spacing: 0.05em;
+        text-decoration: none;
+        cursor: pointer;
+        z-index: 9999;
+      }
+
+      .vision-text {
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+      }
+
+      .vision-blink {
+        animation: blink 2s infinite alternate;
+        margin-bottom: 6px;
+      }
+
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes blink {
+        0% {
+          opacity: 0.2;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+
+  <body oncontextmenu="return false">
+    <div class="top-banner">Shot on GR3x</div>
+
+    <div class="gallery">
+      <!-- 실제 이미지 경로 (비활성화됨) -->
+      <!--
+    <img src="images/photo1.jpg" alt="Photo 1">
+    <img src="images/photo2.jpg" alt="Photo 2">
+    -->
+
+      <!-- 테스트용 이미지 -->
+      <img
+        src="https://picsum.photos/700/450?random=1"
+        alt="Test Image 1"
+        ondragstart="return false"
+        oncontextmenu="return false"
+      />
+      <img
+        src="https://picsum.photos/700/450?random=2"
+        alt="Test Image 2"
+        ondragstart="return false"
+        oncontextmenu="return false"
+      />
+      <img
+        src="https://picsum.photos/700/450?random=3"
+        alt="Test Image 3"
+        ondragstart="return false"
+        oncontextmenu="return false"
+      />
+      <img
+        src="https://picsum.photos/700/450?random=4"
+        alt="Test Image 4"
+        ondragstart="return false"
+        oncontextmenu="return false"
+      />
+      <img
+        src="https://picsum.photos/700/450?random=5"
+        alt="Test Image 5"
+        ondragstart="return false"
+        oncontextmenu="return false"
+      />
+    </div>
+
+    <a href="index.html" class="vision" style="left: 10px; right: auto">
+      <div class="vision-blink">&lt;</div>
+      <div class="vision-text">Back</div>
+    </a>
+  </body>
+</html>
