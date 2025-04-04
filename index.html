@@ -27,6 +27,15 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
+  <!-- 보안 향상을 위한 메타태그 -->
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; img-src 'self' https:; style-src 'self' 'unsafe-inline'; script-src 'self'; object-src 'none';">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
+  <meta http-equiv="Cache-Control" content="no-store">
+
   <style>
     :root {
       --bg: #282828;
