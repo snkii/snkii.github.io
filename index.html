@@ -99,6 +99,18 @@
       pointer-events: none;
     }
 
+    .vision {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      font-size: 0.9rem;
+      color: var(--fg);
+      letter-spacing: 0.05em;
+      pointer-events: none;
+    }
 
     @keyframes fadeIn {
       0% { opacity: 0; transform: translateY(20px); }
@@ -136,6 +148,33 @@
     .social-links a:hover {
       color: var(--hover);
     }
+
+    .vision-wrapper {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      pointer-events: none;
+    }
+
+    .vision-arrow {
+      font-size: 0.9rem;
+      color: var(--fg);
+      animation: blink 2s infinite alternate;
+      margin-right: 6px;
+    }
+
+    .vision-text {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      font-size: 0.9rem;
+      color: var(--fg);
+      letter-spacing: 0.05em;
+    }
+
   </style>
 
   <script>
@@ -185,12 +224,16 @@
       const welcome = document.querySelector(".welcome");
       const instruction = document.querySelector(".instruction");
       const credit = document.querySelector(".credit");
+      const arrow = document.querySelector(".vision-arrow");
+      const visionText = document.querySelector(".vision-text");
       const socialLinks = document.querySelectorAll(".social-links a");
 
       if (a) a.style.color = link;
       if (welcome) welcome.style.color = link;
       if (instruction) instruction.style.color = link;
       if (credit) credit.style.color = link;
+      if (arrow) arrow.style.color = link;
+      if (visionText) visionText.style.color = link;
       socialLinks.forEach(icon => icon.style.color = link);
     }
 
@@ -235,5 +278,11 @@
 
   <div class="instruction">Tap or click anywhere</div>
   <div class="credit">Co-designed with ChatGPT</div>
+
+  <div class="vision-wrapper">
+    <div class="vision-arrow">&gt;</div>
+    <div class="vision-text">Shot on GR3x</div>
+  </div>
+
 </body>
 </html>
