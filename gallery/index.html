@@ -20,8 +20,13 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
   <!-- 보안 향상을 위한 메타태그 -->
-  <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; img-src 'self' https:; style-src 'self' 'unsafe-inline'; script-src 'self'; object-src 'none';">
+  <meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  img-src 'self' https:;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;
+  script-src 'self' https://cdnjs.cloudflare.com;
+">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta name="referrer" content="strict-origin-when-cross-origin">

@@ -28,8 +28,13 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
   <!-- 보안 향상을 위한 메타태그 -->
-  <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; img-src 'self' https:; style-src 'self' 'unsafe-inline'; script-src 'self'; object-src 'none';">
+  <meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  img-src 'self' https:;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;
+  script-src 'self' https://cdnjs.cloudflare.com;
+">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -70,6 +75,7 @@
     }
 
     a {
+      color: var(--accent);
       text-decoration: none;
       font-size: 3rem;
       user-select: none;
@@ -201,102 +207,8 @@
     }
   </style>
 
-  <script>
-    const gruvboxColors = [
-      "#282828",
-      "#3c3836",
-      "#504945",
-      "#665c54",
-      "#7c6f64",
-      "#b8bb26",
-      "#fabd2f",
-      "#fe8019",
-      "#fb4934",
-      "#d3869b",
-      "#8ec07c",
-      "#ebdbb2",
-      "#d5c4a1",
-      "#928374",
-      "#83a598",
-      "#458588",
-    ];
+  <script src="script.js" defer></script>
 
-    function luminance(hex) {
-      const rgb = hex
-        .replace("#", "")
-        .match(/.{2}/g)
-        .map((c) => parseInt(c, 16) / 255);
-      const linear = rgb.map((c) =>
-        c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)
-      );
-      return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2];
-    }
-
-    function contrastRatio(c1, c2) {
-      const L1 = luminance(c1);
-      const L2 = luminance(c2);
-      return (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05);
-    }
-
-    function getReadableColors() {
-      let bg, text, link;
-      const MAX_TRIES = 100;
-      for (let i = 0; i < MAX_TRIES; i++) {
-        bg = gruvboxColors[Math.floor(Math.random() * gruvboxColors.length)];
-        text =
-          gruvboxColors[Math.floor(Math.random() * gruvboxColors.length)];
-        link =
-          gruvboxColors[Math.floor(Math.random() * gruvboxColors.length)];
-
-        const contrastText = contrastRatio(bg, text);
-        const contrastLink = contrastRatio(bg, link);
-        const distinct = new Set([bg, text, link]).size === 3;
-
-        if (distinct && contrastText >= 4.5 && contrastLink >= 4.5) {
-          return { bg, text, link };
-        }
-      }
-      return { bg: "#282828", text: "#ebdbb2", link: "#fabd2f" };
-    }
-
-    function applyColors(bg, text, link) {
-      document.body.style.backgroundColor = bg;
-      document.body.style.color = text;
-
-      const a = document.querySelector("a");
-      const welcome = document.querySelector(".welcome");
-      const instruction = document.querySelector(".instruction");
-      const credit = document.querySelector(".credit");
-      const vision = document.querySelector(".vision");
-      const visionText = document.querySelector(".vision-text");
-      const visionBlink = document.querySelector(".vision-blink");
-      const socialLinks = document.querySelectorAll(".social-links a");
-      const copyright = document.querySelector(".copyright");
-
-      if (a) a.style.color = link;
-      if (welcome) welcome.style.color = link;
-      if (instruction) instruction.style.color = link;
-      if (credit) credit.style.color = link;
-      if (vision) vision.style.color = link;
-      if (visionText) visionText.style.color = link;
-      if (visionBlink) visionBlink.style.color = link;
-      if (copyright) copyright.style.color = link;
-      socialLinks.forEach((icon) => (icon.style.color = link));
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      const initial = getReadableColors();
-      applyColors(initial.bg, initial.text, initial.link);
-
-      document.body.addEventListener("click", (e) => {
-        if (e.target.closest("a")?.getAttribute("href") === "gallery.html")
-          return;
-
-        const { bg, text, link } = getReadableColors();
-        applyColors(bg, text, link);
-      });
-    });
-  </script>
 </head>
 
 <body>
@@ -304,7 +216,7 @@
 
   <div class="center">
     <div class="fade-in" style="text-align: center">
-      <a href="mailto:hello@seonuk.kim" onmousedown="return false" onselectstart="return false">
+      <a href="mailto:hello@seonuk.kim" id="email-link">
         hello@seonuk.kim
       </a>
 
