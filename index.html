@@ -187,6 +187,17 @@
       .social-links a:hover {
         color: var(--hover);
       }
+
+      .copyright {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  font-size: 0.6rem;
+  color: var(--fg);
+  opacity: 0.6;
+  pointer-events: none;
+  letter-spacing: 0.03em;
+}
     </style>
 
     <script>
@@ -259,6 +270,7 @@
         const visionText = document.querySelector(".vision-text");
         const visionBlink = document.querySelector(".vision-blink");
         const socialLinks = document.querySelectorAll(".social-links a");
+        const copyright = document.querySelector(".copyright");
 
         if (a) a.style.color = link;
         if (welcome) welcome.style.color = link;
@@ -267,6 +279,7 @@
         if (vision) vision.style.color = link;
         if (visionText) visionText.style.color = link;
         if (visionBlink) visionBlink.style.color = link;
+        if (copyright) copyright.style.color = link;
         socialLinks.forEach((icon) => (icon.style.color = link));
       }
 
@@ -337,5 +350,8 @@
       <div class="vision-blink">&gt;</div>
       <div class="vision-text">Shot on GR3x</div>
     </a>
+
+    <div class="copyright">© 2025 Seonuk Kim. All rights reserved.</div>
+
   </body>
 </html>
