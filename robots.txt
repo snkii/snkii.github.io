@@ -1,3 +1,3 @@
 User-agent: *
-Disallow: /gallery/
+Disallow:
 Sitemap: https://seon.uk/sitemap.xml
