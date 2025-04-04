@@ -1,122 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    />
-    <title>Gallery – Shot on GR3x</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500&display=swap"
-      rel="stylesheet"
-    />
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Gallery – Shot on GR3x</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500&display=swap" rel="stylesheet" />
 
-    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="shortcut icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="seon.uk" />
-    <link rel="manifest" href="/site.webmanifest" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="seon.uk" />
+  <link rel="manifest" href="/site.webmanifest" />
 
-    <style>
-      :root {
-        --bg: #282828;
-        --fg: #ebdbb2;
-      }
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-      body {
-        margin: 0;
-        background-color: var(--bg);
-        color: var(--fg);
-        font-family: "DM Sans", sans-serif;
-      }
+  <style>
+    :root {
+      --bg: #282828;
+      --fg: #ebdbb2;
+    }
 
-      .top-banner {
-        text-align: center;
-        font-size: 3rem;
-        color: var(--fg);
-        margin-top: 20px;
-        margin-bottom: 20px;
-        user-select: none;
-        animation: fadeIn 1.2s ease-in-out forwards;
-      }
+    body {
+      margin: 0;
+      background-color: var(--bg);
+      color: var(--fg);
+      font-family: "DM Sans", sans-serif;
+    }
 
-      .gallery {
-        display: flex;
-        flex-direction: column;
-        gap: 40px;
-        padding: 0 20px 80px;
-        max-width: 700px;
-        margin: 0 auto;
-      }
+    .top-banner {
+      text-align: center;
+      font-size: 3rem;
+      color: var(--fg);
+      margin-top: 20px;
+      margin-bottom: 20px;
+      user-select: none;
+      animation: fadeIn 1.2s ease-in-out forwards;
+    }
 
-      .gallery img {
-        max-width: 100%;
-        width: auto;
-        height: auto;
-        border-radius: 6px;
-        object-fit: cover;
-        margin: 0 auto;
-        pointer-events: none;
-        user-select: none;
+    .gallery {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      padding: 0 20px 30px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
 
+    .gallery img {
+      max-width: 100%;
+      width: auto;
+      height: auto;
+      border-radius: 6px;
+      object-fit: cover;
+      margin: 0 auto;
+      pointer-events: none;
+      user-select: none;
+
+      opacity: 0;
+      animation: fadeOnly 1s ease-in-out forwards;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.03);
+    }
+
+    @keyframes fadeIn {
+      0% {
         opacity: 0;
-        animation: fadeOnly 1s ease-in-out forwards;
+        transform: translateY(20px);
       }
 
-      .gallery img:hover {
-        transform: scale(1.03);
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeOnly {
+      from {
+        opacity: 0;
       }
 
-      @keyframes fadeIn {
-        0% {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-
-        100% {
-          opacity: 1;
-          transform: translateY(0);
-        }
+      to {
+        opacity: 1;
       }
-      @keyframes fadeOnly {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-    </style>
-  </head>
+    }
 
-  <body oncontextmenu="return false">
-    <div class="top-banner">Shot on GR3x</div>
+    .copyright {
+      font-size: 0.4rem;
+      color: var(--fg);
+      opacity: 0.6;
+      pointer-events: none;
+      letter-spacing: 0.03em;
+      text-align: center;
+      padding-bottom: 10px;
+      /* ← 여백 확보 */
+    }
+  </style>
+</head>
 
-    <div class="gallery">
-      <!-- 실제 이미지 경로 (비활성화됨) -->
+<body oncontextmenu="return false">
+  <div class="top-banner">Shot on GR3x</div>
 
-      <img
-        src="images/photo1.jpg"
-        alt="Photo 1"
-        style="animation-delay: 1.4s"
-      />
-      <img
-        src="images/photo2.jpg"
-        alt="Photo 2"
-        style="animation-delay: 1.8s"
-      />
+  <div class="gallery">
+    <!-- 실제 이미지 경로 (비활성화됨) -->
 
-      <!-- 테스트용 이미지
+    <img src="images/photo1.jpg" alt="Photo 1" style="animation-delay: 1.4s" />
+    <img src="images/photo2.jpg" alt="Photo 2" style="animation-delay: 1.8s" />
+
+    <!-- 테스트용 이미지
     <img src="https://picsum.photos/700/450?random=1" alt="Test Image 1"
          ondragstart="return false" oncontextmenu="return false">
     <img src="https://picsum.photos/700/450?random=2" alt="Test Image 2"
@@ -127,6 +124,9 @@
          ondragstart="return false" oncontextmenu="return false">
     <img src="https://picsum.photos/700/450?random=5" alt="Test Image 5"
          ondragstart="return false" oncontextmenu="return false"> -->
-    </div>
-  </body>
+  </div>
+  <div class="copyright">© 2025 Seonuk Kim. All rights reserved.</div>
+
+</body>
+
 </html>
