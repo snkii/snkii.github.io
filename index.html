@@ -270,7 +270,10 @@
         const initial = getReadableColors();
         applyColors(initial.bg, initial.text, initial.link);
 
-        document.body.addEventListener("click", () => {
+        document.body.addEventListener("click", (e) => {
+          if (e.target.closest("a")?.getAttribute("href") === "gallery.html")
+            return;
+
           const { bg, text, link } = getReadableColors();
           applyColors(bg, text, link);
         });
