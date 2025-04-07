@@ -88,18 +88,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.body.addEventListener("click", (e) => {
         const clickedLink = e.target.closest("a");
-        if (!clickedLink) return;
-      
-        const href = clickedLink.getAttribute("href")?.trim().toLowerCase();
-        console.log("🔍 href 확인:", `[${href}]`);
-      
-        if (["about", "gallery", "thisthat"].includes(href)) {
-          console.log("🚫 제외 대상이므로 색상 변경 생략:", href);
-          return;
-        }
-      
-        console.log("🎨 색상 변경 실행!");
+        const href = clickedLink?.getAttribute("href");
+
+        if (href === "gallery" || href === "about" || href === "thisthat") return;
+
         const { bg, text, link } = getReadableColors();
         applyColors(bg, text, link);
-      });
+    });
 });
