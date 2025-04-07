@@ -18,7 +18,7 @@ function initBubbleTags() {
     const vy = (Math.random() - 0.5) * 0.6;
 
     tag.style.position = "absolute";
-    tag.style.willChange = "transform"; // ✅ GPU 최적화 유도
+    tag.style.willChange = "transform";
 
     tagStates.push({ el: tag, x, y, vx, vy, width, height });
   });
@@ -35,7 +35,6 @@ function animateTags() {
     if (tag.x <= 0 || tag.x + tag.width >= containerWidth) tag.vx *= -1;
     if (tag.y <= 0 || tag.y + tag.height >= containerHeight) tag.vy *= -1;
 
-    // ✅ transform 기반 이동으로 수정
     tag.el.style.transform = `translate(${tag.x}px, ${tag.y}px)`;
   });
 
@@ -46,3 +45,18 @@ window.addEventListener("load", () => {
   initBubbleTags();
   requestAnimationFrame(animateTags);
 });
+
+window.addEventListener("contextmenu", e => e.preventDefault());
+
+window.addEventListener("selectstart", e => e.preventDefault());
+
+window.addEventListener("keydown", e => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "c") {
+    e.preventDefault();
+  }
+});
+
+window.addEventListener("copy", e => {
+  e.preventDefault();
+});
+
