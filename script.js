@@ -88,9 +88,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.body.addEventListener("click", (e) => {
         const clickedLink = e.target.closest("a");
-        const href = clickedLink?.getAttribute("href");
-        if (href === "gallery" || href === "about" || href === "thisthat") return;
+        if (!clickedLink) return;
+    
+        // href를 URL 객체로 만들어서 pathname만 뽑기
+        const url = new URL(clickedLink.href, location.origin);
+        const path = url.pathname.replace(/^\/|\/$/g, ""); // 앞뒤 슬래시 제거
+    
+        if (["gallery", "about", "thisthat"].includes(path)) return;
+    
         const { bg, text, link } = getReadableColors();
         applyColors(bg, text, link);
     });
+    
 });
