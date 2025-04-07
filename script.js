@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const clickedLink = e.target.closest("a");
         const href = clickedLink?.getAttribute("href");
 
-        if (href === "gallery" || href === "about") return;
+        if (href === "gallery" || href === "about" || href === "thisthat") return;
 
         const { bg, text, link } = getReadableColors();
         applyColors(bg, text, link);
