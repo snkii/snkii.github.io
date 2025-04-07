@@ -89,15 +89,17 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.addEventListener("click", (e) => {
         const clickedLink = e.target.closest("a");
         if (!clickedLink) return;
-    
-        // href를 URL 객체로 만들어서 pathname만 뽑기
-        const url = new URL(clickedLink.href, location.origin);
-        const path = url.pathname.replace(/^\/|\/$/g, ""); // 앞뒤 슬래시 제거
-    
-        if (["gallery", "about", "thisthat"].includes(path)) return;
-    
+      
+        const href = clickedLink.getAttribute("href")?.trim().toLowerCase();
+        console.log("🔍 href 확인:", `[${href}]`);
+      
+        if (["about", "gallery", "thisthat"].includes(href)) {
+          console.log("🚫 제외 대상이므로 색상 변경 생략:", href);
+          return;
+        }
+      
+        console.log("🎨 색상 변경 실행!");
         const { bg, text, link } = getReadableColors();
         applyColors(bg, text, link);
-    });
-    
+      });
 });
