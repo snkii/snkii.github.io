@@ -55,6 +55,9 @@ function applyColors(bg, text, link) {
     const about = document.querySelector(".about");
     const aboutText = document.querySelector(".about-text");
     const aboutBlink = document.querySelector(".about-blink");
+    const thisthat = document.querySelector(".thisthat");
+    const thisthatText = document.querySelector(".thisthat-text");
+    const thisthatBlink = document.querySelector(".thisthat-blink");
 
     if (welcome) welcome.style.color = link;
     if (instruction) instruction.style.color = link;
@@ -66,6 +69,9 @@ function applyColors(bg, text, link) {
     if (about) about.style.color = link;
     if (aboutText) aboutText.style.color = link;
     if (aboutBlink) aboutBlink.style.color = link;
+    if (thisthat) thisthat.style.color = link;
+    if (thisthatText) thisthatText.style.color = link;
+    if (thisthatBlink) thisthatBlink.style.color = link;
 
     socialLinks.forEach((icon) => (icon.style.color = link));
 }

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>This & That – Seonuk Kim</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="seon.uk" />
+    <link rel="manifest" href="/site.webmanifest" />
+  
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  
+    <!-- 보안 향상을 위한 메타태그 -->
+    <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    base-uri 'self';
+    object-src 'none';
+    img-src 'self' https:;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+    font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;
+    script-src 'self' https://cdnjs.cloudflare.com;
+  ">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=(), fullscreen=()">
+    <meta http-equiv="Cache-Control" content="no-store, max-age=0, must-revalidate">
+
+    <style>
+      :root {
+        --bg: #282828;
+        --fg: #ebdbb2;
+        --divider: rgba(235, 219, 178, 0.1);
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: var(--bg);
+        color: var(--fg);
+        font-family: "DM Sans", sans-serif;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .title {
+        text-align: center;
+        font-size: 2.2rem;
+        margin-top: 2rem;
+        animation: fadeIn 1.2s ease-in-out forwards;
+      }
+
+      .floating-tags-wrapper {
+        position: absolute;
+        top: 52%; /* 50%보다 살짝 위 */
+        left: 50%;
+        transform: translate(-50%, -50%);
+        height: 60vh;
+        max-width: 700px;
+        width: 100%;
+        overflow: visible;
+      }
+
+      .floating-tags {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+
+      .tag {
+        position: absolute;
+        background: rgba(235, 219, 178, 0.12);
+        border: 1px solid var(--divider);
+        border-radius: 9999px;
+        padding: 0.6rem 1.2rem;
+        font-size: 0.95rem;
+        color: var(--fg);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        white-space: nowrap;
+        backdrop-filter: blur(2px);
+        pointer-events: none; /* 클릭 방지, 진짜 비눗방울처럼 */
+        transition: none; /* 부드러운 모션 직접 컨트롤하니까 */
+      }
+
+      @keyframes floaty {
+        0% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+        100% {
+          transform: translateY(0px);
+        }
+      }
+
+      .copyright {
+        font-size: 0.5rem;
+        color: var(--fg);
+        opacity: 0.6;
+        pointer-events: none;
+        text-align: center;
+        position: absolute;
+        bottom: 16px;
+        width: 100%;
+      }
+
+      @media (min-width: 768px) {
+        .tag {
+          font-size: 1.1rem;
+          padding: 0.75rem 1.4rem;
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .tag {
+          font-size: 1.25rem;
+          padding: 0.9rem 1.6rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="title">This & That</h1>
+
+    <div class="floating-tags-wrapper">
+      <div class="floating-tags">
+        <span class="tag">#Jesus</span>
+        <span class="tag">#Bible</span>
+        <span class="tag">#Aquascaping</span>
+        <span class="tag">#NatureAquarium</span>
+        <span class="tag">#Camera</span>
+        <span class="tag">#GR3x</span>
+        <span class="tag">#VibeCoding</span>
+        <span class="tag">#HomeDecor</span>
+        <span class="tag">#CustomKeyboard</span>
+      </div>
+    </div>
+
+    <div class="copyright">© 2025 Seonuk Kim. All rights reserved.</div>
+    <script>
+      // 복사/우클릭/선택 방지
+      window.addEventListener("contextmenu", (e) => e.preventDefault());
+      window.addEventListener("copy", (e) => e.preventDefault());
+      window.addEventListener("selectstart", (e) => e.preventDefault());
+      window.addEventListener("keydown", (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "c") {
+          e.preventDefault();
+        }
+      });
+
+      const tags = document.querySelectorAll(".tag");
+      const wrapper = document.querySelector(".floating-tags-wrapper");
+      const tagStates = [];
+
+      function initBubbleTags() {
+        const wrapperRect = wrapper.getBoundingClientRect();
+
+        tags.forEach((tag) => {
+          const width = tag.offsetWidth;
+          const height = tag.offsetHeight;
+
+          const maxLeft = wrapper.clientWidth - width;
+          const maxTop = wrapper.clientHeight - height;
+
+          const x = Math.random() * maxLeft;
+          const y = Math.random() * maxTop;
+          const vx = (Math.random() - 0.5) * 0.6; // 속도 줄이기
+          const vy = (Math.random() - 0.5) * 0.6;
+
+          tag.style.left = `${x}px`;
+          tag.style.top = `${y}px`;
+          tag.style.position = "absolute";
+
+          tagStates.push({
+            el: tag,
+            x,
+            y,
+            vx,
+            vy,
+            width,
+            height,
+          });
+        });
+      }
+
+      function animateTags() {
+        const containerWidth = wrapper.clientWidth;
+        const containerHeight = wrapper.clientHeight;
+
+        tagStates.forEach((tag) => {
+          tag.x += tag.vx;
+          tag.y += tag.vy;
+
+          // 벽에 닿으면 반사
+          if (tag.x <= 0 || tag.x + tag.width >= containerWidth) tag.vx *= -1;
+          if (tag.y <= 0 || tag.y + tag.height >= containerHeight) tag.vy *= -1;
+
+          tag.el.style.left = `${tag.x}px`;
+          tag.el.style.top = `${tag.y}px`;
+        });
+
+        requestAnimationFrame(animateTags);
+      }
+
+      window.addEventListener("load", () => {
+        initBubbleTags();
+        requestAnimationFrame(animateTags);
+      });
+    </script>
+
+    <div class="copyright">© 2025 Seonuk Kim. All rights reserved.</div>
+  </body>
+</html>
