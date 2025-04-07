@@ -17,9 +17,8 @@ function initBubbleTags() {
     const vx = (Math.random() - 0.5) * 0.6;
     const vy = (Math.random() - 0.5) * 0.6;
 
-    tag.style.left = `${x}px`;
-    tag.style.top = `${y}px`;
     tag.style.position = "absolute";
+    tag.style.willChange = "transform"; // ✅ GPU 최적화 유도
 
     tagStates.push({ el: tag, x, y, vx, vy, width, height });
   });
@@ -36,8 +35,8 @@ function animateTags() {
     if (tag.x <= 0 || tag.x + tag.width >= containerWidth) tag.vx *= -1;
     if (tag.y <= 0 || tag.y + tag.height >= containerHeight) tag.vy *= -1;
 
-    tag.el.style.left = `${tag.x}px`;
-    tag.el.style.top = `${tag.y}px`;
+    // ✅ transform 기반 이동으로 수정
+    tag.el.style.transform = `translate(${tag.x}px, ${tag.y}px)`;
   });
 
   requestAnimationFrame(animateTags);

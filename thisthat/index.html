@@ -97,6 +97,7 @@
         backdrop-filter: blur(2px);
         pointer-events: none; /* 클릭 방지, 진짜 비눗방울처럼 */
         transition: none; /* 부드러운 모션 직접 컨트롤하니까 */
+        will-change: transform; /* CSS 쪽에서도 명시하면 안정성 ↑ */
       }
 
       @keyframes floaty {
