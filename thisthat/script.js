@@ -6,6 +6,8 @@ function initBubbleTags() {
   const wrapperRect = wrapper.getBoundingClientRect();
 
   tags.forEach(tag => {
+    tag.setAttribute("draggable", "false");
+    tag.addEventListener("dragstart", e => e.preventDefault());
     const width = tag.offsetWidth;
     const height = tag.offsetHeight;
 
@@ -115,3 +117,4 @@ window.addEventListener("keydown", e => {
 window.addEventListener("copy", e => {
   e.preventDefault();
 });
+window.addEventListener("dragstart", e => e.preventDefault());
