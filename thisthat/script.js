@@ -27,19 +27,19 @@ function initBubbleTags() {
 let lastTime = performance.now();
 
 function animateTags(now) {
-  const deltaTime = (now - lastTime) / 16.666; // 60fps 기준으로 보정
+  const deltaTime = Math.min((now - lastTime) / 1000, 0.05); // 초 단위
   lastTime = now;
 
   const containerWidth = wrapper.clientWidth;
   const containerHeight = wrapper.clientHeight;
 
   for (const tag of tagStates) {
-    tag.x += tag.vx * deltaTime;
-    tag.y += tag.vy * deltaTime;
+    tag.x += tag.vx * deltaTime * 60;
+    tag.y += tag.vy * deltaTime * 60;
 
     if (tag.x <= 0 || tag.x + tag.width >= containerWidth) {
       tag.vx *= -1;
-      tag.x = Math.max(0, Math.min(tag.x, containerWidth - tag.width)); // 경계 클램프
+      tag.x = Math.max(0, Math.min(tag.x, containerWidth - tag.width));
     }
 
     if (tag.y <= 0 || tag.y + tag.height >= containerHeight) {
@@ -47,11 +47,10 @@ function animateTags(now) {
       tag.y = Math.max(0, Math.min(tag.y, containerHeight - tag.height));
     }
 
-    tag.el.style.transform = `matrix3d(1,0,0,0, 0,1,0,0, 0,0,1,0, ${tag.x},${tag.y},0,1)`;
+    tag.el.style.transform = `translate3d(${tag.x}px, ${tag.y}px, 0)`;
   }
 
-  // 랜덤 지연: 미세한 타이밍 흩어짐으로 떨림 방지
-  setTimeout(() => requestAnimationFrame(animateTags), Math.random() * 2 + 1);
+  requestAnimationFrame(animateTags);
 }
 
 
