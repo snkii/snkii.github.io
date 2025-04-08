@@ -96,6 +96,12 @@
         overflow: visible;
       }
 
+      @supports (-webkit-touch-callout: none) {
+        .floating-tags-wrapper {
+          top: 42%;
+        }
+      }
+
       .floating-tags {
         position: relative;
         width: 100%;
