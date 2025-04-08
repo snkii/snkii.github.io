@@ -118,3 +118,11 @@ window.addEventListener("copy", e => {
   e.preventDefault();
 });
 window.addEventListener("dragstart", e => e.preventDefault());
+
+function setRealViewportHeight() {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+
+window.addEventListener('resize', setRealViewportHeight);
+window.addEventListener('load', setRealViewportHeight);
