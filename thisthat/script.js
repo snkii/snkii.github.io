@@ -76,22 +76,22 @@ function animateTags(now) {
 }
 
 // 클릭 이벤트: 퍼짐 효과 추가
-wrapper.addEventListener("click", (e) => {
-  const rect = wrapper.getBoundingClientRect();
-  const clickX = e.clientX - rect.left;
-  const clickY = e.clientY - rect.top;
-
-  tagStates.forEach(tag => {
-    const dx = tag.x + tag.width / 2 - clickX;
-    const dy = tag.y + tag.height / 2 - clickY;
-    const dist = Math.max(Math.sqrt(dx * dx + dy * dy), 1); // 0 나눗셈 방지
-
-    const power = 5; // 클릭 퍼짐 강도
-    tag.fx = (dx / dist) * power;
-    tag.fy = (dy / dist) * power;
-    tag.forceDecay = 0.9; // 매 프레임 감쇠율 (0.9 = 10%씩 감소)
+window.addEventListener("click", (e) => {
+    const rect = wrapper.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const clickY = e.clientY - rect.top;
+  
+    tagStates.forEach(tag => {
+      const dx = tag.x + tag.width / 2 - clickX;
+      const dy = tag.y + tag.height / 2 - clickY;
+      const dist = Math.max(Math.sqrt(dx * dx + dy * dy), 1);
+  
+      const power = 5;
+      tag.fx = (dx / dist) * power;
+      tag.fy = (dy / dist) * power;
+      tag.forceDecay = 0.9;
+    });
   });
-});
 
 // 초기화 및 애니메이션 시작
 window.addEventListener("load", () => {
