@@ -74,8 +74,9 @@ function animateTags(now) {
   requestAnimationFrame(animateTags);
 }
 
-// 클릭 또는 터치 이벤트 핸들러
 function handleInteraction(e) {
+  if (e.target.classList.contains("tag")) return;
+
   const isTouch = e.type === "touchstart";
   const clientX = isTouch ? e.touches[0].clientX : e.clientX;
   const clientY = isTouch ? e.touches[0].clientY : e.clientY;
