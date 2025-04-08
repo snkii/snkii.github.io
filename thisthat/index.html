@@ -22,12 +22,17 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="seon.uk" />
     <link rel="manifest" href="/site.webmanifest" />
-  
+
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+
     <!-- 보안 향상을 위한 메타태그 -->
-    <meta http-equiv="Content-Security-Policy" content="
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="
     default-src 'self';
     base-uri 'self';
     object-src 'none';
@@ -35,12 +40,19 @@
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;
     script-src 'self' https://cdnjs.cloudflare.com;
-  ">
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta http-equiv="X-Frame-Options" content="DENY">
-    <meta name="referrer" content="strict-origin-when-cross-origin">
-    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=(), fullscreen=()">
-    <meta http-equiv="Cache-Control" content="no-store, max-age=0, must-revalidate">
+  "
+    />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta
+      http-equiv="Permissions-Policy"
+      content="geolocation=(), microphone=(), camera=(), fullscreen=()"
+    />
+    <meta
+      http-equiv="Cache-Control"
+      content="no-store, max-age=0, must-revalidate"
+    />
 
     <style>
       :root {
@@ -69,13 +81,20 @@
 
       .floating-tags-wrapper {
         position: absolute;
-        top: 52%; /* 50%보다 살짝 위 */
+        top: 52%;
         left: 50%;
         transform: translate(-50%, -50%);
         height: 75vh;
         max-width: 1000px;
         width: 100%;
         overflow: visible;
+      }
+
+      @media (max-width: 600px) {
+        .floating-tags-wrapper {
+          top: 60%;
+          height: 60vh;
+        }
       }
 
       .floating-tags {
@@ -146,22 +165,80 @@
 
     <div class="floating-tags-wrapper">
       <div class="floating-tags">
-        <a href="https://en.wikipedia.org/wiki/Jesus" class="tag" target="_blank" rel="noopener">#Jesus</a>
-        <a href="https://en.wikipedia.org/wiki/Bible" class="tag" target="_blank" rel="noopener">#Bible</a>
-        <a href="https://en.wikipedia.org/wiki/Aquascaping" class="tag" target="_blank" rel="noopener">#Aquascaping</a>
-        <a href="https://en.wikipedia.org/wiki/Aquarium" class="tag" target="_blank" rel="noopener">#Aquarium</a>
-        <a href="https://en.wikipedia.org/wiki/Moss" class="tag" target="_blank" rel="noopener">#MossGarden</a>
-        <a href="https://en.wikipedia.org/wiki/Digital_camera" class="tag" target="_blank" rel="noopener">#Camera</a>
-        <a href="https://en.wikipedia.org/wiki/Ricoh_GR_digital_cameras" class="tag" target="_blank" rel="noopener">#GR3x</a>
-        <a href="https://en.wikipedia.org/wiki/Computer_programming" class="tag" target="_blank" rel="noopener">#VibeCoding</a>
-        <a href="https://en.wikipedia.org/wiki/Interior_design" class="tag" target="_blank" rel="noopener">#InteriorDesign</a>
-        <a href="https://en.wikipedia.org/wiki/Mechanical_keyboard" class="tag" target="_blank" rel="noopener">#CustomKeyboard</a>        
+        <a
+          href="https://en.wikipedia.org/wiki/Jesus"
+          class="tag"
+          target="_blank"
+          rel="noopener"
+          >#Jesus</a
+        >
+        <a
+          href="https://en.wikipedia.org/wiki/Bible"
+          class="tag"
+          target="_blank"
+          rel="noopener"
+          >#Bible</a
+        >
+        <a
+          href="https://en.wikipedia.org/wiki/Aquascaping"
+          class="tag"
+          target="_blank"
+          rel="noopener"
+          >#Aquascaping</a
+        >
+        <a
+          href="https://en.wikipedia.org/wiki/Aquarium"
+          class="tag"
+          target="_blank"
+          rel="noopener"
+          >#Aquarium</a
+        >
+        <a
+          href="https://en.wikipedia.org/wiki/Moss"
+          class="tag"
+          target="_blank"
+          rel="noopener"
+          >#MossGarden</a
+        >
+        <a
+          href="https://en.wikipedia.org/wiki/Digital_camera"
+          class="tag"
+          target="_blank"
+          rel="noopener"
+          >#Camera</a
+        >
+        <a
+          href="https://en.wikipedia.org/wiki/Ricoh_GR_digital_cameras"
+          class="tag"
+          target="_blank"
+          rel="noopener"
+          >#GR3x</a
+        >
+        <a
+          href="https://en.wikipedia.org/wiki/Computer_programming"
+          class="tag"
+          target="_blank"
+          rel="noopener"
+          >#VibeCoding</a
+        >
+        <a
+          href="https://en.wikipedia.org/wiki/Interior_design"
+          class="tag"
+          target="_blank"
+          rel="noopener"
+          >#InteriorDesign</a
+        >
+        <a
+          href="https://en.wikipedia.org/wiki/Mechanical_keyboard"
+          class="tag"
+          target="_blank"
+          rel="noopener"
+          >#CustomKeyboard</a
+        >
       </div>
     </div>
 
     <div class="copyright">© 2025 Seonuk Kim. All rights reserved.</div>
     <script src="script.js?v=1.0.0"></script>
-
-
   </body>
 </html>

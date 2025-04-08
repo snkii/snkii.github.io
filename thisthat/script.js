@@ -28,9 +28,9 @@ function initBubbleTags() {
       vy,
       width,
       height,
-      fx: 0,      // 추가: 외부 force x
-      fy: 0,      // 추가: 외부 force y
-      forceDecay: 0 // 추가: 감쇠율
+      fx: 0,
+      fy: 0,
+      forceDecay: 0
     });
   });
 }
@@ -38,18 +38,16 @@ function initBubbleTags() {
 let lastTime = performance.now();
 
 function animateTags(now) {
-  const deltaTime = Math.min((now - lastTime) / 1000, 0.05); // 초 단위
+  const deltaTime = Math.min((now - lastTime) / 1000, 0.05);
   lastTime = now;
 
   const containerWidth = wrapper.clientWidth;
   const containerHeight = wrapper.clientHeight;
 
   for (const tag of tagStates) {
-    // 기본 속도 + 외부 force 적용
     tag.x += (tag.vx + tag.fx) * deltaTime * 60;
     tag.y += (tag.vy + tag.fy) * deltaTime * 60;
 
-    // force 감쇠
     if (tag.forceDecay > 0) {
       tag.fx *= tag.forceDecay;
       tag.fy *= tag.forceDecay;
@@ -58,7 +56,6 @@ function animateTags(now) {
       if (Math.abs(tag.fy) < 0.01) tag.fy = 0;
     }
 
-    // 벽 반사 처리
     if (tag.x <= 0 || tag.x + tag.width >= containerWidth) {
       tag.vx *= -1;
       tag.x = Math.max(0, Math.min(tag.x, containerWidth - tag.width));
@@ -75,31 +72,39 @@ function animateTags(now) {
   requestAnimationFrame(animateTags);
 }
 
-// 클릭 이벤트: 퍼짐 효과 추가
-window.addEventListener("click", (e) => {
-    const rect = wrapper.getBoundingClientRect();
-    const clickX = e.clientX - rect.left;
-    const clickY = e.clientY - rect.top;
-  
-    tagStates.forEach(tag => {
-      const dx = tag.x + tag.width / 2 - clickX;
-      const dy = tag.y + tag.height / 2 - clickY;
-      const dist = Math.max(Math.sqrt(dx * dx + dy * dy), 1);
-  
-      const power = 5;
-      tag.fx = (dx / dist) * power;
-      tag.fy = (dy / dist) * power;
-      tag.forceDecay = 0.9;
-    });
-  });
+// 클릭 또는 터치 이벤트 핸들러
+function handleInteraction(e) {
+  const isTouch = e.type === "touchstart";
+  const clientX = isTouch ? e.touches[0].clientX : e.clientX;
+  const clientY = isTouch ? e.touches[0].clientY : e.clientY;
 
-// 초기화 및 애니메이션 시작
+  const rect = wrapper.getBoundingClientRect();
+  const clickX = clientX - rect.left;
+  const clickY = clientY - rect.top;
+
+  tagStates.forEach(tag => {
+    const dx = tag.x + tag.width / 2 - clickX;
+    const dy = tag.y + tag.height / 2 - clickY;
+    const dist = Math.max(Math.sqrt(dx * dx + dy * dy), 1);
+
+    const power = 5;
+    tag.fx = (dx / dist) * power;
+    tag.fy = (dy / dist) * power;
+    tag.forceDecay = 0.9;
+  });
+}
+
+
+window.addEventListener("click", handleInteraction);
+window.addEventListener("touchstart", handleInteraction, { passive: true });
+
+
 window.addEventListener("load", () => {
   initBubbleTags();
   requestAnimationFrame(animateTags);
 });
 
-// 복사, 마우스 우클릭, 선택 방지
+
 window.addEventListener("contextmenu", e => e.preventDefault());
 window.addEventListener("selectstart", e => e.preventDefault());
 window.addEventListener("keydown", e => {
