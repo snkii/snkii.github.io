@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta
@@ -10,17 +10,21 @@
 
     <meta
       name="description"
-      content="김선욱(Seonuk Kim)의 개인 웹사이트. GR3x 사진, 웹 실험, 디자인에 대한 생각을 공유하는 미니멀한 공간입니다."
+      content="김선욱(Seonuk Kim)의 개인 웹사이트. 서울대학교 휴먼인터페이스연구실(HIL) 출신. GR3x 사진, 웹 실험, 디자인에 대한 생각을 공유하는 미니멀한 공간입니다."
     />
-    <meta name="keywords" content="김선욱, Seonuk Kim, 김선욱 웹사이트, 포트폴리오, GR3x 사진, 웹 디자인, 개발자" />
+    <meta name="keywords" content="김선욱, Seonuk Kim, 김선욱 서울대학교, 서울대학교, Seoul National University, SNU, 휴먼인터페이스연구실, HIL, Human Interface Lab, 김선욱 HIL, 김선욱 웹사이트, 포트폴리오, GR3x 사진, 웹 디자인, 개발자" />
     <meta name="author" content="김선욱 (Seonuk Kim)" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://seon.uk/" />
+    <link rel="alternate" hreflang="ko" href="https://seon.uk/" />
+    <link rel="alternate" hreflang="en" href="https://seon.uk/" />
+    <link rel="alternate" hreflang="x-default" href="https://seon.uk/" />
+    <link type="text/plain" rel="author" href="https://seon.uk/humans.txt" />
 
     <meta property="og:title" content="김선욱 Seonuk Kim - 개인 웹사이트" />
     <meta
       property="og:description"
-      content="김선욱(Seonuk Kim)의 개인 웹사이트. GR3x 사진, 웹 실험, 디자인을 공유하는 공간입니다."
+      content="김선욱(Seonuk Kim)의 개인 웹사이트. 서울대학교 휴먼인터페이스연구실(HIL) 출신. GR3x 사진, 웹 실험, 디자인을 공유하는 공간입니다."
     />
     <meta property="og:locale" content="ko_KR" />
     <meta property="og:image" content="https://seon.uk/preview.png" />
@@ -32,7 +36,7 @@
     <meta name="twitter:title" content="김선욱 Seonuk Kim - 개인 웹사이트" />
     <meta
       name="twitter:description"
-      content="김선욱(Seonuk Kim)의 개인 웹사이트. GR3x 사진, 웹 실험, 디자인을 공유하는 공간입니다."
+      content="김선욱(Seonuk Kim)의 개인 웹사이트. 서울대학교 휴먼인터페이스연구실(HIL) 출신. GR3x 사진, 웹 실험, 디자인을 공유하는 공간입니다."
     />
     <meta name="twitter:image" content="https://seon.uk/preview.png" />
 
@@ -319,8 +323,25 @@
       ],
       "jobTitle": "Web Developer & Designer",
       "email": "hello@seonuk.kim",
-      "knowsAbout": ["Photography", "Web Design", "Web Development", "GR3x Photography"],
-      "description": "김선욱(Seonuk Kim)의 개인 웹사이트. GR3x 사진, 웹 실험, 디자인에 대한 생각을 공유하는 미니멀한 공간입니다."
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "서울대학교",
+        "alternateName": "Seoul National University",
+        "sameAs": "https://www.snu.ac.kr"
+      },
+      "affiliation": {
+        "@type": "Organization",
+        "name": "휴먼인터페이스연구실",
+        "alternateName": ["HIL", "Human Interface Lab"],
+        "url": "https://hi.snu.ac.kr/",
+        "sameAs": "https://hi.snu.ac.kr/",
+        "parentOrganization": {
+          "@type": "CollegeOrUniversity",
+          "name": "서울대학교"
+        }
+      },
+      "knowsAbout": ["Photography", "Web Design", "Web Development", "GR3x Photography", "Human Computer Interaction", "User Interface"],
+      "description": "김선욱(Seonuk Kim)의 개인 웹사이트. 서울대학교 휴먼인터페이스연구실(HIL) 출신. GR3x 사진, 웹 실험, 디자인에 대한 생각을 공유하는 미니멀한 공간입니다."
     }
     </script>
 
@@ -329,7 +350,7 @@
 
   <body>
     <header>
-      <h1 style="position: absolute; left: -9999px;">김선욱 (Seonuk Kim) - 개인 웹사이트</h1>
+      <h1 style="position: absolute; left: -9999px;">김선욱 (Seonuk Kim) - 서울대학교 휴먼인터페이스연구실(HIL) 출신 - 개인 웹사이트</h1>
     </header>
     
     <div class="welcome">This is seon.uk</div>
@@ -383,14 +404,14 @@
 
     <a href="gallery" class="gallery">
       <div class="gallery-blink">&gt;</div>
-      <div class="gallery-text">My Photobook</div>
+      <div class="gallery-text">Photobook</div>
     </a>
 
     <div class="copyright">© 2025 Seonuk Kim. All rights reserved.</div>
 
     <a href="about" class="about">
       <div class="about-blink">&gt;</div>
-      <div class="about-text">About me</div>
+      <div class="about-text">About</div>
     </a>
 
     <a href="thisthat" class="thisthat">

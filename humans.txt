@@ -1,0 +1,15 @@
+# humanstxt.org
+
+/* TEAM */
+Name: 김선욱 (Seonuk Kim)
+Site: hello@seonuk.kim
+Location: Seoul, Korea
+
+/* SITE */
+Last update: 2025/12/15
+Standards: HTML5, CSS3
+Components: JavaScript
+Software: VS Code, GitHub Pages
+
+/* THANKS */
+Co-designed with ChatGPT
