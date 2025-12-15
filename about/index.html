@@ -169,7 +169,10 @@
     <p class="subtitle">From Seoul, Korea</p>
 
     <section>
-      <div class="section-title">🎓 Education</div>
+      <div class="section-title">
+        🎓 Education
+        <span onclick="toggleTMI()" style="font-size: 0.5rem; opacity: 0.3; margin-left: 8px; cursor: pointer; user-select: none;">TMI</span>
+      </div>
       <p class="indent" style="font-size: 1rem;">
         Integrated M.S.–Ph.D., 
         <a href="https://hi.snu.ac.kr" target="_blank" class="no-link-style">Human Interface Lab</a>, 
@@ -181,7 +184,23 @@
         <a href="https://ece.snu.ac.kr" target="_blank" class="no-link-style">ECE</a>, 
         <a href="https://www.snu.ac.kr" target="_blank" class="no-link-style">SNU</a> (2018–2024)
       </p>
+      <div id="tmi-education" style="display: none;">
+        <p class="indent" style="font-size: 0.85rem; opacity: 0.4;">광성고등학교 졸업 (2015–2017)</p>
+        <p class="indent" style="font-size: 0.85rem; opacity: 0.4;">경성중학교 졸업 (2012–2014)</p>
+        <p class="indent" style="font-size: 0.85rem; opacity: 0.4;">성서초등학교 졸업 (2006–2011)</p>
+      </div>
     </section>
+
+    <script>
+      function toggleTMI() {
+        const tmiDiv = document.getElementById('tmi-education');
+        if (tmiDiv.style.display === 'none') {
+          tmiDiv.style.display = 'block';
+        } else {
+          tmiDiv.style.display = 'none';
+        }
+      }
+    </script>
 
     <section>
       <div class="section-title">💻 Research Interests</div>
