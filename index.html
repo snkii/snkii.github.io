@@ -44,7 +44,6 @@
       href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500&display=swap"
       rel="stylesheet"
     />
-
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
@@ -58,12 +57,8 @@
     <link rel="manifest" href="/site.webmanifest" />
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta
-      name="apple-mobile-web-app-status-bar-style"
-      content="black-translucent"
-    />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-    <!-- 보안 향상을 위한 메타태그 -->
     <meta
       http-equiv="Content-Security-Policy"
       content="
@@ -73,39 +68,171 @@
   img-src 'self' https:;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;
-  script-src 'self' https://cdnjs.cloudflare.com;
+  script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
 "
     />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     <meta http-equiv="X-Frame-Options" content="DENY" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <meta
-      http-equiv="Permissions-Policy"
-      content="geolocation=(), microphone=(), camera=(), fullscreen=()"
-    />
-    <meta
-      http-equiv="Cache-Control"
-      content="no-store, max-age=0, must-revalidate"
-    />
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=(), fullscreen=()" />
+    <meta http-equiv="Cache-Control" content="no-store, max-age=0, must-revalidate" />
+
+    <!-- 구조화된 데이터: 개인 프로필 (JSON-LD) -->
+    <script type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "김선욱",
+        "alternateName": ["Seonuk Kim", "snkii", "snkiilog"],
+        "url": "https://seon.uk",
+        "image": "https://seon.uk/preview.png",
+        "email": "hello@seonuk.kim",
+        "telephone": "+82-10-9707-3737",
+        "nationality": "Korean",
+        "sameAs": [
+          "https://instagram.com/snkiilog",
+          "https://github.com/snkii",
+          "https://linkedin.com/in/seonuk-kim-026aa1359",
+          "https://until.blog/@seonuk"
+        ],
+        "jobTitle": "Integrated M.S.–Ph.D. Student",
+        "worksFor": {
+          "@type": "Organization",
+          "name": "Human Interface Lab",
+          "alternateName": ["HIL", "휴먼인터페이스연구실"],
+          "url": "https://hi.snu.ac.kr/",
+          "parentOrganization": {
+            "@type": "CollegeOrUniversity",
+            "name": "Seoul National University",
+            "alternateName": ["서울대학교", "SNU"],
+            "sameAs": "https://www.snu.ac.kr"
+          }
+        },
+        "alumniOf": [
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "Seoul National University",
+            "alternateName": ["서울대학교", "SNU"],
+            "sameAs": "https://www.snu.ac.kr",
+            "department": "Department of Electrical and Computer Engineering"
+          }
+        ],
+        "knowsAbout": [
+          "Human-Computer Interaction",
+          "HCI",
+          "Voice User Interface",
+          "Speech Processing",
+          "Spoken Dialogue Systems",
+          "SDS",
+          "AI",
+          "Photography",
+          "GR3x",
+          "Web Design",
+          "Web Development"
+        ],
+        "description": "김선욱(Seonuk Kim)의 개인 웹사이트. 서울대학교(SNU) 전기정보공학부 휴먼인터페이스연구실(HIL) 석박통합과정. HCI, 음성인터페이스, AI 음성처리, Spoken Dialogue Systems 연구. GR3x 사진을 공유하는 미니멀한 공간."
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "seon.uk — 김선욱 Seonuk Kim",
+        "url": "https://seon.uk",
+        "author": {
+          "@type": "Person",
+          "name": "김선욱",
+          "alternateName": "Seonuk Kim"
+        }
+      }
+    ]
+    </script>
 
     <style>
+      /* ===== BASE ===== */
       :root {
         --bg: #282828;
         --fg: #ebdbb2;
         --accent: #fabd2f;
         --hover: #fe8019;
+        --divider: rgba(235, 219, 178, 0.1);
       }
 
-      html,
-      body {
+      *, *::before, *::after {
+        box-sizing: border-box;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      html, body {
         margin: 0;
         padding: 0;
-        background-color: var(--bg);
-        color: var(--fg);
         height: 100%;
         width: 100%;
-        font-family: "DM Sans", sans-serif;
         overflow: hidden;
+        font-family: "DM Sans", sans-serif;
+        background-color: var(--bg);
+        color: var(--fg);
+      }
+
+      /* ===== SECTION ROUTER ===== */
+      .section {
+        position: fixed;
+        inset: 0;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.4s ease;
+      }
+
+      .section.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      #home, #thisthat {
+        overflow: hidden;
+      }
+
+      #about, #gallery {
+        overflow-y: auto;
+        overflow-x: hidden;
+      }
+
+      /* ===== BACK BUTTON ===== */
+      .back-btn {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        background: none;
+        border: none;
+        color: var(--fg);
+        font-size: 1.1rem;
+        font-family: inherit;
+        cursor: pointer;
+        padding: 6px 10px;
+        z-index: 100;
+        opacity: 0.45;
+        transition: opacity 0.2s;
+        line-height: 1;
+      }
+
+      .back-btn:hover {
+        opacity: 1;
+      }
+
+      /* ===== HOME ===== */
+      #home {
+        background-color: var(--bg);
+        color: var(--fg);
         transition: background-color 0.6s ease, color 0.6s ease;
       }
 
@@ -121,7 +248,7 @@
         animation: fadeIn 2s ease-in-out forwards;
       }
 
-      a {
+      #home a {
         color: var(--accent);
         text-decoration: none;
         font-size: 3rem;
@@ -160,68 +287,8 @@
         writing-mode: vertical-rl;
         text-orientation: mixed;
         font-size: 0.6rem;
-        color: var(--fg);
         letter-spacing: 0.05em;
         pointer-events: none;
-      }
-
-      .gallery {
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-60%);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        pointer-events: auto;
-        font-size: 0.9rem;
-        color: var(--fg);
-        letter-spacing: 0.05em;
-        text-decoration: none;
-        cursor: pointer;
-      }
-
-      .gallery-text {
-        writing-mode: vertical-rl;
-        text-orientation: mixed;
-        white-space: nowrap;
-      }
-
-      .gallery-blink {
-        animation: blink 2s infinite alternate;
-        margin-bottom: 6px;
-      }
-
-      @keyframes fadeIn {
-        0% {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-
-        100% {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      @keyframes blink {
-        0% {
-          opacity: 0.2;
-        }
-
-        100% {
-          opacity: 1;
-        }
-      }
-
-      @media (max-width: 600px) {
-        a {
-          font-size: 1.8rem;
-        }
-
-        .social-links a {
-          font-size: 1.2rem;
-        }
       }
 
       .social-links {
@@ -241,182 +308,685 @@
         color: var(--hover);
       }
 
-      .copyright {
+      /* home side nav buttons */
+      .nav-btn {
+        position: absolute;
+        background: none;
+        border: none;
+        font-family: inherit;
+        font-size: 0.9rem;
+        letter-spacing: 0.05em;
+        color: var(--fg);
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        pointer-events: auto;
+        padding: 0;
+      }
+
+      .nav-btn .nav-label {
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        white-space: nowrap;
+      }
+
+      .nav-btn .nav-arrow {
+        animation: blink 2s infinite alternate;
+        margin-bottom: 6px;
+      }
+
+      .nav-gallery {
+        right: 10px;
+        top: 50%;
+        transform: translateY(-60%);
+      }
+
+      .nav-about {
+        right: 10px;
+        top: 20px;
+      }
+
+      .nav-thisthat {
+        right: 10px;
+        bottom: 25px;
+      }
+
+      #home .copyright {
         position: absolute;
         bottom: 25px;
         left: 50%;
         transform: translateX(-50%);
         font-size: 0.4rem;
-        color: var(--fg);
         opacity: 0.6;
         pointer-events: none;
         letter-spacing: 0.03em;
-      }
-
-      .about {
-        position: absolute;
-        right: 10px;
-        top: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        pointer-events: auto;
-        font-size: 0.9rem;
-        color: var(--fg);
-        letter-spacing: 0.05em;
-        text-decoration: none;
-        cursor: pointer;
-      }
-
-      .about-text {
-        writing-mode: vertical-rl;
-        text-orientation: mixed;
         white-space: nowrap;
       }
 
-      .about-blink {
-        animation: blink 2s infinite alternate;
-        margin-bottom: 6px;
+      @media (max-width: 600px) {
+        #home a { font-size: 1.8rem; }
+        .social-links a { font-size: 1.2rem; }
       }
 
-      .thisthat {
+      /* ===== ABOUT ===== */
+      #about {
+        background-color: var(--bg);
+      }
+
+      #about .container {
+        max-width: 680px;
+        margin: 0 auto;
+        padding: 32px 16px 0;
+        animation: fadeIn 1.2s ease-in-out forwards;
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      #about h1 {
+        text-align: center;
+        font-size: 2.4rem;
+        margin-bottom: 0.5rem;
+        margin-top: 0;
+      }
+
+      .subtitle {
+        text-align: center;
+        font-size: 0.95rem;
+        margin-top: 0;
+        opacity: 0.8;
+      }
+
+      #about .content-section {
+        margin-top: 20px;
+        padding-top: 24px;
+        border-top: 1px solid var(--divider);
+      }
+
+      #about .content-section:first-of-type {
+        border-top: none;
+        padding-top: 0;
+      }
+
+      .section-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 12px;
+      }
+
+      .indent {
+        margin-left: 1rem;
+        margin-bottom: 15px;
+      }
+
+      .contact a {
+        color: var(--fg);
+        text-decoration: none;
+      }
+
+      .contact a:hover {
+        text-decoration: underline;
+      }
+
+      .no-link-style {
+        color: inherit;
+        text-decoration: none;
+        font-weight: inherit;
+      }
+
+      #about .copyright {
+        font-size: 0.4rem;
+        opacity: 0.6;
+        pointer-events: none;
+        letter-spacing: 0.03em;
+        text-align: center;
+        margin-top: auto;
+        padding-bottom: 25px;
+        padding-top: 16px;
+      }
+
+      @media (max-width: 480px) {
+        #about .container { padding: 24px 14px 0; }
+        #about h1 { font-size: 1.8rem; }
+        .section-title { font-size: 1rem; }
+      }
+
+      /* ===== GALLERY ===== */
+      #gallery {
+        background-color: var(--bg);
+      }
+
+      .top-banner {
+        text-align: center;
+        font-size: 3rem;
+        color: var(--fg);
+        margin-top: 20px;
+        margin-bottom: 20px;
+        user-select: none;
+        animation: fadeIn 1.2s ease-in-out forwards;
+      }
+
+      .subtitle-alt {
+        text-align: center;
+        font-size: 0.9rem;
+        margin-top: -10px;
+        margin-bottom: 30px;
+        opacity: 0;
+        font-style: italic;
+        animation: fadeInDim 1.2s ease-in-out forwards;
+      }
+
+      .photo-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+        padding: 0 20px 25px;
+        max-width: 700px;
+        margin: 0 auto;
+      }
+
+      .photo-grid img {
+        max-width: 100%;
+        width: auto;
+        height: auto;
+        border-radius: 6px;
+        object-fit: cover;
+        margin: 0 auto;
+        pointer-events: none;
+        user-select: none;
+        opacity: 0;
+        animation: fadeOnly 1s ease-in-out forwards;
+      }
+
+      #gallery .copyright {
+        font-size: 0.4rem;
+        opacity: 0.6;
+        pointer-events: none;
+        letter-spacing: 0.03em;
+        text-align: center;
+        padding-bottom: 25px;
+      }
+
+      /* ===== THIS & THAT ===== */
+      #thisthat {
+        background-color: var(--bg);
+      }
+
+      .tt-title {
+        text-align: center;
+        font-size: 2.2rem;
+        margin-top: 2rem;
+        margin-bottom: 0;
+        animation: fadeIn 1.2s ease-in-out forwards;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+
+      .floating-tags-wrapper {
         position: absolute;
-        right: 10px;
+        top: 52%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        height: 70vh;
+        max-width: 1000px;
+        width: 100%;
+        overflow: visible;
+      }
+
+      @supports (-webkit-touch-callout: none) {
+        .floating-tags-wrapper {
+          top: 52%;
+          height: 60vh;
+        }
+      }
+
+      .floating-tags {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+
+      .tag {
+        position: absolute;
+        background: rgba(235, 219, 178, 0.12);
+        border: 1px solid var(--divider);
+        border-radius: 9999px;
+        padding: 0.6rem 1.2rem;
+        font-size: 0.95rem;
+        color: var(--fg);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        white-space: nowrap;
+        backdrop-filter: blur(2px);
+        pointer-events: auto;
+        transition: none;
+        will-change: transform;
+        backface-visibility: hidden;
+        transform-style: preserve-3d;
+        contain: layout style;
+        user-select: none;
+        text-decoration: none;
+      }
+
+      #thisthat .copyright {
+        position: absolute;
         bottom: 25px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        pointer-events: auto;
-        font-size: 0.9rem;
-        color: var(--fg);
-        letter-spacing: 0.05em;
-        text-decoration: none;
-        cursor: pointer;
-      }
-
-      .thisthat-text {
-        writing-mode: vertical-rl;
-        text-orientation: mixed;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0.4rem;
+        opacity: 0.6;
+        pointer-events: none;
+        letter-spacing: 0.03em;
         white-space: nowrap;
       }
 
-      .thisthat-blink {
-        animation: blink 2s infinite alternate;
-        margin-bottom: 6px;
+      @media (min-width: 768px) {
+        .tag { font-size: 1.1rem; padding: 0.75rem 1.4rem; }
+      }
+
+      @media (min-width: 1024px) {
+        .tag { font-size: 1.25rem; padding: 0.9rem 1.6rem; }
+      }
+
+      /* ===== ANIMATIONS ===== */
+      @keyframes fadeIn {
+        0%   { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
+
+      @keyframes fadeOnly {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+      }
+
+      @keyframes fadeInDim {
+        0%   { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 0.7; transform: translateY(0); }
+      }
+
+      @keyframes blink {
+        0%   { opacity: 0.2; }
+        100% { opacity: 1; }
       }
     </style>
-
-    <!-- 구조화된 데이터: 개인 프로필 (JSON-LD) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "김선욱",
-      "alternateName": "Seonuk Kim",
-      "url": "https://seon.uk",
-      "image": "https://seon.uk/preview.png",
-      "sameAs": [
-        "https://instagram.com/snkiilog",
-        "https://github.com/snkii",
-        "https://linkedin.com/in/seonuk-kim-026aa1359",
-        "https://until.blog/@seonuk"
-      ],
-      "jobTitle": "Web Developer & Designer",
-      "email": "hello@seonuk.kim",
-      "alumniOf": {
-        "@type": "CollegeOrUniversity",
-        "name": "서울대학교",
-        "alternateName": "Seoul National University",
-        "sameAs": "https://www.snu.ac.kr"
-      },
-      "affiliation": {
-        "@type": "Organization",
-        "name": "휴먼인터페이스연구실",
-        "alternateName": ["HIL", "Human Interface Lab"],
-        "url": "https://hi.snu.ac.kr/",
-        "sameAs": "https://hi.snu.ac.kr/",
-        "parentOrganization": {
-          "@type": "CollegeOrUniversity",
-          "name": "서울대학교"
-        }
-      },
-      "knowsAbout": ["Photography", "Web Design", "Web Development", "GR3x Photography", "Human Computer Interaction", "User Interface"],
-      "description": "김선욱(Seonuk Kim)의 개인 웹사이트. 서울대학교 휴먼인터페이스연구실(HIL) 출신. GR3x 사진, 웹 실험, 디자인에 대한 생각을 공유하는 미니멀한 공간입니다."
-    }
-    </script>
-
-    <script src="script.js?v=1.0.0" defer></script>
   </head>
 
   <body>
-    <header>
-      <h1 style="position: absolute; left: -9999px;">김선욱 (Seonuk Kim) - 서울대학교 휴먼인터페이스연구실(HIL) 출신 - 개인 웹사이트</h1>
-    </header>
-    
-    <div class="welcome">This is seon.uk</div>
 
-    <div class="center">
-      <div class="fade-in" style="text-align: center">
-        <a href="mailto:hello@seonuk.kim" id="email-link"> hello@seonuk.kim </a>
+    <!-- JS 없는 크롤러를 위한 폴백 (화면에는 표시 안 됨) -->
+    <noscript>
+      <div style="font-family:sans-serif;max-width:680px;margin:0 auto;padding:32px 16px;background:#282828;color:#ebdbb2;min-height:100vh;">
+        <h1>Seonuk Kim (김선욱)</h1>
+        <p>From Seoul, Korea — <a href="mailto:hello@seonuk.kim" style="color:#fabd2f;">hello@seonuk.kim</a></p>
+        <h2>Education</h2>
+        <p>Integrated M.S.–Ph.D., <a href="https://hi.snu.ac.kr" style="color:#fabd2f;">Human Interface Lab (HIL)</a>, ECE, Seoul National University (SNU) (2024–)</p>
+        <p>B.S., ECE, Seoul National University (SNU) (2018–2024)</p>
+        <h2>Research Interests</h2>
+        <p>Voice-based Human-Computer Interaction (HCI)</p>
+        <p>AI-driven Speech Processing</p>
+        <p>Spoken Dialogue Systems (SDS)</p>
+        <h2>Links</h2>
+        <p>
+          <a href="/about/" style="color:#fabd2f;">About</a> ·
+          <a href="/gallery/" style="color:#fabd2f;">Photobook</a> ·
+          <a href="/thisthat/" style="color:#fabd2f;">This &amp; That</a> ·
+          <a href="https://github.com/snkii" style="color:#fabd2f;">GitHub (snkii)</a> ·
+          <a href="https://instagram.com/snkiilog" style="color:#fabd2f;">Instagram (snkiilog)</a>
+        </p>
+      </div>
+    </noscript>
 
-        <div class="social-links fade-in">
-          <a
-            href="https://instagram.com/snkiilog"
-            target="_blank"
-            aria-label="Instagram"
-          >
-            <i class="fab fa-instagram"></i>
-          </a>
-          <!-- <a
-            href="https://x.com/snkii35"
-            target="_blank"
-            aria-label="X (Twitter)"
-          >
-            <i class="fab fa-x-twitter"></i>
-          </a> -->
-          <a
-            href="https://github.com/snkii"
-            target="_blank"
-            aria-label="GitHub"
-          >
-            <i class="fab fa-github"></i>
-          </a>
-          <a
-            href="https://linkedin.com/in/seonuk-kim-026aa1359"
-            target="_blank"
-            aria-label="LinkedIn"
-          >
-            <i class="fab fa-linkedin-in"></i>
-          </a>
-          <a
-            href="https://until.blog/@seonuk"
-            target="_blank"
-            aria-label="Blog"
-          >
-            <i class="fas fa-laptop-code"></i>
-          </a>
+    <!-- ===================== HOME ===================== -->
+    <div id="home" class="section active">
+      <header>
+        <h1 class="sr-only">김선욱 (Seonuk Kim) — 서울대학교 전기정보공학부 휴먼인터페이스연구실(HIL) 석박통합과정 — 개인 웹사이트</h1>
+      </header>
+
+      <div class="welcome">This is seon.uk</div>
+
+      <div class="center">
+        <div class="fade-in" style="text-align: center">
+          <a href="mailto:hello@seonuk.kim" id="email-link">hello@seonuk.kim</a>
+          <div class="social-links fade-in">
+            <a href="https://instagram.com/snkiilog" target="_blank" aria-label="Instagram">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://github.com/snkii" target="_blank" aria-label="GitHub">
+              <i class="fab fa-github"></i>
+            </a>
+            <a href="https://linkedin.com/in/seonuk-kim-026aa1359" target="_blank" aria-label="LinkedIn">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a href="https://until.blog/@seonuk" target="_blank" aria-label="Blog">
+              <i class="fas fa-laptop-code"></i>
+            </a>
+          </div>
         </div>
+      </div>
+
+      <div class="instruction">Tap or click anywhere</div>
+      <div class="credit">Co-designed with ChatGPT</div>
+
+      <button class="nav-btn nav-gallery" data-nav="gallery">
+        <div class="nav-arrow">&gt;</div>
+        <div class="nav-label">Photobook</div>
+      </button>
+
+      <button class="nav-btn nav-about" data-nav="about">
+        <div class="nav-arrow">&gt;</div>
+        <div class="nav-label">About</div>
+      </button>
+
+      <button class="nav-btn nav-thisthat" data-nav="thisthat">
+        <div class="nav-arrow">&gt;</div>
+        <div class="nav-label">This &amp; That</div>
+      </button>
+
+      <div class="copyright">© 2025 Seonuk Kim. All rights reserved.</div>
+    </div>
+
+    <!-- ===================== ABOUT ===================== -->
+    <div id="about" class="section">
+      <button class="back-btn" data-nav="home">←</button>
+      <div class="container">
+        <h1>Seonuk Kim <span style="font-size: 1.4rem; opacity: 1.0;">(김선욱)</span></h1>
+        <p class="subtitle">From Seoul, Korea</p>
+
+        <div class="content-section">
+          <div class="section-title">
+            🎓 Education
+            <span id="tmi-toggle" style="font-size: 0.5rem; opacity: 0.3; margin-left: 8px; cursor: pointer; user-select: none;">TMI</span>
+          </div>
+          <p class="indent" style="font-size: 1rem;">
+            Integrated M.S.–Ph.D.,
+            <a href="https://hi.snu.ac.kr" target="_blank" class="no-link-style">Human Interface Lab</a>,
+            <a href="https://ece.snu.ac.kr" target="_blank" class="no-link-style">ECE</a>,
+            <a href="https://www.snu.ac.kr" target="_blank" class="no-link-style">SNU</a> (2024–)
+          </p>
+          <p class="indent" style="font-size: 0.95rem;">
+            B.S.,
+            <a href="https://ece.snu.ac.kr" target="_blank" class="no-link-style">ECE</a>,
+            <a href="https://www.snu.ac.kr" target="_blank" class="no-link-style">SNU</a> (2018–2024)
+          </p>
+          <div id="tmi-education" style="display: none;">
+            <p class="indent" style="font-size: 0.85rem; opacity: 0.4;">광성고등학교 (2015–2017)</p>
+            <p class="indent" style="font-size: 0.85rem; opacity: 0.4;">경성중학교 (2012–2014)</p>
+            <p class="indent" style="font-size: 0.85rem; opacity: 0.4;">성서초등학교 (2007–2011)</p>
+            <p class="indent" style="font-size: 0.85rem; opacity: 0.4;">서강초등학교 (2006)</p>
+          </div>
+        </div>
+
+        <div class="content-section">
+          <div class="section-title">💻 Research Interests</div>
+          <p class="indent" style="font-size: 0.95rem;">Voice-based Human-Computer Interaction (HCI)</p>
+          <p class="indent" style="font-size: 0.95rem;">AI-driven Speech Processing</p>
+          <p class="indent" style="font-size: 0.95rem;">
+            Spoken Dialogue Systems (SDS)<br>
+            <a href="https://github.com/snkii/awesome-spoken-dialogue-systems" target="_blank" style="display: inline-block; margin-top: 4px;" title="Awesome Spoken Dialogue Systems">
+              <img src="https://awesome.re/badge.svg" alt="Awesome" style="height: 20px;">
+            </a>
+          </p>
+        </div>
+
+        <div class="content-section contact">
+          <div class="section-title">📱 Contact</div>
+          <p class="indent" style="font-size: 0.95rem;">Email: <a href="mailto:hello@seonuk.kim" class="no-link-style">hello@seonuk.kim</a> / <a href="mailto:sukim@hi.snu.ac.kr" class="no-link-style">sukim@hi.snu.ac.kr</a></p>
+          <p class="indent" style="font-size: 0.95rem;">Website: <a href="https://seon.uk" target="_blank" class="no-link-style">seon.uk</a></p>
+          <p class="indent" style="font-size: 0.95rem;">Phone: <a href="tel:+821097073737" class="no-link-style">+82-10-9707-3737</a></p>
+        </div>
+
+        <div class="copyright">© 2025 Seonuk Kim. All rights reserved.</div>
       </div>
     </div>
 
-    <div class="instruction">Tap or click anywhere</div>
-    <div class="credit">Co-designed with ChatGPT</div>
+    <!-- ===================== GALLERY ===================== -->
+    <div id="gallery" class="section" oncontextmenu="return false">
+      <button class="back-btn" data-nav="home">←</button>
+      <div class="top-banner">Photobook</div>
+      <div class="subtitle-alt">GR3x, iPhone,<br />and a few things I love</div>
+      <div class="photo-grid">
+        <img src="gallery/images/photo1.jpg"  alt="Photo 1"  style="animation-delay: 1.4s" />
+        <img src="gallery/images/photo2.jpg"  alt="Photo 2"  style="animation-delay: 1.8s" />
+        <img src="gallery/images/photo3.jpeg" alt="Photo 3"  style="animation-delay: 2.2s" />
+        <img src="gallery/images/photo4.jpg"  alt="Photo 4"  style="animation-delay: 2.6s" />
+        <img src="gallery/images/photo5.jpg"  alt="Photo 5"  style="animation-delay: 3.0s" />
+      </div>
+      <div class="copyright">© 2025 Seonuk Kim. All rights reserved.</div>
+    </div>
 
-    <a href="gallery" class="gallery">
-      <div class="gallery-blink">&gt;</div>
-      <div class="gallery-text">Photobook</div>
-    </a>
+    <!-- ===================== THIS & THAT ===================== -->
+    <div id="thisthat" class="section">
+      <button class="back-btn" data-nav="home">←</button>
+      <h1 class="tt-title">This &amp; That</h1>
 
-    <div class="copyright">© 2025 Seonuk Kim. All rights reserved.</div>
+      <div class="floating-tags-wrapper">
+        <div class="floating-tags">
+          <a href="https://en.wikipedia.org/wiki/Jesus"                        class="tag" target="_blank" rel="noopener">#Jesus</a>
+          <a href="https://en.wikipedia.org/wiki/Bible"                        class="tag" target="_blank" rel="noopener">#Bible</a>
+          <a href="https://en.wikipedia.org/wiki/Aquascaping"                  class="tag" target="_blank" rel="noopener">#Aquascaping</a>
+          <a href="https://en.wikipedia.org/wiki/Aquarium"                     class="tag" target="_blank" rel="noopener">#Aquarium</a>
+          <a href="https://en.wikipedia.org/wiki/Moss"                         class="tag" target="_blank" rel="noopener">#MossGarden</a>
+          <a href="https://en.wikipedia.org/wiki/Digital_camera"               class="tag" target="_blank" rel="noopener">#Camera</a>
+          <a href="https://en.wikipedia.org/wiki/Ricoh_GR_digital_cameras"     class="tag" target="_blank" rel="noopener">#GR3x</a>
+          <a href="https://en.wikipedia.org/wiki/Computer_programming"         class="tag" target="_blank" rel="noopener">#VibeCoding</a>
+          <a href="https://en.wikipedia.org/wiki/Interior_design"              class="tag" target="_blank" rel="noopener">#InteriorDesign</a>
+          <a href="https://en.wikipedia.org/wiki/Mechanical_keyboard"          class="tag" target="_blank" rel="noopener">#CustomKeyboard</a>
+          <a href="https://en.wikipedia.org/wiki/Network-attached_storage"     class="tag" target="_blank" rel="noopener">#NAS</a>
+          <a href="https://en.wikipedia.org/wiki/Z_shell"                      class="tag" target="_blank" rel="noopener">#ZSH</a>
+        </div>
+      </div>
 
-    <a href="about" class="about">
-      <div class="about-blink">&gt;</div>
-      <div class="about-text">About</div>
-    </a>
+      <div class="copyright">© 2025 Seonuk Kim. All rights reserved.</div>
+    </div>
 
-    <a href="thisthat" class="thisthat">
-      <div class="thisthat-blink">&gt;</div>
-      <div class="thisthat-text">This & That</div>
-    </a>
+    <script>
+      // ===================== ROUTER =====================
+      const SECTIONS = ['home', 'about', 'gallery', 'thisthat'];
+
+      function showSection(id) {
+        if (!SECTIONS.includes(id)) id = 'home';
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+
+        if (id === 'thisthat' && !thisthatInitialized) {
+          // small delay so the section is rendered before measuring dimensions
+          setTimeout(() => {
+            initBubbleTags();
+            requestAnimationFrame(animateTags);
+            thisthatInitialized = true;
+          }, 50);
+        }
+      }
+
+      function navigate(id) {
+        try {
+          history.pushState({ section: id }, '', id === 'home' ? '/' : '/' + id + '/');
+        } catch (e) {
+          // file:// 프로토콜에서는 경로 변경 불가 — 무시하고 섹션 전환만 수행
+        }
+        showSection(id);
+      }
+
+      // nav buttons (home side nav + back buttons)
+      document.querySelectorAll('[data-nav]').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.stopPropagation();
+          navigate(btn.dataset.nav);
+        });
+      });
+
+      // browser back / forward
+      window.addEventListener('popstate', e => {
+        showSection((e.state && e.state.section) || 'home');
+      });
+
+      // initial load — derive section from URL path
+      (function () {
+        const seg = location.pathname.replace(/\//g, '').trim();
+        const id = SECTIONS.includes(seg) ? seg : 'home';
+        if (id !== 'home') history.replaceState({ section: id }, '', location.pathname);
+        else history.replaceState({ section: 'home' }, '', location.pathname);
+        showSection(id);
+      })();
+
+      // ===================== COLOR RANDOMIZER (Home) =====================
+      const gruvboxColors = [
+        "#282828", "#3c3836", "#504945", "#665c54", "#7c6f64",
+        "#b8bb26", "#fabd2f", "#fe8019", "#fb4934", "#d3869b",
+        "#8ec07c", "#ebdbb2", "#d5c4a1", "#928374", "#83a598", "#458588"
+      ];
+
+      function luminance(hex) {
+        const rgb = hex.replace("#", "").match(/.{2}/g).map(c => parseInt(c, 16) / 255);
+        const lin = rgb.map(c => c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
+        return 0.2126 * lin[0] + 0.7152 * lin[1] + 0.0722 * lin[2];
+      }
+
+      function contrastRatio(c1, c2) {
+        const L1 = luminance(c1), L2 = luminance(c2);
+        return (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05);
+      }
+
+      function getReadableColors() {
+        for (let i = 0; i < 100; i++) {
+          const bg   = gruvboxColors[Math.floor(Math.random() * gruvboxColors.length)];
+          const text = gruvboxColors[Math.floor(Math.random() * gruvboxColors.length)];
+          const link = gruvboxColors[Math.floor(Math.random() * gruvboxColors.length)];
+          if (new Set([bg, text, link]).size === 3
+              && contrastRatio(bg, text) >= 4.5
+              && contrastRatio(bg, link) >= 4.5) {
+            return { bg, text, link };
+          }
+        }
+        return { bg: "#282828", text: "#ebdbb2", link: "#fabd2f" };
+      }
+
+      function applyColors({ bg, text, link }) {
+        const home = document.getElementById('home');
+        home.style.backgroundColor = bg;
+        home.style.color = text;
+        home.querySelectorAll('a').forEach(el => el.style.color = link);
+        home.querySelectorAll('.nav-btn').forEach(el => el.style.color = link);
+        ['.welcome', '.instruction', '.credit', '.copyright'].forEach(sel => {
+          const el = home.querySelector(sel);
+          if (el) el.style.color = link;
+        });
+      }
+
+      applyColors(getReadableColors());
+
+      document.getElementById('home').addEventListener('click', e => {
+        if (e.target.closest('[data-nav]') || e.target.closest('a')) return;
+        applyColors(getReadableColors());
+      });
+
+      const emailLink = document.getElementById('email-link');
+      emailLink.addEventListener('mousedown', e => e.preventDefault());
+      emailLink.addEventListener('selectstart', e => e.preventDefault());
+
+      // ===================== TMI TOGGLE (About) =====================
+      document.getElementById('tmi-toggle').addEventListener('click', () => {
+        const tmi = document.getElementById('tmi-education');
+        tmi.style.display = tmi.style.display === 'none' ? 'block' : 'none';
+      });
+
+      // ===================== FLOATING TAGS (This & That) =====================
+      let thisthatInitialized = false;
+      const tagStates = [];
+      let lastTime = performance.now();
+
+      function initBubbleTags() {
+        const wrapper = document.querySelector('.floating-tags-wrapper');
+        const tags = document.querySelectorAll('.tag');
+        tagStates.length = 0;
+
+        tags.forEach(tag => {
+          tag.setAttribute('draggable', 'false');
+          tag.addEventListener('dragstart', e => e.preventDefault());
+
+          const width = tag.offsetWidth;
+          const height = tag.offsetHeight;
+
+          tagStates.push({
+            el: tag,
+            x: Math.random() * Math.max(0, wrapper.clientWidth - width),
+            y: Math.random() * Math.max(0, wrapper.clientHeight - height),
+            vx: (Math.random() - 0.5) * 1.5,
+            vy: (Math.random() - 0.5) * 1.5,
+            width, height,
+            fx: 0, fy: 0, forceDecay: 0
+          });
+        });
+      }
+
+      function animateTags(now) {
+        const dt = Math.min((now - lastTime) / 1000, 0.05);
+        lastTime = now;
+
+        const wrapper = document.querySelector('.floating-tags-wrapper');
+        const cw = wrapper.clientWidth;
+        const ch = wrapper.clientHeight;
+
+        for (const tag of tagStates) {
+          tag.x += (tag.vx + tag.fx) * dt * 60;
+          tag.y += (tag.vy + tag.fy) * dt * 60;
+
+          if (tag.forceDecay > 0) {
+            tag.fx *= tag.forceDecay;
+            tag.fy *= tag.forceDecay;
+            if (Math.abs(tag.fx) < 0.01) tag.fx = 0;
+            if (Math.abs(tag.fy) < 0.01) tag.fy = 0;
+          }
+
+          if (tag.x <= 0 || tag.x + tag.width >= cw) {
+            tag.vx *= -1;
+            tag.x = Math.max(0, Math.min(tag.x, cw - tag.width));
+          }
+          if (tag.y <= 0 || tag.y + tag.height >= ch) {
+            tag.vy *= -1;
+            tag.y = Math.max(0, Math.min(tag.y, ch - tag.height));
+          }
+
+          tag.el.style.transform = `translate3d(${tag.x}px, ${tag.y}px, 0)`;
+        }
+
+        requestAnimationFrame(animateTags);
+      }
+
+      function handleTagInteraction(e) {
+        if (e.target.classList.contains('tag') || e.target.closest('[data-nav]')) return;
+        const wrapper = document.querySelector('.floating-tags-wrapper');
+        const isTouch = e.type === 'touchstart';
+        const clientX = isTouch ? e.touches[0].clientX : e.clientX;
+        const clientY = isTouch ? e.touches[0].clientY : e.clientY;
+        const rect = wrapper.getBoundingClientRect();
+
+        tagStates.forEach(tag => {
+          const dx = tag.x + tag.width / 2 - (clientX - rect.left);
+          const dy = tag.y + tag.height / 2 - (clientY - rect.top);
+          const dist = Math.max(Math.sqrt(dx * dx + dy * dy), 1);
+          tag.fx = (dx / dist) * 5;
+          tag.fy = (dy / dist) * 5;
+          tag.forceDecay = 0.9;
+        });
+      }
+
+      const thisthatEl = document.getElementById('thisthat');
+      thisthatEl.addEventListener('click', handleTagInteraction);
+      thisthatEl.addEventListener('touchstart', handleTagInteraction, { passive: true });
+
+      // prevent copy/drag on thisthat
+      thisthatEl.addEventListener('contextmenu', e => e.preventDefault());
+      thisthatEl.addEventListener('selectstart', e => e.preventDefault());
+      thisthatEl.addEventListener('copy', e => e.preventDefault());
+      thisthatEl.addEventListener('dragstart', e => e.preventDefault());
+
+      // ===================== VIEWPORT HEIGHT FIX =====================
+      function setVh() {
+        document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+      }
+      window.addEventListener('resize', setVh);
+      setVh();
+    </script>
   </body>
 </html>

@@ -19,23 +19,64 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-  <!-- 구조화된 데이터: Breadcrumb -->
+  <!-- 구조화된 데이터 -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [{
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "https://seon.uk/"
-    },{
-      "@type": "ListItem",
-      "position": 2,
-      "name": "About",
-      "item": "https://seon.uk/about/"
-    }]
-  }
+  [
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://seon.uk/"
+      },{
+        "@type": "ListItem",
+        "position": 2,
+        "name": "About",
+        "item": "https://seon.uk/about/"
+      }]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "김선욱",
+      "alternateName": ["Seonuk Kim", "snkii", "snkiilog"],
+      "url": "https://seon.uk",
+      "email": "hello@seonuk.kim",
+      "telephone": "+82-10-9707-3737",
+      "sameAs": [
+        "https://instagram.com/snkiilog",
+        "https://github.com/snkii",
+        "https://linkedin.com/in/seonuk-kim-026aa1359",
+        "https://until.blog/@seonuk"
+      ],
+      "jobTitle": "Integrated M.S.–Ph.D. Student",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Human Interface Lab",
+        "alternateName": ["HIL", "휴먼인터페이스연구실"],
+        "url": "https://hi.snu.ac.kr/",
+        "parentOrganization": {
+          "@type": "CollegeOrUniversity",
+          "name": "Seoul National University",
+          "alternateName": ["서울대학교", "SNU"],
+          "sameAs": "https://www.snu.ac.kr"
+        }
+      },
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "Seoul National University",
+        "alternateName": ["서울대학교", "SNU"],
+        "sameAs": "https://www.snu.ac.kr"
+      },
+      "knowsAbout": [
+        "Human-Computer Interaction", "HCI",
+        "Voice User Interface", "Speech Processing",
+        "Spoken Dialogue Systems", "SDS", "AI"
+      ]
+    }
+  ]
   </script>
 
   <style>
@@ -195,9 +236,10 @@
         <a href="https://www.snu.ac.kr" target="_blank" class="no-link-style">SNU</a> (2018–2024)
       </p>
       <div id="tmi-education" style="display: none;">
-        <p class="indent" style="font-size: 0.85rem; opacity: 0.4;">광성고등학교 졸업 (2015–2017)</p>
-        <p class="indent" style="font-size: 0.85rem; opacity: 0.4;">경성중학교 졸업 (2012–2014)</p>
-        <p class="indent" style="font-size: 0.85rem; opacity: 0.4;">성서초등학교 졸업 (2006–2011)</p>
+        <p class="indent" style="font-size: 0.85rem; opacity: 0.4;">광성고등학교 (2015–2017)</p>
+        <p class="indent" style="font-size: 0.85rem; opacity: 0.4;">경성중학교 (2012–2014)</p>
+        <p class="indent" style="font-size: 0.85rem; opacity: 0.4;">성서초등학교 (2007–2011)</p>
+        <p class="indent" style="font-size: 0.85rem; opacity: 0.4;">서강초등학교 (2006)</p>
       </div>
     </section>
 
