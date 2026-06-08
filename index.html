@@ -185,6 +185,7 @@
         font-family: "DM Sans", sans-serif;
         background-color: var(--bg);
         color: var(--fg);
+        transition: background-color 0.6s ease, color 0.6s ease;
         user-select: none;
         -webkit-user-select: none;
       }
@@ -227,7 +228,7 @@
         padding: 0 10px;
         z-index: 100;
         opacity: 0.65;
-        transition: opacity 0.2s;
+        transition: opacity 0.2s, color 0.6s ease;
         line-height: 1;
       }
 
@@ -331,6 +332,7 @@
         cursor: pointer;
         display: flex;
         flex-direction: column;
+        transition: color 0.6s ease;
         align-items: center;
         pointer-events: auto;
         padding: 0;
@@ -413,6 +415,7 @@
         margin-top: 20px;
         padding-top: 24px;
         border-top: 1px solid var(--divider);
+        transition: border-color 0.6s ease;
       }
 
       #about .content-section:first-of-type {
@@ -434,6 +437,7 @@
       .contact a {
         color: var(--fg);
         text-decoration: none;
+        transition: color 0.6s ease;
       }
 
       .contact a:hover {
@@ -474,6 +478,7 @@
         color: var(--fg);
         margin: 20px 0;
         animation: fadeIn 1.2s ease-in-out forwards;
+        transition: color 0.6s ease;
       }
 
       .subtitle-alt {
@@ -567,7 +572,7 @@
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
         white-space: nowrap;
         backdrop-filter: blur(2px);
-        transition: none;
+        transition: color 0.6s ease, border-color 0.6s ease;
         will-change: transform;
         backface-visibility: hidden;
         transform-style: preserve-3d;
