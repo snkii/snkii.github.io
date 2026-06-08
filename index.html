@@ -1019,7 +1019,11 @@
 
       function _lerp(a, b, t) { return a.map((v,i) => v + (b[i]-v)*t); }
 
-      function _drawFrame() {
+      let _lastFrame = 0;
+      function _drawFrame(ts) {
+        requestAnimationFrame(_drawFrame);
+        if (ts - _lastFrame < 50) return; // cap at 20fps
+        _lastFrame = ts;
         const w = window.innerWidth, h = window.innerHeight, m = Math.min(w,h);
         for (const b of _blobs) {
           b.color = _lerp(b.color, b.target, 0.025);
@@ -1031,7 +1035,6 @@
           b.el.style.background = `rgb(${r},${g},${bl})`;
           b.el.style.transform = `translate(${b.x*w - size/2}px, ${b.y*h - size/2}px)`;
         }
-        requestAnimationFrame(_drawFrame);
       }
       requestAnimationFrame(_drawFrame);
       // ──────────────────────────────────────────────────────────────────
