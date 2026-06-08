@@ -408,19 +408,6 @@
         bottom: 25px;
       }
 
-      .home-hint {
-        position: absolute;
-        top: 52px;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 0.68rem;
-        opacity: 0.72;
-        pointer-events: none;
-        letter-spacing: 0.04em;
-        white-space: nowrap;
-        animation: blink 1.4s infinite alternate;
-      }
-
       #home .copyright {
         position: absolute;
         bottom: 25px;
@@ -745,7 +732,6 @@
       </header>
 
       <div class="welcome">This is seon.uk</div>
-      <div class="home-hint">Click or tap anywhere below</div>
 
       <div class="center">
         <div class="home-identity">
@@ -1072,43 +1058,43 @@
         };
       }
 
-      function createMeshDitherTile() {
-        const size = 257;
-        const canvas = document.createElement('canvas');
-        canvas.width = size;
-        canvas.height = size;
-
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return null;
-
-        const image = ctx.createImageData(size, size);
-        const data = image.data;
-        for (let i = 0; i < data.length; i += 4) {
-          const value = Math.floor(Math.random() * 256);
-          data[i] = value;
-          data[i + 1] = value;
-          data[i + 2] = value;
-          data[i + 3] = 255;
-        }
-        ctx.putImageData(image, 0, 0);
-        return canvas;
+      function clampChannel(value) {
+        return value < 0 ? 0 : value > 255 ? 255 : value;
       }
 
-      const _meshDitherTile = createMeshDitherTile();
+      function nextDitherSeed(seed) {
+        seed ^= seed << 13;
+        seed ^= seed >>> 17;
+        seed ^= seed << 5;
+        return seed >>> 0;
+      }
 
-      function drawMeshDither(ctx, width, height) {
-        if (!_meshDitherTile) return;
+      function applyMeshPixelDither(ctx, width, height) {
+        let image;
+        try {
+          image = ctx.getImageData(0, 0, width, height);
+        } catch (_) {
+          return;
+        }
 
-        const pattern = ctx.createPattern(_meshDitherTile, 'repeat');
-        if (!pattern) return;
+        const data = image.data;
+        const strength = Math.max(4.2, Math.min(6.2, Math.max(width, height) / 720));
+        const chromaStrength = strength * 0.18;
+        let seed = (Math.random() * 0xffffffff) >>> 0;
+        if (!seed) seed = 0x9e3779b9;
 
-        ctx.save();
-        ctx.globalCompositeOperation = 'overlay';
-        const usesOverlay = ctx.globalCompositeOperation === 'overlay';
-        ctx.globalAlpha = usesOverlay ? 0.068 : 0.036;
-        ctx.fillStyle = pattern;
-        ctx.fillRect(0, 0, width, height);
-        ctx.restore();
+        for (let i = 0; i < data.length; i += 4) {
+          seed = nextDitherSeed(seed);
+          const luma = (((seed & 1023) / 1023) - 0.5) * 2 * strength;
+          seed = nextDitherSeed(seed);
+          const chroma = (((seed & 255) / 255) - 0.5) * 2 * chromaStrength;
+
+          data[i] = clampChannel(data[i] + luma + chroma);
+          data[i + 1] = clampChannel(data[i + 1] + luma - chroma * 0.35);
+          data[i + 2] = clampChannel(data[i + 2] + luma - chroma * 0.65);
+        }
+
+        ctx.putImageData(image, 0, 0);
       }
 
       function drawStaticBlob(ctx, width, height, blob) {
@@ -1170,7 +1156,7 @@
         ctx.fillStyle = '#282828';
         ctx.fillRect(0, 0, width, height);
         Array.from({ length: 3 }, createStaticBlob).forEach(blob => drawStaticBlob(ctx, width, height, blob));
-        drawMeshDither(ctx, width, height);
+        applyMeshPixelDither(ctx, width, height);
         return canvasToMeshUrl(canvas);
       }
 
