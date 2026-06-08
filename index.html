@@ -900,9 +900,11 @@
 
       applyColors(getReadableColors());
 
-      document.getElementById('home').addEventListener('click', e => {
-        if (e.target.closest('[data-nav]') || e.target.closest('a')) return;
-        applyColors(getReadableColors());
+      ['home', 'about', 'gallery', 'thisthat'].forEach(id => {
+        document.getElementById(id).addEventListener('click', e => {
+          if (e.target.closest('[data-nav]') || e.target.closest('a') || e.target.closest('img')) return;
+          applyColors(getReadableColors());
+        });
       });
 
       const emailLink = document.getElementById('email-link');
