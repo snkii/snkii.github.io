@@ -200,14 +200,13 @@
       .section {
         position: fixed;
         inset: 0;
+        opacity: 0;
         pointer-events: none;
-        transform: translateX(100%);
-        transition: transform 380ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        will-change: transform;
+        transition: opacity 0.4s ease;
       }
 
       .section.active {
-        transform: translateX(0);
+        opacity: 1;
         pointer-events: auto;
       }
 
@@ -872,49 +871,14 @@
       // ===================== ROUTER =====================
       const SECTIONS = ['home', 'about', 'gallery', 'thisthat'];
 
-      let currentSectionId = 'home';
-      const SLIDE_DURATION = 380;
-      const SLIDE_EASE = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-
-      function showSection(id, direction) {
+      function showSection(id) {
         if (!SECTIONS.includes(id)) id = 'home';
-        if (id === currentSectionId) return;
-
-        const outgoing = document.getElementById(currentSectionId);
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         const incoming = document.getElementById(id);
-
-        if (direction === undefined) {
-          direction = SECTIONS.indexOf(id) > SECTIONS.indexOf(currentSectionId) ? 1 : -1;
-        }
-
-        // incoming: start off-screen, slide to 0
-        incoming.style.transition = 'none';
-        incoming.style.transform = `translateX(${direction * 100}%)`;
-        incoming.style.opacity = '1';
         incoming.classList.add('active');
 
-        incoming.getBoundingClientRect();
-
-        incoming.style.transition = `transform ${SLIDE_DURATION}ms ${SLIDE_EASE}`;
-        incoming.style.transform = 'translateX(0)';
-
-        // outgoing: parallax — move 28% and fade slightly (iOS depth feel)
-        outgoing.style.transition = `transform ${SLIDE_DURATION}ms ${SLIDE_EASE}, opacity ${SLIDE_DURATION}ms ${SLIDE_EASE}`;
-        outgoing.style.transform = `translateX(${-direction * 28}%)`;
-        outgoing.style.opacity = '0.6';
-
         incoming.style.pointerEvents = 'none';
-        setTimeout(() => {
-          incoming.style.pointerEvents = '';
-          incoming.style.transition = '';
-          incoming.style.transform = '';
-          outgoing.classList.remove('active');
-          outgoing.style.transition = '';
-          outgoing.style.transform = '';
-          outgoing.style.opacity = '';
-        }, SLIDE_DURATION);
-
-        currentSectionId = id;
+        setTimeout(() => { incoming.style.pointerEvents = ''; }, 400);
 
         if (id === 'thisthat' && !thisthatInitialized) {
           setTimeout(() => {
@@ -928,7 +892,9 @@
       function navigate(id) {
         try {
           history.pushState({ section: id }, '', id === 'home' ? '/' : '/' + id + '/');
-        } catch (e) {}
+        } catch (e) {
+          // file:// 프로토콜에서는 경로 변경 불가
+        }
         showSection(id);
       }
 
@@ -949,9 +915,7 @@
 
       // browser back / forward
       window.addEventListener('popstate', e => {
-        const target = (e.state && e.state.section) || 'home';
-        const direction = SECTIONS.indexOf(target) > SECTIONS.indexOf(currentSectionId) ? 1 : -1;
-        showSection(target, direction);
+        showSection((e.state && e.state.section) || 'home');
       });
 
       // initial load — derive section from URL path (handles ?r= redirect from 404.html / subpage stubs)
@@ -963,16 +927,7 @@
         const seg = pathname.replace(/\//g, '').trim();
         const id = SECTIONS.includes(seg) ? seg : 'home';
         history.replaceState({ section: id }, '', pathname);
-        // initial load: place directly, no animation
-        const el = document.getElementById(id);
-        el.style.transition = 'none';
-        el.classList.add('active');
-        currentSectionId = id;
-        el.getBoundingClientRect();
-        el.style.transition = '';
-        if (id === 'thisthat') {
-          setTimeout(() => { initBubbleTags(); requestAnimationFrame(animateTags); thisthatInitialized = true; }, 50);
-        }
+        showSection(id);
       })();
 
       // ===================== COLOR RANDOMIZER (Home) =====================
