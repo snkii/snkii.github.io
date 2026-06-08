@@ -1241,7 +1241,10 @@
       }
 
       function shouldRefreshMeshFromEvent(event) {
-        return !event.target.closest('a, button, input, textarea, select, summary, [role="button"], [data-nav], .tag');
+        const target = event.target;
+        const home = document.getElementById('home');
+        if (!(target instanceof Element) || !home.classList.contains('active') || !target.closest('#home')) return false;
+        return !target.closest('a, button, input, textarea, select, summary, [role="button"], [data-nav], .tag');
       }
 
       function refreshMeshFromEvent(event) {
