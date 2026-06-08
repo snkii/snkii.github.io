@@ -946,36 +946,66 @@
         return blobColors[Math.floor(Math.random() * blobColors.length)];
       }
 
+      function randomBetween(min, max) {
+        return min + Math.random() * (max - min);
+      }
+
+      function randomVelocity() {
+        const angle = randomBetween(0, Math.PI * 2);
+        const speed = randomBetween(0.0026, 0.0054);
+        return {
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed
+        };
+      }
+
+      function randomBlobRadius() {
+        const radii = Array.from({ length: 8 }, () => `${Math.round(randomBetween(42, 58))}%`);
+        return `${radii.slice(0, 4).join(' ')} / ${radii.slice(4).join(' ')}`;
+      }
+
       // ── div mesh gradient ─────────────────────────────────────────────
       const _meshBg = document.createElement('div');
       _meshBg.style.cssText = 'position:fixed;inset:0;z-index:0;background:#282828;overflow:hidden;pointer-events:none;';
       document.body.prepend(_meshBg);
 
-      const _blobs = [
-        { x:0.22, y:0.45, vx: 0.0044, vy: 0.0032, r:0.90, color:randomBlobColor() },
-        { x:0.78, y:0.20, vx:-0.0036, vy: 0.0042, r:0.90, color:randomBlobColor() },
-        { x:0.52, y:0.78, vx: 0.0028, vy:-0.0046, r:0.90, color:randomBlobColor() },
-      ];
-
-      const _mobileQuery = window.matchMedia('(max-width: 768px)');
       const _reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-      let _mobile = _mobileQuery.matches;
       let _reduceMotion = _reduceMotionQuery.matches;
       let _colorTimer = 0;
 
-      function _blobSizeFactor() { return _mobile ? 0.78 : 0.90; }
-      function _blurFactor() { return _mobile ? 0.10 : 0.22; }
-      function _frameDelay() { return _reduceMotion ? 500 : (_mobile ? 125 : 66); }
-      function _colorDelay() { return _reduceMotion ? 16000 : (_mobile ? 10000 : 7000); }
-      function _colorTransitionDuration() { return _reduceMotion ? 14000 : (_mobile ? 9500 : 6500); }
+      function _blobSizeFactor() { return 0.90; }
+      function _blurFactor() { return 0.22; }
+      function _frameDelay() { return _reduceMotion ? 500 : 66; }
+      function _colorDelay() { return _reduceMotion ? 16000 : 7000; }
+      function _colorTransitionDuration() { return _reduceMotion ? 14000 : 6500; }
+
+      function createBlob() {
+        const velocity = randomVelocity();
+        return {
+          x: randomBetween(-0.12, 1.12),
+          y: randomBetween(-0.10, 1.10),
+          vx: velocity.vx,
+          vy: velocity.vy,
+          vr: randomBetween(-0.8, 0.8),
+          r: randomBetween(0.86, 1.08),
+          sx: randomBetween(0.85, 1.38),
+          sy: randomBetween(0.78, 1.28),
+          rot: randomBetween(0, 360),
+          radius: randomBlobRadius(),
+          color: randomBlobColor()
+        };
+      }
+
+      const _blobs = Array.from({ length: 3 }, createBlob);
 
       _blobs.forEach(b => {
         const el = document.createElement('div');
         el.style.position = 'absolute';
         el.style.left = '0';
         el.style.top = '0';
-        el.style.borderRadius = '50%';
+        el.style.borderRadius = b.radius;
         el.style.opacity = '0.7';
+        el.style.transformOrigin = 'center center';
         el.style.willChange = 'transform';
         el.style.contain = 'layout style paint';
         el.style.backgroundColor = rgbString(b.color);
@@ -1012,12 +1042,6 @@
         }, _colorDelay());
       }
 
-      _mobileQuery.addEventListener('change', e => {
-        _mobile = e.matches;
-        _setBlobGeometry();
-        _scheduleColorShift();
-      });
-
       _reduceMotionQuery.addEventListener('change', e => {
         _reduceMotion = e.matches;
         _setBlobGeometry();
@@ -1033,9 +1057,10 @@
         for (const b of _blobs) {
           b.x += b.vx * dt;
           b.y += b.vy * dt;
+          b.rot += b.vr * dt;
           if (b.x < -0.2 || b.x > 1.2) b.vx *= -1;
           if (b.y < -0.2 || b.y > 1.2) b.vy *= -1;
-          b.el.style.transform = `translate3d(${b.x * w - b.size / 2}px, ${b.y * h - b.size / 2}px, 0)`;
+          b.el.style.transform = `translate3d(${b.x * w - b.size / 2}px, ${b.y * h - b.size / 2}px, 0) rotate(${b.rot}deg) scale(${b.sx}, ${b.sy})`;
         }
 
         window.setTimeout(() => requestAnimationFrame(_drawFrame), _frameDelay());
