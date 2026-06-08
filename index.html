@@ -231,8 +231,20 @@
       }
 
       #about, #gallery {
+        overflow: hidden;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+
+      #about.active, #gallery.active {
         overflow-y: auto;
         overflow-x: hidden;
+      }
+
+      #about::-webkit-scrollbar,
+      #gallery::-webkit-scrollbar {
+        width: 0;
+        height: 0;
       }
 
       /* ===== BACK BUTTON ===== */
@@ -977,6 +989,9 @@
         return min + Math.random() * (max - min);
       }
 
+      const _isWindowsBrowser = /Windows/i.test(navigator.userAgent) ||
+        (navigator.userAgentData && /Windows/i.test(navigator.userAgentData.platform || ''));
+
       // ── static canvas mesh gradient ───────────────────────────────────
       const _meshBg = document.createElement('div');
       _meshBg.style.cssText = [
@@ -1014,7 +1029,7 @@
           'inset:0',
           'z-index:4',
           'pointer-events:none',
-          'opacity:0.1',
+          `opacity:${_isWindowsBrowser ? 0.16 : 0.1}`,
           'mix-blend-mode:soft-light',
           `background-image:url("${noiseSvg}")`,
           'background-size:128px 128px',
@@ -1078,8 +1093,9 @@
         }
 
         const data = image.data;
-        const strength = Math.max(4.2, Math.min(6.2, Math.max(width, height) / 720));
-        const chromaStrength = strength * 0.18;
+        const baseStrength = Math.max(4.2, Math.min(6.2, Math.max(width, height) / 720));
+        const strength = _isWindowsBrowser ? baseStrength * 1.55 : baseStrength;
+        const chromaStrength = strength * (_isWindowsBrowser ? 0.24 : 0.18);
         let seed = (Math.random() * 0xffffffff) >>> 0;
         if (!seed) seed = 0x9e3779b9;
 
