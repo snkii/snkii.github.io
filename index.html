@@ -65,7 +65,7 @@
   default-src 'self';
   base-uri 'self';
   object-src 'none';
-  img-src 'self' https:;
+  img-src 'self' https: data: blob:;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;
   script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
@@ -979,10 +979,6 @@
         [211,134,155], [146,131,116],
       ];
 
-      function rgbString(color) {
-        return `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
-      }
-
       function rgbaString(color, alpha) {
         return `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${alpha})`;
       }
@@ -995,23 +991,18 @@
         return min + Math.random() * (max - min);
       }
 
-      function randomVelocity() {
-        const angle = randomBetween(0, Math.PI * 2);
-        const speed = randomBetween(0.0026, 0.0054);
-        return {
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed
-        };
-      }
-
-      function randomBlobRadius() {
-        const radii = Array.from({ length: 8 }, () => `${Math.round(randomBetween(42, 58))}%`);
-        return `${radii.slice(0, 4).join(' ')} / ${radii.slice(4).join(' ')}`;
-      }
-
-      // ── div mesh gradient ─────────────────────────────────────────────
+      // ── static canvas mesh gradient ───────────────────────────────────
       const _meshBg = document.createElement('div');
-      _meshBg.style.cssText = 'position:fixed;inset:0;z-index:0;background:#282828;overflow:hidden;pointer-events:none;';
+      _meshBg.style.cssText = [
+        'position:fixed',
+        'inset:0',
+        'z-index:0',
+        'background:#282828',
+        'background-size:cover',
+        'background-position:center',
+        'overflow:hidden',
+        'pointer-events:none'
+      ].join(';');
       document.body.prepend(_meshBg);
 
       function addMeshDitherOverlay() {
@@ -1032,171 +1023,113 @@
         _meshBg.appendChild(noise);
       }
 
-      const _reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-      const _compactViewportQuery = window.matchMedia('(max-width: 768px)');
-      const _ua = navigator.userAgent;
-      const _isIOSLike = /iPad|iPhone|iPod/.test(_ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-      const _useLiteMesh = _compactViewportQuery.matches || _isIOSLike;
-      let _reduceMotion = _reduceMotionQuery.matches;
-      let _colorTimer = 0;
+      let _meshObjectUrl = '';
+      let _meshGeneration = 0;
+      let _lastMeshRefresh = 0;
+      let _lastMeshSize = '';
 
-      function _blobSizeFactor() { return 0.90; }
-      function _blurFactor() { return 0.22; }
-      function _frameDelay() { return _reduceMotion ? 500 : 66; }
-      function _colorDelay() { return _reduceMotion ? 16000 : 7000; }
-      function _colorTransitionDuration() { return _reduceMotion ? 14000 : 6500; }
-      function _liteTransitionDuration() { return _reduceMotion ? 4500 : 2600; }
-      function _liteColorDelay() { return _reduceMotion ? 18000 : 9000; }
-
-      function createBlob() {
-        const velocity = randomVelocity();
+      function createStaticBlob() {
         return {
-          x: randomBetween(-0.12, 1.12),
-          y: randomBetween(-0.10, 1.10),
-          vx: velocity.vx,
-          vy: velocity.vy,
-          vr: randomBetween(-0.8, 0.8),
+          x: randomBetween(-0.08, 1.08),
+          y: randomBetween(-0.08, 1.08),
           r: randomBetween(0.86, 1.08),
           sx: randomBetween(0.85, 1.38),
           sy: randomBetween(0.78, 1.28),
           rot: randomBetween(0, 360),
-          radius: randomBlobRadius(),
           color: randomBlobColor()
         };
       }
 
-      function createLiteBackground() {
-        const gradients = Array.from({ length: 4 }, () => {
-          const color = randomBlobColor();
-          const x = Math.round(randomBetween(-8, 108));
-          const y = Math.round(randomBetween(-8, 108));
-          const rx = Math.round(randomBetween(70, 125));
-          const ry = Math.round(randomBetween(55, 105));
-          return `radial-gradient(ellipse ${rx}% ${ry}% at ${x}% ${y}%, ${rgbaString(color, 0.68)} 0%, ${rgbaString(color, 0.34)} 30%, ${rgbaString(color, 0)} 72%)`;
-        });
-        return `${gradients.join(', ')}, #282828`;
+      function meshCanvasSize() {
+        const viewportWidth = Math.max(1, window.innerWidth);
+        const viewportHeight = Math.max(1, window.innerHeight);
+        const rawScale = Math.min(window.devicePixelRatio || 1, 2);
+        const maxSide = 3840;
+        const sideScale = Math.min(1, maxSide / Math.max(viewportWidth * rawScale, viewportHeight * rawScale));
+        const scale = Math.max(1, rawScale * sideScale);
+        return {
+          width: Math.round(viewportWidth * scale),
+          height: Math.round(viewportHeight * scale)
+        };
       }
 
-      if (_useLiteMesh) {
-        const _liteLayers = [0, 1].map((_, i) => {
-          const el = document.createElement('div');
-          el.style.cssText = [
-            'position:absolute',
-            'inset:0',
-            `opacity:${i === 0 ? 1 : 0}`,
-            `background:${createLiteBackground()}`,
-            'will-change:opacity',
-            'contain:paint',
-            `transition:opacity ${_liteTransitionDuration()}ms ease-in-out`
-          ].join(';');
-          _meshBg.appendChild(el);
-          return el;
-        });
+      function drawStaticBlob(ctx, width, height, blob) {
+        const minDim = Math.min(width, height);
+        const blobSize = blob.r * 0.90 * minDim;
+        const blurSize = 0.22 * minDim;
+        const radius = blobSize / 2 + blurSize * 2;
+        const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, radius);
+        gradient.addColorStop(0, rgbaString(blob.color, 0.70));
+        gradient.addColorStop(0.36, rgbaString(blob.color, 0.50));
+        gradient.addColorStop(0.72, rgbaString(blob.color, 0.18));
+        gradient.addColorStop(1, rgbaString(blob.color, 0));
 
-        let _activeLiteLayer = 0;
-
-        function _setLiteTransitions() {
-          _liteLayers.forEach(layer => {
-            layer.style.transition = `opacity ${_liteTransitionDuration()}ms ease-in-out`;
-          });
-        }
-
-        function _shiftLiteMesh() {
-          const nextLayer = (_activeLiteLayer + 1) % _liteLayers.length;
-          _liteLayers[nextLayer].style.background = createLiteBackground();
-          _liteLayers[nextLayer].style.opacity = '1';
-          _liteLayers[_activeLiteLayer].style.opacity = '0';
-          _activeLiteLayer = nextLayer;
-        }
-
-        function _scheduleLiteShift() {
-          window.clearTimeout(_colorTimer);
-          _colorTimer = window.setTimeout(() => {
-            _shiftLiteMesh();
-            _scheduleLiteShift();
-          }, _liteColorDelay());
-        }
-
-        _reduceMotionQuery.addEventListener('change', e => {
-          _reduceMotion = e.matches;
-          _setLiteTransitions();
-          _scheduleLiteShift();
-        });
-
-        _scheduleLiteShift();
-      } else {
-        const _blobs = Array.from({ length: 3 }, createBlob);
-
-        _blobs.forEach(b => {
-          const el = document.createElement('div');
-          el.style.position = 'absolute';
-          el.style.left = '0';
-          el.style.top = '0';
-          el.style.borderRadius = b.radius;
-          el.style.opacity = '0.7';
-          el.style.transformOrigin = 'center center';
-          el.style.willChange = 'transform';
-          el.style.contain = 'layout style paint';
-          el.style.backgroundColor = rgbString(b.color);
-          _meshBg.appendChild(el);
-          b.el = el;
-        });
-
-        function _setBlobGeometry() {
-          const m = Math.min(window.innerWidth, window.innerHeight);
-          _blobs.forEach(b => {
-            const size = b.r * _blobSizeFactor() * m;
-            b.size = size;
-            b.el.style.width = b.el.style.height = size + 'px';
-            b.el.style.filter = `blur(${Math.round(m * _blurFactor())}px)`;
-            b.el.style.transition = `background-color ${_colorTransitionDuration()}ms ease-in-out`;
-          });
-        }
-        _setBlobGeometry();
-        window.addEventListener('resize', _setBlobGeometry);
-
-        function _pickNextBlobColors() {
-          _blobs.forEach(b => {
-            const nextColor = blobColors[Math.floor(Math.random() * blobColors.length)];
-            b.color = nextColor;
-            b.el.style.backgroundColor = rgbString(nextColor);
-          });
-        }
-
-        function _scheduleColorShift() {
-          window.clearTimeout(_colorTimer);
-          _colorTimer = window.setTimeout(() => {
-            _pickNextBlobColors();
-            _scheduleColorShift();
-          }, _colorDelay());
-        }
-
-        _reduceMotionQuery.addEventListener('change', e => {
-          _reduceMotion = e.matches;
-          _setBlobGeometry();
-          _scheduleColorShift();
-        });
-
-        let _lastFrame = performance.now();
-        function _drawFrame(ts) {
-          const dt = Math.min((ts - _lastFrame) / 1000, 0.25);
-          _lastFrame = ts;
-          const w = window.innerWidth, h = window.innerHeight;
-
-          for (const b of _blobs) {
-            b.x += b.vx * dt;
-            b.y += b.vy * dt;
-            b.rot += b.vr * dt;
-            if (b.x < -0.2 || b.x > 1.2) b.vx *= -1;
-            if (b.y < -0.2 || b.y > 1.2) b.vy *= -1;
-            b.el.style.transform = `translate3d(${b.x * w - b.size / 2}px, ${b.y * h - b.size / 2}px, 0) rotate(${b.rot}deg) scale(${b.sx}, ${b.sy})`;
-          }
-
-          window.setTimeout(() => requestAnimationFrame(_drawFrame), _frameDelay());
-        }
-        requestAnimationFrame(_drawFrame);
-        _scheduleColorShift();
+        ctx.save();
+        ctx.translate(blob.x * width, blob.y * height);
+        ctx.rotate(blob.rot * Math.PI / 180);
+        ctx.scale(blob.sx, blob.sy);
+        ctx.fillStyle = gradient;
+        ctx.fillRect(-radius, -radius, radius * 2, radius * 2);
+        ctx.restore();
       }
+
+      function setMeshBackgroundFromCanvas(canvas, generation) {
+        if (canvas.toBlob) {
+          canvas.toBlob(blob => {
+            if (!blob || generation !== _meshGeneration) return;
+            const nextUrl = URL.createObjectURL(blob);
+            const previousUrl = _meshObjectUrl;
+            _meshBg.style.backgroundImage = `url("${nextUrl}")`;
+            _meshObjectUrl = nextUrl;
+            if (previousUrl) URL.revokeObjectURL(previousUrl);
+          }, 'image/png');
+          return;
+        }
+
+        _meshBg.style.backgroundImage = `url("${canvas.toDataURL('image/png')}")`;
+      }
+
+      function generateStaticMeshBackground() {
+        const generation = ++_meshGeneration;
+        const { width, height } = meshCanvasSize();
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        ctx.fillStyle = '#282828';
+        ctx.fillRect(0, 0, width, height);
+        Array.from({ length: 3 }, createStaticBlob).forEach(blob => drawStaticBlob(ctx, width, height, blob));
+        setMeshBackgroundFromCanvas(canvas, generation);
+      }
+
+      function shouldRefreshMeshFromEvent(event) {
+        return !event.target.closest('a, button, input, textarea, select, summary, [role="button"], [data-nav], .tag');
+      }
+
+      function refreshMeshFromEvent(event) {
+        if (!shouldRefreshMeshFromEvent(event)) return;
+        const now = performance.now();
+        if (now - _lastMeshRefresh < 700) return;
+        _lastMeshRefresh = now;
+        generateStaticMeshBackground();
+      }
+
+      function refreshMeshForResize() {
+        const nextSize = `${window.innerWidth}x${window.innerHeight}`;
+        if (nextSize === _lastMeshSize) return;
+        _lastMeshSize = nextSize;
+        window.clearTimeout(refreshMeshForResize.timer);
+        refreshMeshForResize.timer = window.setTimeout(generateStaticMeshBackground, 120);
+      }
+
+      document.addEventListener('click', refreshMeshFromEvent);
+      document.addEventListener('touchstart', refreshMeshFromEvent, { passive: true });
+      window.addEventListener('resize', refreshMeshForResize);
+      _lastMeshSize = `${window.innerWidth}x${window.innerHeight}`;
+      generateStaticMeshBackground();
       addMeshDitherOverlay();
       // ──────────────────────────────────────────────────────────────────
 

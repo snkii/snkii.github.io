@@ -46,8 +46,8 @@ npm run dev        # http://localhost:3000
   | `--accent` | `#fabd2f` | 링크·강조 |
   | `--hover` | `#fe8019` | 호버 |
 
-- **홈 화면 배경** → 로딩마다 Gruvbox 색상, 시작 위치, 속도, 형태가 자유롭게 선택되는 mesh/blob gradient가 자동으로 천천히 전환
-- 모바일에서는 렉을 줄이기 위해 blurred div animation 대신 radial-gradient 레이어 crossfade 사용
+- **홈 화면 배경** → 접속/새로고침마다 Gruvbox 색상, 위치, 형태가 자유롭게 선택되는 정적 canvas mesh/blob gradient 생성
+- 빈 영역을 클릭하거나 탭하면 현재 배경을 다시 랜덤 생성
 - 4K 등 큰 화면의 gradient banding을 줄이기 위해 mesh 배경 위에 아주 약한 soft-light dither/noise overlay 사용
 - 미니멀리즘 — 전체화면 고정 레이아웃, opacity transition으로 섹션 전환
 - Co-designed with ChatGPT
@@ -60,7 +60,7 @@ npm run dev        # http://localhost:3000
 
 | 섹션 | URL | 주요 내용 |
 |------|-----|-----------|
-| **Home** | `/` | 이메일, 소셜 링크, 자동 mesh gradient 배경, 네비게이션 버튼 |
+| **Home** | `/` | 이메일, 소셜 링크, 정적 랜덤 mesh gradient 배경, 네비게이션 버튼 |
 | **About** | `/about/` | 학력, 연구 분야, 연락처. TMI 토글(숨김 학력) 있음 |
 | **Gallery** | `/gallery/` | GR3x + iPhone 사진 5장, 우클릭 방지 |
 | **This & That** | `/thisthat/` | 관심사 태그 floating bubble 애니메이션 |
