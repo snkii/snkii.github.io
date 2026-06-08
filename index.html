@@ -836,12 +836,15 @@
         showSection((e.state && e.state.section) || 'home');
       });
 
-      // initial load — derive section from URL path
+      // initial load — derive section from URL path (handles ?r= redirect from 404.html / subpage stubs)
       (function () {
-        const seg = location.pathname.replace(/\//g, '').trim();
+        const params = new URLSearchParams(location.search);
+        const r = params.get('r');
+        const pathname = r ? decodeURIComponent(r) : location.pathname;
+        if (r) history.replaceState(null, null, pathname);
+        const seg = pathname.replace(/\//g, '').trim();
         const id = SECTIONS.includes(seg) ? seg : 'home';
-        if (id !== 'home') history.replaceState({ section: id }, '', location.pathname);
-        else history.replaceState({ section: 'home' }, '', location.pathname);
+        history.replaceState({ section: id }, '', pathname);
         showSection(id);
       })();
 
