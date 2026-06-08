@@ -605,6 +605,17 @@
         -webkit-user-select: none;
       }
 
+      .tt-hint {
+        text-align: center;
+        margin-top: 0.75rem;
+        font-size: 0.78rem;
+        letter-spacing: 0.05em;
+        color: var(--fg);
+        opacity: 0.72;
+        pointer-events: none;
+        animation: blink 1.4s infinite alternate;
+      }
+
       .floating-tags-wrapper {
         position: absolute;
         top: 52%;
@@ -864,6 +875,7 @@
         <div class="nav-label">Home</div>
       </button>
       <h1 class="tt-title">This &amp; That</h1>
+      <div class="tt-hint">Click or tap anywhere below</div>
 
       <div class="floating-tags-wrapper">
         <div class="floating-tags">
@@ -999,6 +1011,24 @@
       const _meshBg = document.createElement('div');
       _meshBg.style.cssText = 'position:fixed;inset:0;z-index:0;background:#282828;overflow:hidden;pointer-events:none;';
       document.body.prepend(_meshBg);
+
+      function addMeshDitherOverlay() {
+        const noise = document.createElement('div');
+        const noiseSvg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128' viewBox='0 0 128 128'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.78' numOctaves='1' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='128' height='128' filter='url(%23n)' opacity='.62'/%3E%3C/svg%3E";
+        noise.style.cssText = [
+          'position:absolute',
+          'inset:0',
+          'z-index:4',
+          'pointer-events:none',
+          'opacity:0.055',
+          'mix-blend-mode:soft-light',
+          `background-image:url("${noiseSvg}")`,
+          'background-size:128px 128px',
+          'background-repeat:repeat',
+          'contain:paint'
+        ].join(';');
+        _meshBg.appendChild(noise);
+      }
 
       const _reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
       const _compactViewportQuery = window.matchMedia('(max-width: 768px)');
@@ -1165,6 +1195,7 @@
         requestAnimationFrame(_drawFrame);
         _scheduleColorShift();
       }
+      addMeshDitherOverlay();
       // ──────────────────────────────────────────────────────────────────
 
       const emailLink = document.getElementById('email-link');
