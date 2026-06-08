@@ -223,23 +223,23 @@
       .back-btn {
         position: absolute;
         top: 20px;
-        left: 16px;
+        left: 10px;
         background: none;
         border: none;
-        color: var(--fg);
-        font-size: 2rem;
-        font-weight: 600;
+        color: var(--accent);
         font-family: inherit;
+        font-size: 0.9rem;
+        letter-spacing: 0.05em;
         cursor: pointer;
-        padding: 0 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0;
         z-index: 100;
-        opacity: 0.65;
-        transition: opacity 0.2s, transform 0.15s ease;
-        line-height: 1;
+        transition: transform 0.15s ease;
       }
 
       .back-btn:hover {
-        opacity: 1;
         transform: translateY(-2px);
       }
 
@@ -755,7 +755,10 @@
 
     <!-- ===================== ABOUT ===================== -->
     <div id="about" class="section">
-      <button class="back-btn" data-nav="home">&lt;</button>
+      <button class="back-btn" data-nav="home">
+        <div class="nav-arrow">&lt;</div>
+        <div class="nav-label">Home</div>
+      </button>
       <div class="container">
         <h1>Seonuk Kim <span style="font-size: 1.4rem; opacity: 1.0;">김선욱</span></h1>
         <p class="subtitle">From Seoul, Korea</p>
@@ -818,7 +821,10 @@
 
     <!-- ===================== GALLERY ===================== -->
     <div id="gallery" class="section" oncontextmenu="return false">
-      <button class="back-btn" data-nav="home">&lt;</button>
+      <button class="back-btn" data-nav="home">
+        <div class="nav-arrow">&lt;</div>
+        <div class="nav-label">Home</div>
+      </button>
       <div class="top-banner">Photobook</div>
       <div class="subtitle-alt">GR3x, iPhone,<br />and a few things I love</div>
       <div class="photo-grid">
@@ -833,7 +839,10 @@
 
     <!-- ===================== THIS & THAT ===================== -->
     <div id="thisthat" class="section">
-      <button class="back-btn" data-nav="home">&lt;</button>
+      <button class="back-btn" data-nav="home">
+        <div class="nav-arrow">&lt;</div>
+        <div class="nav-label">Home</div>
+      </button>
       <h1 class="tt-title">This &amp; That</h1>
 
       <div class="floating-tags-wrapper">
