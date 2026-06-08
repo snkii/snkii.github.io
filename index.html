@@ -152,12 +152,19 @@
 
     <style>
       /* ===== BASE ===== */
+      @property --bg      { syntax: '<color>'; initial-value: #282828;             inherits: true; }
+      @property --fg      { syntax: '<color>'; initial-value: #ebdbb2;             inherits: true; }
+      @property --accent  { syntax: '<color>'; initial-value: #fabd2f;             inherits: true; }
+      @property --hover   { syntax: '<color>'; initial-value: #fe8019;             inherits: true; }
+      @property --divider { syntax: '<color>'; initial-value: rgba(235,219,178,.1); inherits: true; }
+
       :root {
         --bg: #282828;
         --fg: #ebdbb2;
         --accent: #fabd2f;
         --hover: #fe8019;
         --divider: rgba(235, 219, 178, 0.1);
+        transition: --bg 0.6s ease, --fg 0.6s ease, --accent 0.6s ease, --hover 0.6s ease, --divider 0.6s ease;
       }
 
       *, *::before, *::after {
@@ -269,6 +276,33 @@
 
       #home a:hover {
         transform: translateY(-2px);
+      }
+
+      #email-link {
+        position: relative;
+        overflow: hidden;
+      }
+
+      @keyframes glint {
+        0%, 65%  { transform: translateX(-200%) skewX(-20deg); }
+        85%, 100% { transform: translateX(350%)  skewX(-20deg); }
+      }
+
+      #email-link::after {
+        content: '';
+        position: absolute;
+        top: -5%;
+        left: 0;
+        width: 25%;
+        height: 110%;
+        background: linear-gradient(
+          105deg,
+          transparent 35%,
+          rgba(255,255,255,0.22) 50%,
+          transparent 65%
+        );
+        animation: glint 4s ease-in-out infinite;
+        pointer-events: none;
       }
 
       .welcome {
@@ -443,6 +477,27 @@
         font-size: 1.2rem;
         font-weight: bold;
         margin-bottom: 12px;
+      }
+
+      .css-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.7rem;
+        padding: 1px 7px;
+        border: 1px solid var(--fg);
+        border-radius: 3px;
+        color: var(--fg);
+        opacity: 0.6;
+        letter-spacing: 0.04em;
+        vertical-align: middle;
+        text-decoration: none;
+        transition: opacity 0.15s ease, transform 0.15s ease;
+      }
+
+      .css-badge:hover {
+        opacity: 1;
+        transform: translateY(-2px);
       }
 
       .indent {
@@ -765,12 +820,8 @@
           <p class="indent" style="font-size: 0.95rem;">Large Audio Language Models (LALM)</p>
           <p class="indent" style="font-size: 0.95rem;">
             Spoken Dialogue Systems (SDS)<br>
-            <a href="https://github.com/snkii/awesome-spoken-dialogue-systems" target="_blank" style="display: inline-block; margin-top: 4px;" title="Awesome Spoken Dialogue Systems">
-              <img src="https://awesome.re/badge.svg" alt="Awesome" style="height: 20px;">
-            </a>
-            <a href="https://github.com/snkii/korean-modular-sds" target="_blank" style="display: inline-block; margin-top: 4px; margin-left: 6px;" title="korean-modular-sds">
-              <img src="https://img.shields.io/badge/GitHub-korean--modular--sds-181717?style=flat&logo=github" alt="GitHub" style="height: 20px;">
-            </a>
+            <a href="https://github.com/snkii/awesome-spoken-dialogue-systems" target="_blank" rel="noopener" class="css-badge" style="margin-top: 6px;" title="Awesome Spoken Dialogue Systems">★ awesome</a>
+            <a href="https://github.com/snkii/korean-modular-sds" target="_blank" rel="noopener" class="css-badge" style="margin-top: 6px; margin-left: 5px;" title="korean-modular-sds"><i class="fab fa-github"></i> korean-modular-sds</a>
           </p>
         </div>
 
