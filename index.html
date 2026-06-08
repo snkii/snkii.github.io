@@ -215,17 +215,18 @@
       /* ===== BACK BUTTON ===== */
       .back-btn {
         position: absolute;
-        top: 16px;
+        top: 20px;
         left: 16px;
         background: none;
         border: none;
         color: var(--fg);
-        font-size: 1.1rem;
+        font-size: 2rem;
+        font-weight: 600;
         font-family: inherit;
         cursor: pointer;
-        padding: 6px 10px;
+        padding: 0 10px;
         z-index: 100;
-        opacity: 0.45;
+        opacity: 0.65;
         transition: opacity 0.2s;
         line-height: 1;
       }
@@ -233,6 +234,7 @@
       .back-btn:hover {
         opacity: 1;
       }
+
 
       /* ===== HOME ===== */
       #home {
@@ -465,8 +467,7 @@
         text-align: center;
         font-size: 3rem;
         color: var(--fg);
-        margin-top: 20px;
-        margin-bottom: 20px;
+        margin: 20px 0;
         animation: fadeIn 1.2s ease-in-out forwards;
       }
 
@@ -689,7 +690,7 @@
 
     <!-- ===================== ABOUT ===================== -->
     <div id="about" class="section">
-      <button class="back-btn" data-nav="home">←</button>
+      <button class="back-btn" data-nav="home">&lt;</button>
       <div class="container">
         <h1>Seonuk Kim <span style="font-size: 1.4rem; opacity: 1.0;">(김선욱)</span></h1>
         <p class="subtitle">From Seoul, Korea</p>
@@ -744,7 +745,7 @@
 
     <!-- ===================== GALLERY ===================== -->
     <div id="gallery" class="section" oncontextmenu="return false">
-      <button class="back-btn" data-nav="home">←</button>
+      <button class="back-btn" data-nav="home">&lt;</button>
       <div class="top-banner">Photobook</div>
       <div class="subtitle-alt">GR3x, iPhone,<br />and a few things I love</div>
       <div class="photo-grid">
@@ -759,7 +760,7 @@
 
     <!-- ===================== THIS & THAT ===================== -->
     <div id="thisthat" class="section">
-      <button class="back-btn" data-nav="home">←</button>
+      <button class="back-btn" data-nav="home">&lt;</button>
       <h1 class="tt-title">This &amp; That</h1>
 
       <div class="floating-tags-wrapper">
