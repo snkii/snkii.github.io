@@ -12,4 +12,4 @@ Components: JavaScript
 Software: VS Code, GitHub Pages
 
 /* THANKS */
-Co-designed with ChatGPT
+Co-designed with ChatGPT & Claude Code
