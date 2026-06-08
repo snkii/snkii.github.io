@@ -192,7 +192,6 @@
         font-family: "DM Sans", sans-serif;
         background-color: var(--bg);
         color: var(--fg);
-        transition: background-color 0.6s ease, color 0.6s ease;
         user-select: none;
         -webkit-user-select: none;
       }
@@ -203,7 +202,7 @@
         inset: 0;
         opacity: 0;
         pointer-events: none;
-        transition: opacity 0.4s ease, background-color 0.6s ease, color 0.6s ease;
+        transition: opacity 0.4s ease;
       }
 
       .section.active {
@@ -235,7 +234,7 @@
         padding: 0 10px;
         z-index: 100;
         opacity: 0.65;
-        transition: opacity 0.2s, color 0.6s ease, transform 0.15s ease;
+        transition: opacity 0.2s, transform 0.15s ease;
         line-height: 1;
       }
 
@@ -270,7 +269,7 @@
         display: inline-block;
         user-select: none;
         -webkit-user-select: none;
-        transition: color 0.3s ease, transform 0.15s ease;
+        transition: transform 0.15s ease;
         cursor: pointer;
       }
 
@@ -278,32 +277,6 @@
         transform: translateY(-2px);
       }
 
-      #email-link {
-        position: relative;
-        overflow: hidden;
-      }
-
-      @keyframes glint {
-        0%, 65%  { transform: translateX(-200%) skewX(-20deg); }
-        85%, 100% { transform: translateX(350%)  skewX(-20deg); }
-      }
-
-      #email-link::after {
-        content: '';
-        position: absolute;
-        top: -5%;
-        left: 0;
-        width: 25%;
-        height: 110%;
-        background: linear-gradient(
-          105deg,
-          transparent 35%,
-          rgba(255,255,255,0.22) 50%,
-          transparent 65%
-        );
-        animation: glint 4s ease-in-out infinite;
-        pointer-events: none;
-      }
 
       .welcome {
         position: absolute;
@@ -353,7 +326,7 @@
       .social-links a {
         color: var(--accent);
         font-size: 1.5rem;
-        transition: color 0.3s ease, transform 0.15s ease;
+        transition: transform 0.15s ease;
       }
 
       .social-links a:hover {
@@ -373,7 +346,7 @@
         cursor: pointer;
         display: flex;
         flex-direction: column;
-        transition: color 0.6s ease, transform 0.15s ease;
+        transition: transform 0.15s ease;
         align-items: center;
         pointer-events: auto;
         padding: 0;
@@ -465,7 +438,6 @@
         margin-top: 20px;
         padding-top: 24px;
         border-top: 1px solid var(--divider);
-        transition: border-color 0.6s ease;
       }
 
       #about .content-section:first-of-type {
@@ -508,7 +480,7 @@
       .contact a {
         color: var(--fg);
         text-decoration: none;
-        transition: color 0.6s ease, transform 0.15s ease;
+        transition: transform 0.15s ease;
       }
 
       .contact a:hover {
@@ -558,7 +530,6 @@
         color: var(--fg);
         margin: 20px 0;
         animation: fadeIn 1.2s ease-in-out forwards;
-        transition: color 0.6s ease;
       }
 
       .subtitle-alt {
@@ -652,7 +623,7 @@
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
         white-space: nowrap;
         backdrop-filter: blur(2px);
-        transition: color 0.6s ease, border-color 0.6s ease, filter 0.15s ease;
+        transition: filter 0.15s ease;
         will-change: transform;
         backface-visibility: hidden;
         transform-style: preserve-3d;
