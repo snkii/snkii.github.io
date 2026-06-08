@@ -202,7 +202,7 @@
         inset: 0;
         pointer-events: none;
         transform: translateX(100%);
-        transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: transform 380ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
         will-change: transform;
       }
 
@@ -873,6 +873,8 @@
       const SECTIONS = ['home', 'about', 'gallery', 'thisthat'];
 
       let currentSectionId = 'home';
+      const SLIDE_DURATION = 380;
+      const SLIDE_EASE = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)';
 
       function showSection(id, direction) {
         if (!SECTIONS.includes(id)) id = 'home';
@@ -881,31 +883,36 @@
         const outgoing = document.getElementById(currentSectionId);
         const incoming = document.getElementById(id);
 
-        // determine direction from section order if not provided
         if (direction === undefined) {
           direction = SECTIONS.indexOf(id) > SECTIONS.indexOf(currentSectionId) ? 1 : -1;
         }
 
-        // position incoming off-screen in the direction of travel
+        // incoming: start off-screen, slide to 0
         incoming.style.transition = 'none';
         incoming.style.transform = `translateX(${direction * 100}%)`;
+        incoming.style.opacity = '1';
         incoming.classList.add('active');
 
-        // force reflow
         incoming.getBoundingClientRect();
 
-        // slide both sections
-        incoming.style.transition = '';
-        incoming.style.transform = '';
-        outgoing.style.transform = `translateX(${-direction * 100}%)`;
+        incoming.style.transition = `transform ${SLIDE_DURATION}ms ${SLIDE_EASE}`;
+        incoming.style.transform = 'translateX(0)';
 
-        // block ghost clicks during animation
+        // outgoing: parallax — move 28% and fade slightly (iOS depth feel)
+        outgoing.style.transition = `transform ${SLIDE_DURATION}ms ${SLIDE_EASE}, opacity ${SLIDE_DURATION}ms ${SLIDE_EASE}`;
+        outgoing.style.transform = `translateX(${-direction * 28}%)`;
+        outgoing.style.opacity = '0.6';
+
         incoming.style.pointerEvents = 'none';
         setTimeout(() => {
           incoming.style.pointerEvents = '';
+          incoming.style.transition = '';
+          incoming.style.transform = '';
           outgoing.classList.remove('active');
+          outgoing.style.transition = '';
           outgoing.style.transform = '';
-        }, 450);
+          outgoing.style.opacity = '';
+        }, SLIDE_DURATION);
 
         currentSectionId = id;
 
