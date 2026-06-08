@@ -228,12 +228,13 @@
         padding: 0 10px;
         z-index: 100;
         opacity: 0.65;
-        transition: opacity 0.2s, color 0.6s ease;
+        transition: opacity 0.2s, color 0.6s ease, transform 0.15s ease;
         line-height: 1;
       }
 
       .back-btn:hover {
         opacity: 1;
+        transform: translateY(-2px);
       }
 
 
@@ -261,8 +262,12 @@
         font-size: 3rem;
         user-select: none;
         -webkit-user-select: none;
-        transition: color 0.3s ease;
+        transition: color 0.3s ease, transform 0.15s ease;
         cursor: pointer;
+      }
+
+      #home a:hover {
+        transform: translateY(-2px);
       }
 
       .welcome {
@@ -313,11 +318,12 @@
       .social-links a {
         color: var(--accent);
         font-size: 1.5rem;
-        transition: color 0.3s ease;
+        transition: color 0.3s ease, transform 0.15s ease;
       }
 
       .social-links a:hover {
         color: var(--hover);
+        transform: translateY(-2px);
       }
 
       /* home side nav buttons */
@@ -332,10 +338,15 @@
         cursor: pointer;
         display: flex;
         flex-direction: column;
-        transition: color 0.6s ease;
+        transition: color 0.6s ease, transform 0.15s ease;
         align-items: center;
         pointer-events: auto;
         padding: 0;
+      }
+
+      .nav-btn:hover {
+        opacity: 1;
+        transform: translateY(-2px);
       }
 
       .nav-btn .nav-label {
@@ -437,11 +448,20 @@
       .contact a {
         color: var(--fg);
         text-decoration: none;
-        transition: color 0.6s ease;
+        transition: color 0.6s ease, transform 0.15s ease;
       }
 
       .contact a:hover {
-        text-decoration: underline;
+        transform: translateY(-2px);
+      }
+
+      #about a {
+        transition: transform 0.15s ease;
+        display: inline-block;
+      }
+
+      #about a:hover {
+        transform: translateY(-2px);
       }
 
       .no-link-style {
@@ -572,13 +592,17 @@
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
         white-space: nowrap;
         backdrop-filter: blur(2px);
-        transition: color 0.6s ease, border-color 0.6s ease;
+        transition: color 0.6s ease, border-color 0.6s ease, filter 0.15s ease;
         will-change: transform;
         backface-visibility: hidden;
         transform-style: preserve-3d;
         contain: layout style;
         user-select: none;
         text-decoration: none;
+      }
+
+      .tag:hover {
+        filter: brightness(1.2);
       }
 
       #thisthat .copyright {
