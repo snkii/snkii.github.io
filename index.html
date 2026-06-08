@@ -964,18 +964,13 @@
         return (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05);
       }
 
-      // Colorful Gruvbox colors as RGB for canvas blobs
-      const blobPalette = [
-        [250, 189,  47],  // yellow
-        [254, 128,  25],  // orange
-        [251,  73,  52],  // red
-        [211, 134, 155],  // pink
-        [184, 187,  38],  // green
-        [142, 192, 124],  // aqua
-        [131, 165, 152],  // teal
-        [ 69, 133, 136],  // blue
-        [146, 131, 116],  // gray
-        [215, 153,  33],  // deep yellow
+      // Gruvbox colors grouped by hue family — each blob picks from a different group
+      const blobGroups = [
+        [[250,189, 47], [215,153, 33]],           // yellow / deep yellow
+        [[254,128, 25], [251, 73, 52]],           // orange / red
+        [[184,187, 38], [142,192,124]],           // green / aqua
+        [[131,165,152], [ 69,133,136]],           // teal / blue
+        [[211,134,155], [146,131,116]],           // pink / gray
       ];
 
       function hexToRgb(hex) {
@@ -1040,16 +1035,10 @@
       // ──────────────────────────────────────────────────────────────────
 
       function getReadableColors() {
-        // pick 3 distinct blob colors
-        const pool = [...blobPalette];
-        const blobs = [];
-        for (let i = 0; i < 3; i++) {
-          const idx = Math.floor(Math.random() * pool.length);
-          blobs.push(pool.splice(idx, 1)[0]);
-        }
-        // fg: light, low-saturation colors only
-        const fg = "#ebdbb2";
-        return { blobs, fg };
+        // pick 3 blobs from 3 different hue groups (no two blobs similar)
+        const groups = [...blobGroups].sort(() => Math.random() - 0.5).slice(0, 3);
+        const blobs = groups.map(g => g[Math.floor(Math.random() * g.length)]);
+        return { blobs, fg: "#ebdbb2" };
       }
 
       function applyColors({ blobs, fg }) {
