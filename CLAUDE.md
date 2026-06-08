@@ -47,7 +47,7 @@ npm run dev        # http://localhost:3000
   | `--hover` | `#fe8019` | 호버 |
 
 - **홈 화면 배경** → 로딩마다 Gruvbox 색상, 시작 위치, 속도, 형태가 자유롭게 선택되는 mesh/blob gradient가 자동으로 천천히 전환
-- 데스크톱과 모바일에서 같은 mesh/blob 배경 파라미터 사용
+- 모바일에서는 렉을 줄이기 위해 blurred div animation 대신 radial-gradient 레이어 crossfade 사용
 - 미니멀리즘 — 전체화면 고정 레이아웃, opacity transition으로 섹션 전환
 - Co-designed with ChatGPT
 

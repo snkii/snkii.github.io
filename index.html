@@ -969,6 +969,10 @@
         return `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
       }
 
+      function rgbaString(color, alpha) {
+        return `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${alpha})`;
+      }
+
       function randomBlobColor() {
         return blobColors[Math.floor(Math.random() * blobColors.length)];
       }
@@ -997,6 +1001,10 @@
       document.body.prepend(_meshBg);
 
       const _reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const _compactViewportQuery = window.matchMedia('(max-width: 768px)');
+      const _ua = navigator.userAgent;
+      const _isIOSLike = /iPad|iPhone|iPod/.test(_ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      const _useLiteMesh = _compactViewportQuery.matches || _isIOSLike;
       let _reduceMotion = _reduceMotionQuery.matches;
       let _colorTimer = 0;
 
@@ -1005,6 +1013,8 @@
       function _frameDelay() { return _reduceMotion ? 500 : 66; }
       function _colorDelay() { return _reduceMotion ? 16000 : 7000; }
       function _colorTransitionDuration() { return _reduceMotion ? 14000 : 6500; }
+      function _liteTransitionDuration() { return _reduceMotion ? 4500 : 2600; }
+      function _liteColorDelay() { return _reduceMotion ? 18000 : 9000; }
 
       function createBlob() {
         const velocity = randomVelocity();
@@ -1023,77 +1033,138 @@
         };
       }
 
-      const _blobs = Array.from({ length: 3 }, createBlob);
-
-      _blobs.forEach(b => {
-        const el = document.createElement('div');
-        el.style.position = 'absolute';
-        el.style.left = '0';
-        el.style.top = '0';
-        el.style.borderRadius = b.radius;
-        el.style.opacity = '0.7';
-        el.style.transformOrigin = 'center center';
-        el.style.willChange = 'transform';
-        el.style.contain = 'layout style paint';
-        el.style.backgroundColor = rgbString(b.color);
-        _meshBg.appendChild(el);
-        b.el = el;
-      });
-
-      function _setBlobGeometry() {
-        const m = Math.min(window.innerWidth, window.innerHeight);
-        _blobs.forEach(b => {
-          const size = b.r * _blobSizeFactor() * m;
-          b.size = size;
-          b.el.style.width = b.el.style.height = size + 'px';
-          b.el.style.filter = `blur(${Math.round(m * _blurFactor())}px)`;
-          b.el.style.transition = `background-color ${_colorTransitionDuration()}ms ease-in-out`;
+      function createLiteBackground() {
+        const gradients = Array.from({ length: 4 }, () => {
+          const color = randomBlobColor();
+          const x = Math.round(randomBetween(-8, 108));
+          const y = Math.round(randomBetween(-8, 108));
+          const rx = Math.round(randomBetween(70, 125));
+          const ry = Math.round(randomBetween(55, 105));
+          return `radial-gradient(ellipse ${rx}% ${ry}% at ${x}% ${y}%, ${rgbaString(color, 0.68)} 0%, ${rgbaString(color, 0.34)} 30%, ${rgbaString(color, 0)} 72%)`;
         });
+        return `${gradients.join(', ')}, #282828`;
       }
-      _setBlobGeometry();
-      window.addEventListener('resize', _setBlobGeometry);
 
-      function _pickNextBlobColors() {
-        _blobs.forEach(b => {
-          const nextColor = blobColors[Math.floor(Math.random() * blobColors.length)];
-          b.color = nextColor;
-          b.el.style.backgroundColor = rgbString(nextColor);
+      if (_useLiteMesh) {
+        const _liteLayers = [0, 1].map((_, i) => {
+          const el = document.createElement('div');
+          el.style.cssText = [
+            'position:absolute',
+            'inset:0',
+            `opacity:${i === 0 ? 1 : 0}`,
+            `background:${createLiteBackground()}`,
+            'will-change:opacity',
+            'contain:paint',
+            `transition:opacity ${_liteTransitionDuration()}ms ease-in-out`
+          ].join(';');
+          _meshBg.appendChild(el);
+          return el;
         });
-      }
 
-      function _scheduleColorShift() {
-        window.clearTimeout(_colorTimer);
-        _colorTimer = window.setTimeout(() => {
-          _pickNextBlobColors();
-          _scheduleColorShift();
-        }, _colorDelay());
-      }
+        let _activeLiteLayer = 0;
 
-      _reduceMotionQuery.addEventListener('change', e => {
-        _reduceMotion = e.matches;
-        _setBlobGeometry();
-        _scheduleColorShift();
-      });
-
-      let _lastFrame = performance.now();
-      function _drawFrame(ts) {
-        const dt = Math.min((ts - _lastFrame) / 1000, 0.25);
-        _lastFrame = ts;
-        const w = window.innerWidth, h = window.innerHeight;
-
-        for (const b of _blobs) {
-          b.x += b.vx * dt;
-          b.y += b.vy * dt;
-          b.rot += b.vr * dt;
-          if (b.x < -0.2 || b.x > 1.2) b.vx *= -1;
-          if (b.y < -0.2 || b.y > 1.2) b.vy *= -1;
-          b.el.style.transform = `translate3d(${b.x * w - b.size / 2}px, ${b.y * h - b.size / 2}px, 0) rotate(${b.rot}deg) scale(${b.sx}, ${b.sy})`;
+        function _setLiteTransitions() {
+          _liteLayers.forEach(layer => {
+            layer.style.transition = `opacity ${_liteTransitionDuration()}ms ease-in-out`;
+          });
         }
 
-        window.setTimeout(() => requestAnimationFrame(_drawFrame), _frameDelay());
+        function _shiftLiteMesh() {
+          const nextLayer = (_activeLiteLayer + 1) % _liteLayers.length;
+          _liteLayers[nextLayer].style.background = createLiteBackground();
+          _liteLayers[nextLayer].style.opacity = '1';
+          _liteLayers[_activeLiteLayer].style.opacity = '0';
+          _activeLiteLayer = nextLayer;
+        }
+
+        function _scheduleLiteShift() {
+          window.clearTimeout(_colorTimer);
+          _colorTimer = window.setTimeout(() => {
+            _shiftLiteMesh();
+            _scheduleLiteShift();
+          }, _liteColorDelay());
+        }
+
+        _reduceMotionQuery.addEventListener('change', e => {
+          _reduceMotion = e.matches;
+          _setLiteTransitions();
+          _scheduleLiteShift();
+        });
+
+        _scheduleLiteShift();
+      } else {
+        const _blobs = Array.from({ length: 3 }, createBlob);
+
+        _blobs.forEach(b => {
+          const el = document.createElement('div');
+          el.style.position = 'absolute';
+          el.style.left = '0';
+          el.style.top = '0';
+          el.style.borderRadius = b.radius;
+          el.style.opacity = '0.7';
+          el.style.transformOrigin = 'center center';
+          el.style.willChange = 'transform';
+          el.style.contain = 'layout style paint';
+          el.style.backgroundColor = rgbString(b.color);
+          _meshBg.appendChild(el);
+          b.el = el;
+        });
+
+        function _setBlobGeometry() {
+          const m = Math.min(window.innerWidth, window.innerHeight);
+          _blobs.forEach(b => {
+            const size = b.r * _blobSizeFactor() * m;
+            b.size = size;
+            b.el.style.width = b.el.style.height = size + 'px';
+            b.el.style.filter = `blur(${Math.round(m * _blurFactor())}px)`;
+            b.el.style.transition = `background-color ${_colorTransitionDuration()}ms ease-in-out`;
+          });
+        }
+        _setBlobGeometry();
+        window.addEventListener('resize', _setBlobGeometry);
+
+        function _pickNextBlobColors() {
+          _blobs.forEach(b => {
+            const nextColor = blobColors[Math.floor(Math.random() * blobColors.length)];
+            b.color = nextColor;
+            b.el.style.backgroundColor = rgbString(nextColor);
+          });
+        }
+
+        function _scheduleColorShift() {
+          window.clearTimeout(_colorTimer);
+          _colorTimer = window.setTimeout(() => {
+            _pickNextBlobColors();
+            _scheduleColorShift();
+          }, _colorDelay());
+        }
+
+        _reduceMotionQuery.addEventListener('change', e => {
+          _reduceMotion = e.matches;
+          _setBlobGeometry();
+          _scheduleColorShift();
+        });
+
+        let _lastFrame = performance.now();
+        function _drawFrame(ts) {
+          const dt = Math.min((ts - _lastFrame) / 1000, 0.25);
+          _lastFrame = ts;
+          const w = window.innerWidth, h = window.innerHeight;
+
+          for (const b of _blobs) {
+            b.x += b.vx * dt;
+            b.y += b.vy * dt;
+            b.rot += b.vr * dt;
+            if (b.x < -0.2 || b.x > 1.2) b.vx *= -1;
+            if (b.y < -0.2 || b.y > 1.2) b.vy *= -1;
+            b.el.style.transform = `translate3d(${b.x * w - b.size / 2}px, ${b.y * h - b.size / 2}px, 0) rotate(${b.rot}deg) scale(${b.sx}, ${b.sy})`;
+          }
+
+          window.setTimeout(() => requestAnimationFrame(_drawFrame), _frameDelay());
+        }
+        requestAnimationFrame(_drawFrame);
+        _scheduleColorShift();
       }
-      requestAnimationFrame(_drawFrame);
-      _scheduleColorShift();
       // ──────────────────────────────────────────────────────────────────
 
       const emailLink = document.getElementById('email-link');
