@@ -982,51 +982,59 @@
         return hex.replace('#','').match(/.{2}/g).map(c => parseInt(c, 16));
       }
 
-      // ── canvas mesh gradient ──────────────────────────────────────────
-      const _canvas = document.createElement('canvas');
-      _canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;';
-      document.body.prepend(_canvas);
-      const _ctx = _canvas.getContext('2d');
-
-      function _resize() { _canvas.width = window.innerWidth; _canvas.height = window.innerHeight; }
-      window.addEventListener('resize', _resize);
-      _resize();
+      // ── div mesh gradient ─────────────────────────────────────────────
+      const _meshBg = document.createElement('div');
+      _meshBg.style.cssText = 'position:fixed;inset:0;z-index:0;background:#282828;overflow:hidden;pointer-events:none;';
+      document.body.prepend(_meshBg);
 
       const _blobs = [
-        { x:0.22, y:0.45, vx: 0.00022, vy: 0.00016, r:0.70, color:[250,189, 47], target:[250,189, 47] },
-        { x:0.78, y:0.20, vx:-0.00018, vy: 0.00021, r:0.65, color:[131,165,152], target:[131,165,152] },
-        { x:0.52, y:0.78, vx: 0.00014, vy:-0.00023, r:0.60, color:[211,134,155], target:[211,134,155] },
+        { x:0.22, y:0.45, vx: 0.00022, vy: 0.00016, r:0.90, color:[250,189, 47], target:[250,189, 47] },
+        { x:0.78, y:0.20, vx:-0.00018, vy: 0.00021, r:0.90, color:[131,165,152], target:[131,165,152] },
+        { x:0.52, y:0.78, vx: 0.00014, vy:-0.00023, r:0.90, color:[211,134,155], target:[211,134,155] },
       ];
-      const _bg = { color:[40,40,40], target:[40,40,40] };
+
+      _blobs.forEach(b => {
+        const el = document.createElement('div');
+        el.style.position = 'absolute';
+        el.style.borderRadius = '50%';
+        el.style.opacity = '0.7';
+        el.style.willChange = 'transform, background-color';
+        _meshBg.appendChild(el);
+        b.el = el;
+        const m = Math.min(window.innerWidth, window.innerHeight);
+        const size = b.r * m;
+        el.style.width = el.style.height = size + 'px';
+        el.style.filter = `blur(${Math.round(m * 0.22)}px)`;
+      });
+
+      function _setBlur() {
+        const m = Math.min(window.innerWidth, window.innerHeight);
+        _blobs.forEach(b => {
+          const size = b.r * m;
+          b.el.style.width = b.el.style.height = size + 'px';
+          b.el.style.filter = `blur(${Math.round(m * 0.22)}px)`;
+        });
+      }
+      window.addEventListener('resize', _setBlur);
 
       function _lerp(a, b, t) { return a.map((v,i) => v + (b[i]-v)*t); }
 
       function _drawFrame() {
-        const w = _canvas.width, h = _canvas.height;
-        _bg.color = _lerp(_bg.color, _bg.target, 0.025);
-        const [br,bg2,bb] = _bg.color.map(Math.round);
-        _ctx.fillStyle = `rgb(${br},${bg2},${bb})`;
-        _ctx.fillRect(0, 0, w, h);
-
+        const w = window.innerWidth, h = window.innerHeight, m = Math.min(w,h);
         for (const b of _blobs) {
           b.color = _lerp(b.color, b.target, 0.025);
           b.x += b.vx; b.y += b.vy;
           if (b.x < -0.2 || b.x > 1.2) b.vx *= -1;
           if (b.y < -0.2 || b.y > 1.2) b.vy *= -1;
-          const cx = b.x*w, cy = b.y*h, rad = b.r*Math.min(w,h);
+          const size = b.r * m;
           const [r,g,bl] = b.color.map(Math.round);
-          _ctx.save();
-          _ctx.filter = `blur(${Math.round(rad * 0.55)}px)`;
-          _ctx.fillStyle = `rgba(${r},${g},${bl},0.9)`;
-          _ctx.beginPath();
-          _ctx.arc(cx, cy, rad * 0.28, 0, Math.PI * 2);
-          _ctx.fill();
-          _ctx.restore();
+          b.el.style.background = `rgb(${r},${g},${bl})`;
+          b.el.style.transform = `translate(${b.x*w - size/2}px, ${b.y*h - size/2}px)`;
         }
         requestAnimationFrame(_drawFrame);
       }
       requestAnimationFrame(_drawFrame);
-      // ─────────────────────────────────────────────────────────────────
+      // ──────────────────────────────────────────────────────────────────
 
       function getReadableColors() {
         // pick 3 distinct blob colors
