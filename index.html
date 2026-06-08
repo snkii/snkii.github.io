@@ -260,6 +260,7 @@
         color: var(--accent);
         text-decoration: none;
         font-size: 3rem;
+        display: inline-block;
         user-select: none;
         -webkit-user-select: none;
         transition: color 0.3s ease, transform 0.15s ease;
@@ -364,6 +365,10 @@
         right: 10px;
         top: 50%;
         transform: translateY(-60%);
+      }
+
+      .nav-gallery:hover {
+        transform: translateY(calc(-60% - 2px));
       }
 
       .nav-about {
