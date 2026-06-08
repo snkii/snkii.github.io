@@ -1016,10 +1016,10 @@
           const cx = b.x*w, cy = b.y*h, rad = b.r*Math.min(w,h);
           const [r,g,bl] = b.color.map(Math.round);
           _ctx.save();
-          _ctx.filter = `blur(${Math.round(rad * 0.32)}px)`;
-          _ctx.fillStyle = `rgba(${r},${g},${bl},0.85)`;
+          _ctx.filter = `blur(${Math.round(rad * 0.55)}px)`;
+          _ctx.fillStyle = `rgba(${r},${g},${bl},0.9)`;
           _ctx.beginPath();
-          _ctx.arc(cx, cy, rad * 0.5, 0, Math.PI * 2);
+          _ctx.arc(cx, cy, rad * 0.28, 0, Math.PI * 2);
           _ctx.fill();
           _ctx.restore();
         }
