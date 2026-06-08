@@ -27,8 +27,9 @@ Desktop.ini
 .env.*
 *.env.local
 
-# Node 관련 (혹시 쓴다면)
+# Node 관련
 node_modules/
+package-lock.json
 npm-debug.log*
 
 # 빌드 출력물 (향후 정적 생성기 도입 시)

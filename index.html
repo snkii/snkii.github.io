@@ -10,9 +10,9 @@
 
     <meta
       name="description"
-      content="김선욱(Seonuk Kim)의 개인 웹사이트. 서울대학교 전기정보공학부 휴먼인터페이스연구실(HIL) 석박통합과정. HCI, 음성인터페이스, AI 음성처리, Spoken Dialogue Systems 연구. GR3x 사진, 웹 실험, 디자인을 공유하는 미니멀한 공간입니다."
+      content="김선욱(Seonuk Kim)의 개인 웹사이트. 서울대학교 전기정보공학부 휴먼인터페이스연구실(HIL) 석박통합과정. HCI, 음성인터페이스, AI 음성처리, Spoken Dialogue Systems, Large Audio Language Models 연구. GR3x 사진, 웹 실험, 디자인을 공유하는 미니멀한 공간입니다."
     />
-    <meta name="keywords" content="김선욱, Seonuk Kim, 김선욱 서울대학교, 서울대학교, Seoul National University, SNU, 휴먼인터페이스연구실, HIL, Human Interface Lab, 김선욱 HIL, 김선욱 HCI, 김선욱 연구, 김선욱 음성인터페이스, 김선욱 AI, 김선욱 석박통합, 김선욱 전기정보공학부, 김선욱 광성고등학교, 김선욱 경성중학교, 김선욱 성서초등학교, 광성고, 경성중, 성서초, 김선욱 웹사이트, 김선욱 포트폴리오, GR3x 사진, 웹 디자인, 개발자, HCI, Speech Processing, Spoken Dialogue Systems, SDS" />
+    <meta name="keywords" content="김선욱, Seonuk Kim, 김선욱 서울대학교, 서울대학교, Seoul National University, SNU, 휴먼인터페이스연구실, HIL, Human Interface Lab, 김선욱 HIL, 김선욱 HCI, 김선욱 연구, 김선욱 음성인터페이스, 김선욱 AI, 김선욱 석박통합, 김선욱 전기정보공학부, 김선욱 광성고등학교, 김선욱 경성중학교, 김선욱 성서초등학교, 광성고, 경성중, 성서초, 김선욱 웹사이트, 김선욱 포트폴리오, GR3x 사진, 웹 디자인, 개발자, HCI, Speech Processing, Spoken Dialogue Systems, SDS, Large Audio Language Models, LALM, Audio Language Model" />
     <meta name="author" content="김선욱 (Seonuk Kim)" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://seon.uk/" />
@@ -125,13 +125,16 @@
           "Speech Processing",
           "Spoken Dialogue Systems",
           "SDS",
+          "Large Audio Language Models",
+          "LALM",
+          "Audio Language Model",
           "AI",
           "Photography",
           "GR3x",
           "Web Design",
           "Web Development"
         ],
-        "description": "김선욱(Seonuk Kim)의 개인 웹사이트. 서울대학교(SNU) 전기정보공학부 휴먼인터페이스연구실(HIL) 석박통합과정. HCI, 음성인터페이스, AI 음성처리, Spoken Dialogue Systems 연구. GR3x 사진을 공유하는 미니멀한 공간."
+        "description": "김선욱(Seonuk Kim)의 개인 웹사이트. 서울대학교(SNU) 전기정보공학부 휴먼인터페이스연구실(HIL) 석박통합과정. HCI, 음성인터페이스, AI 음성처리, Spoken Dialogue Systems, Large Audio Language Models 연구. GR3x 사진을 공유하는 미니멀한 공간."
       },
       {
         "@context": "https://schema.org",
@@ -182,6 +185,8 @@
         font-family: "DM Sans", sans-serif;
         background-color: var(--bg);
         color: var(--fg);
+        user-select: none;
+        -webkit-user-select: none;
       }
 
       /* ===== SECTION ROUTER ===== */
@@ -463,7 +468,6 @@
         color: var(--fg);
         margin-top: 20px;
         margin-bottom: 20px;
-        user-select: none;
         animation: fadeIn 1.2s ease-in-out forwards;
       }
 
@@ -558,7 +562,6 @@
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
         white-space: nowrap;
         backdrop-filter: blur(2px);
-        pointer-events: auto;
         transition: none;
         will-change: transform;
         backface-visibility: hidden;
@@ -720,6 +723,7 @@
           <div class="section-title">💻 Research Interests</div>
           <p class="indent" style="font-size: 0.95rem;">Voice-based Human-Computer Interaction (HCI)</p>
           <p class="indent" style="font-size: 0.95rem;">AI-driven Speech Processing</p>
+          <p class="indent" style="font-size: 0.95rem;">Large Audio Language Models (LALM)</p>
           <p class="indent" style="font-size: 0.95rem;">
             Spoken Dialogue Systems (SDS)<br>
             <a href="https://github.com/snkii/awesome-spoken-dialogue-systems" target="_blank" style="display: inline-block; margin-top: 4px;" title="Awesome Spoken Dialogue Systems">
@@ -786,7 +790,12 @@
       function showSection(id) {
         if (!SECTIONS.includes(id)) id = 'home';
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
+        const incoming = document.getElementById(id);
+        incoming.classList.add('active');
+
+        // Absorb any ghost click (~300ms synthetic click on mobile) that fires after navigation
+        incoming.style.pointerEvents = 'none';
+        setTimeout(() => { incoming.style.pointerEvents = ''; }, 400);
 
         if (id === 'thisthat' && !thisthatInitialized) {
           // small delay so the section is rendered before measuring dimensions
@@ -810,6 +819,13 @@
       // nav buttons (home side nav + back buttons)
       document.querySelectorAll('[data-nav]').forEach(btn => {
         btn.addEventListener('click', e => {
+          e.stopPropagation();
+          navigate(btn.dataset.nav);
+        });
+        // touchend + preventDefault prevents the ~300ms synthetic click that would
+        // otherwise land on a floating tag in the newly visible thisthat section
+        btn.addEventListener('touchend', e => {
+          e.preventDefault();
           e.stopPropagation();
           navigate(btn.dataset.nav);
         });
@@ -907,7 +923,7 @@
           const width = tag.offsetWidth;
           const height = tag.offsetHeight;
 
-          tagStates.push({
+          const state = {
             el: tag,
             x: Math.random() * Math.max(0, wrapper.clientWidth - width),
             y: Math.random() * Math.max(0, wrapper.clientHeight - height),
@@ -915,6 +931,33 @@
             vy: (Math.random() - 0.5) * 1.5,
             width, height,
             fx: 0, fy: 0, forceDecay: 0
+          };
+          tagStates.push(state);
+        });
+
+        // Touch handling for tags: block synthetic clicks and only navigate
+        // when the finger barely moved AND the tag isn't in a post-repulsion state.
+        tags.forEach((tag, i) => {
+          const state = tagStates[i];
+          let touchStartX, touchStartY, didMove;
+
+          tag.addEventListener('touchstart', e => {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+            didMove = false;
+          }, { passive: true });
+
+          tag.addEventListener('touchmove', e => {
+            const dx = e.touches[0].clientX - touchStartX;
+            const dy = e.touches[0].clientY - touchStartY;
+            if (Math.hypot(dx, dy) > 6) didMove = true;
+          }, { passive: true });
+
+          tag.addEventListener('touchend', e => {
+            e.preventDefault(); // always block synthetic click on tags
+            if (!didMove && Math.abs(state.fx) < 0.5 && Math.abs(state.fy) < 0.5) {
+              window.open(tag.href, '_blank', 'noopener');
+            }
           });
         });
       }
