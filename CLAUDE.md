@@ -46,7 +46,8 @@ npm run dev        # http://localhost:3000
   | `--accent` | `#fabd2f` | 링크·강조 |
   | `--hover` | `#fe8019` | 호버 |
 
-- **홈 화면 클릭** → Gruvbox 팔레트에서 랜덤 색상 조합 적용 (WCAG 4.5 이상 대비율 보장)
+- **홈 화면 배경** → 로딩마다 Gruvbox 색상 목록에서 각 blob이 자유롭게 선택되는 mesh/blob gradient가 자동으로 천천히 색상 전환
+- 모바일 렌더링 부담을 줄이기 위해 배경 애니메이션 FPS, blur radius, blob 크기 조정
 - 미니멀리즘 — 전체화면 고정 레이아웃, opacity transition으로 섹션 전환
 - Co-designed with ChatGPT
 
@@ -58,7 +59,7 @@ npm run dev        # http://localhost:3000
 
 | 섹션 | URL | 주요 내용 |
 |------|-----|-----------|
-| **Home** | `/` | 이메일, 소셜 링크, 색상 랜덤라이저, 네비게이션 버튼 |
+| **Home** | `/` | 이메일, 소셜 링크, 자동 mesh gradient 배경, 네비게이션 버튼 |
 | **About** | `/about/` | 학력, 연구 분야, 연락처. TMI 토글(숨김 학력) 있음 |
 | **Gallery** | `/gallery/` | GR3x + iPhone 사진 5장, 우클릭 방지 |
 | **This & That** | `/thisthat/` | 관심사 태그 floating bubble 애니메이션 |
@@ -86,8 +87,7 @@ snkii.github.io/
 │   ├── index.html
 │   └── images/             # photo1~5
 ├── thisthat/
-│   ├── index.html
-│   └── script.js
+│   └── index.html          # /thisthat/ 직접 접근 지원
 ├── sitemap.xml
 ├── robots.txt
 ├── humans.txt

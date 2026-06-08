@@ -293,22 +293,6 @@
         pointer-events: none;
       }
 
-      .instruction {
-        position: absolute;
-        bottom: 50px;
-        width: 100%;
-        text-align: center;
-        font-size: 1rem;
-        color: inherit;
-        pointer-events: none;
-      }
-
-      @keyframes charJump {
-        0%, 100% { transform: translateY(0); }
-        20%      { transform: translateY(-3px); }
-        40%      { transform: translateY(0); }
-      }
-
       .credit {
         position: absolute;
         left: 10px;
@@ -744,7 +728,6 @@
         </div>
       </div>
 
-      <div class="instruction">Tap or click anywhere</div>
       <div class="credit">Co-designed with ChatGPT & Claude Code</div>
 
       <button class="nav-btn nav-gallery" data-nav="gallery">
@@ -946,35 +929,21 @@
         showSection(id);
       })();
 
-      // ===================== COLOR RANDOMIZER (Home) =====================
-      const gruvboxColors = [
-        "#282828", "#3c3836", "#504945", "#665c54", "#7c6f64",
-        "#b8bb26", "#fabd2f", "#fe8019", "#fb4934", "#d3869b",
-        "#8ec07c", "#ebdbb2", "#d5c4a1", "#928374", "#83a598", "#458588"
+      // ===================== MESH BACKGROUND =====================
+      const blobColors = [
+        [250,189, 47], [215,153, 33],
+        [254,128, 25], [251, 73, 52],
+        [184,187, 38], [142,192,124],
+        [131,165,152], [ 69,133,136],
+        [211,134,155], [146,131,116],
       ];
 
-      function luminance(hex) {
-        const rgb = hex.replace("#", "").match(/.{2}/g).map(c => parseInt(c, 16) / 255);
-        const lin = rgb.map(c => c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
-        return 0.2126 * lin[0] + 0.7152 * lin[1] + 0.0722 * lin[2];
+      function rgbString(color) {
+        return `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
       }
 
-      function contrastRatio(c1, c2) {
-        const L1 = luminance(c1), L2 = luminance(c2);
-        return (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05);
-      }
-
-      // Gruvbox colors grouped by hue family — each blob picks from a different group
-      const blobGroups = [
-        [[250,189, 47], [215,153, 33]],           // yellow / deep yellow
-        [[254,128, 25], [251, 73, 52]],           // orange / red
-        [[184,187, 38], [142,192,124]],           // green / aqua
-        [[131,165,152], [ 69,133,136]],           // teal / blue
-        [[211,134,155], [146,131,116]],           // pink / gray
-      ];
-
-      function hexToRgb(hex) {
-        return hex.replace('#','').match(/.{2}/g).map(c => parseInt(c, 16));
+      function randomBlobColor() {
+        return blobColors[Math.floor(Math.random() * blobColors.length)];
       }
 
       // ── div mesh gradient ─────────────────────────────────────────────
@@ -983,103 +952,97 @@
       document.body.prepend(_meshBg);
 
       const _blobs = [
-        { x:0.22, y:0.45, vx: 0.00022, vy: 0.00016, r:0.90, color:[250,189, 47], target:[250,189, 47] },
-        { x:0.78, y:0.20, vx:-0.00018, vy: 0.00021, r:0.90, color:[131,165,152], target:[131,165,152] },
-        { x:0.52, y:0.78, vx: 0.00014, vy:-0.00023, r:0.90, color:[211,134,155], target:[211,134,155] },
+        { x:0.22, y:0.45, vx: 0.0044, vy: 0.0032, r:0.90, color:randomBlobColor() },
+        { x:0.78, y:0.20, vx:-0.0036, vy: 0.0042, r:0.90, color:randomBlobColor() },
+        { x:0.52, y:0.78, vx: 0.0028, vy:-0.0046, r:0.90, color:randomBlobColor() },
       ];
 
-      let _mobile = window.matchMedia('(max-width: 768px)').matches;
-      window.matchMedia('(max-width: 768px)').addEventListener('change', e => { _mobile = e.matches; _setBlur(); });
+      const _mobileQuery = window.matchMedia('(max-width: 768px)');
+      const _reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+      let _mobile = _mobileQuery.matches;
+      let _reduceMotion = _reduceMotionQuery.matches;
+      let _colorTimer = 0;
+
+      function _blobSizeFactor() { return _mobile ? 0.78 : 0.90; }
+      function _blurFactor() { return _mobile ? 0.10 : 0.22; }
+      function _frameDelay() { return _reduceMotion ? 500 : (_mobile ? 125 : 66); }
+      function _colorDelay() { return _reduceMotion ? 16000 : (_mobile ? 10000 : 7000); }
+      function _colorTransitionDuration() { return _reduceMotion ? 14000 : (_mobile ? 9500 : 6500); }
 
       _blobs.forEach(b => {
         const el = document.createElement('div');
         el.style.position = 'absolute';
+        el.style.left = '0';
+        el.style.top = '0';
         el.style.borderRadius = '50%';
         el.style.opacity = '0.7';
-        el.style.willChange = 'transform, background-color';
+        el.style.willChange = 'transform';
+        el.style.contain = 'layout style paint';
+        el.style.backgroundColor = rgbString(b.color);
         _meshBg.appendChild(el);
         b.el = el;
-        const m = Math.min(window.innerWidth, window.innerHeight);
-        const blurFactor = _mobile ? 0.12 : 0.22;
-        const size = b.r * m;
-        el.style.width = el.style.height = size + 'px';
-        el.style.filter = `blur(${Math.round(m * blurFactor)}px)`;
       });
 
-      function _setBlur() {
+      function _setBlobGeometry() {
         const m = Math.min(window.innerWidth, window.innerHeight);
-        const blurFactor = _mobile ? 0.12 : 0.22;
         _blobs.forEach(b => {
-          const size = b.r * m;
+          const size = b.r * _blobSizeFactor() * m;
+          b.size = size;
           b.el.style.width = b.el.style.height = size + 'px';
-          b.el.style.filter = `blur(${Math.round(m * blurFactor)}px)`;
+          b.el.style.filter = `blur(${Math.round(m * _blurFactor())}px)`;
+          b.el.style.transition = `background-color ${_colorTransitionDuration()}ms ease-in-out`;
         });
       }
-      window.addEventListener('resize', _setBlur);
+      _setBlobGeometry();
+      window.addEventListener('resize', _setBlobGeometry);
 
-      function _lerp(a, b, t) { return a.map((v,i) => v + (b[i]-v)*t); }
+      function _pickNextBlobColors() {
+        _blobs.forEach(b => {
+          const nextColor = blobColors[Math.floor(Math.random() * blobColors.length)];
+          b.color = nextColor;
+          b.el.style.backgroundColor = rgbString(nextColor);
+        });
+      }
 
-      let _lastFrame = 0;
+      function _scheduleColorShift() {
+        window.clearTimeout(_colorTimer);
+        _colorTimer = window.setTimeout(() => {
+          _pickNextBlobColors();
+          _scheduleColorShift();
+        }, _colorDelay());
+      }
+
+      _mobileQuery.addEventListener('change', e => {
+        _mobile = e.matches;
+        _setBlobGeometry();
+        _scheduleColorShift();
+      });
+
+      _reduceMotionQuery.addEventListener('change', e => {
+        _reduceMotion = e.matches;
+        _setBlobGeometry();
+        _scheduleColorShift();
+      });
+
+      let _lastFrame = performance.now();
       function _drawFrame(ts) {
-        requestAnimationFrame(_drawFrame);
-        if (ts - _lastFrame < (_mobile ? 100 : 50)) return; // mobile: 10fps, desktop: 20fps
+        const dt = Math.min((ts - _lastFrame) / 1000, 0.25);
         _lastFrame = ts;
-        const w = window.innerWidth, h = window.innerHeight, m = Math.min(w,h);
+        const w = window.innerWidth, h = window.innerHeight;
+
         for (const b of _blobs) {
-          b.color = _lerp(b.color, b.target, 0.025);
-          b.x += b.vx; b.y += b.vy;
+          b.x += b.vx * dt;
+          b.y += b.vy * dt;
           if (b.x < -0.2 || b.x > 1.2) b.vx *= -1;
           if (b.y < -0.2 || b.y > 1.2) b.vy *= -1;
-          const size = b.r * m;
-          const [r,g,bl] = b.color.map(Math.round);
-          b.el.style.background = `rgb(${r},${g},${bl})`;
-          b.el.style.transform = `translate(${b.x*w - size/2}px, ${b.y*h - size/2}px)`;
+          b.el.style.transform = `translate3d(${b.x * w - b.size / 2}px, ${b.y * h - b.size / 2}px, 0)`;
         }
+
+        window.setTimeout(() => requestAnimationFrame(_drawFrame), _frameDelay());
       }
       requestAnimationFrame(_drawFrame);
+      _scheduleColorShift();
       // ──────────────────────────────────────────────────────────────────
-
-      function getReadableColors() {
-        // each blob picks from a group different from its current color
-        const blobs = _blobs.map(b => {
-          const curIdx = blobGroups.findIndex(g =>
-            g.some(c => c[0] === b.target[0] && c[1] === b.target[1] && c[2] === b.target[2])
-          );
-          const others = blobGroups.filter((_, i) => i !== curIdx);
-          const g = others[Math.floor(Math.random() * others.length)];
-          return g[Math.floor(Math.random() * g.length)];
-        });
-        return { blobs, fg: "#ebdbb2" };
-      }
-
-      function applyColors({ blobs, fg }) {
-        blobs.forEach((col, i) => { _blobs[i].target = [...col]; });
-        const root = document.documentElement;
-        root.style.setProperty('--fg', fg);
-        root.style.setProperty('--accent', fg);
-        root.style.setProperty('--hover', fg);
-        const [r,g,b] = hexToRgb(fg);
-        root.style.setProperty('--divider', `rgba(${r},${g},${b},0.1)`);
-      }
-
-      applyColors(getReadableColors());
-
-      // wave-jump animation on "Tap or click anywhere"
-      (function () {
-        const instr = document.querySelector('.instruction');
-        instr.innerHTML = [...instr.textContent].map((ch, i) => {
-          const delay = (i * 0.07).toFixed(2);
-          const content = ch === ' ' ? '&nbsp;' : ch;
-          return `<span style="display:inline-block;animation:charJump 2.8s ease ${delay}s infinite">${content}</span>`;
-        }).join('');
-      })();
-
-      ['home', 'about', 'gallery', 'thisthat'].forEach(id => {
-        document.getElementById(id).addEventListener('click', e => {
-          if (e.target.closest('[data-nav]') || e.target.closest('a') || e.target.closest('img') || e.target.closest('button') || e.target.closest('#tmi-toggle')) return;
-          applyColors(getReadableColors());
-        });
-      });
 
       const emailLink = document.getElementById('email-link');
       emailLink.addEventListener('mousedown', e => e.preventDefault());
