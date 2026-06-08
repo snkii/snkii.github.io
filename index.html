@@ -408,6 +408,19 @@
         bottom: 25px;
       }
 
+      .home-hint {
+        position: absolute;
+        bottom: 46px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0.5rem;
+        opacity: 0.65;
+        pointer-events: none;
+        letter-spacing: 0.04em;
+        white-space: nowrap;
+        animation: blink 1.4s infinite alternate;
+      }
+
       #home .copyright {
         position: absolute;
         bottom: 25px;
@@ -770,6 +783,7 @@
         <div class="nav-label">This &amp; That</div>
       </button>
 
+      <div class="home-hint">Click or tap anywhere below</div>
       <div class="copyright">© 2025 Seonuk Kim. All rights reserved.</div>
     </div>
 
