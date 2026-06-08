@@ -988,6 +988,9 @@
         { x:0.52, y:0.78, vx: 0.00014, vy:-0.00023, r:0.90, color:[211,134,155], target:[211,134,155] },
       ];
 
+      let _mobile = window.matchMedia('(max-width: 768px)').matches;
+      window.matchMedia('(max-width: 768px)').addEventListener('change', e => { _mobile = e.matches; _setBlur(); });
+
       _blobs.forEach(b => {
         const el = document.createElement('div');
         el.style.position = 'absolute';
@@ -997,17 +1000,19 @@
         _meshBg.appendChild(el);
         b.el = el;
         const m = Math.min(window.innerWidth, window.innerHeight);
+        const blurFactor = _mobile ? 0.12 : 0.22;
         const size = b.r * m;
         el.style.width = el.style.height = size + 'px';
-        el.style.filter = `blur(${Math.round(m * 0.22)}px)`;
+        el.style.filter = `blur(${Math.round(m * blurFactor)}px)`;
       });
 
       function _setBlur() {
         const m = Math.min(window.innerWidth, window.innerHeight);
+        const blurFactor = _mobile ? 0.12 : 0.22;
         _blobs.forEach(b => {
           const size = b.r * m;
           b.el.style.width = b.el.style.height = size + 'px';
-          b.el.style.filter = `blur(${Math.round(m * 0.22)}px)`;
+          b.el.style.filter = `blur(${Math.round(m * blurFactor)}px)`;
         });
       }
       window.addEventListener('resize', _setBlur);
@@ -1017,7 +1022,7 @@
       let _lastFrame = 0;
       function _drawFrame(ts) {
         requestAnimationFrame(_drawFrame);
-        if (ts - _lastFrame < 50) return; // cap at 20fps
+        if (ts - _lastFrame < (_mobile ? 100 : 50)) return; // mobile: 10fps, desktop: 20fps
         _lastFrame = ts;
         const w = window.innerWidth, h = window.innerHeight, m = Math.min(w,h);
         for (const b of _blobs) {
