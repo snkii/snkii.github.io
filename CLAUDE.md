@@ -48,7 +48,7 @@ npm run dev        # http://localhost:3000
 
 - **홈 화면 배경** → 접속/새로고침마다 Gruvbox 색상, 위치, 형태가 자유롭게 선택되는 정적 canvas mesh/blob gradient 생성
 - 빈 영역을 클릭하거나 탭하면 미리 생성해 둔 다음 배경으로 부드럽게 crossfade하고, 다음 후보를 다시 비동기 준비
-- 4K 등 큰 화면의 gradient banding을 줄이기 위해 mesh 배경 위에 아주 약한 soft-light dither/noise overlay 사용
+- 4K 등 큰 화면의 gradient banding을 줄이기 위해 canvas 이미지 내부 dither와 아주 약한 soft-light noise overlay를 함께 사용
 - 미니멀리즘 — 전체화면 고정 레이아웃, opacity transition으로 섹션 전환
 - Co-designed with ChatGPT
 
