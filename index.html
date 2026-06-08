@@ -348,22 +348,38 @@
       }
 
       #email-link {
-        min-width: min(18ch, 96vw);
+        display: inline-block;
         min-height: 1.18em;
         opacity: 1;
         text-align: center;
+        position: relative;
         white-space: nowrap;
         font-variant-ligatures: none;
       }
 
-      #email-link.typing::after {
-        content: "";
+      #email-link .email-measure {
         display: inline-block;
+        visibility: hidden;
+        pointer-events: none;
+      }
+
+      #email-link .email-text {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        min-height: 1.18em;
+        transform: translate(-50%, -50%);
+      }
+
+      #email-link.typing .email-text::after {
+        content: "";
+        position: absolute;
+        left: calc(100% + 0.08em);
+        top: 50%;
         width: 0.08em;
         height: 0.82em;
-        margin-left: 0.08em;
         background: currentColor;
-        vertical-align: -0.08em;
+        transform: translateY(-45%);
         animation: caretBlink 0.72s steps(1, end) infinite;
       }
 
@@ -765,7 +781,7 @@
 
       <div class="center">
         <div class="home-identity">
-          <a href="mailto:sukim@hi.snu.ac.kr" id="email-link" data-email="sukim@hi.snu.ac.kr" aria-label="sukim@hi.snu.ac.kr"></a>
+          <a href="mailto:sukim@hi.snu.ac.kr" id="email-link" data-email="sukim@hi.snu.ac.kr" aria-label="sukim@hi.snu.ac.kr"><span class="email-measure" aria-hidden="true">sukim@hi.snu.ac.kr</span><span class="email-text">sukim@hi.snu.ac.kr</span></a>
           <div class="social-links">
             <a href="https://instagram.com/snkiilog" target="_blank" aria-label="Instagram">
               <i class="fab fa-instagram"></i>
@@ -1346,30 +1362,33 @@
       // ──────────────────────────────────────────────────────────────────
 
       const emailLink = document.getElementById('email-link');
+      const emailTextNode = emailLink.querySelector('.email-text');
+      const emailMeasureNode = emailLink.querySelector('.email-measure');
       emailLink.addEventListener('mousedown', e => e.preventDefault());
       emailLink.addEventListener('selectstart', e => e.preventDefault());
 
       function startEmailTypewriter() {
         const emailText = emailLink.dataset.email || 'sukim@hi.snu.ac.kr';
         const socialLinks = document.querySelector('.social-links');
+        emailMeasureNode.textContent = emailText;
 
         function revealSocialLinks() {
           if (socialLinks) socialLinks.classList.add('ready');
         }
 
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-          emailLink.textContent = emailText;
+          emailTextNode.textContent = emailText;
           revealSocialLinks();
           return;
         }
 
-        emailLink.textContent = '';
+        emailTextNode.textContent = '';
         emailLink.classList.add('typing');
 
         let index = 0;
         function typeNextCharacter() {
           index += 1;
-          emailLink.textContent = emailText.slice(0, index);
+          emailTextNode.textContent = emailText.slice(0, index);
 
           if (index < emailText.length) {
             window.setTimeout(typeNextCharacter, index < 6 ? 72 : 52);
