@@ -50,6 +50,7 @@ npm run dev        # http://localhost:3000
 - 빈 영역을 클릭하거나 탭하면 미리 생성해 둔 다음 배경으로 부드럽게 crossfade하고, 다음 후보를 다시 비동기 준비
 - 4K 등 큰 화면의 gradient banding을 줄이기 위해 canvas 이미지에 pixel-level RGB dither를 적용하고, 배경 위에 빈티지 사진 느낌의 film grain/tone overlay를 함께 사용. Windows Chrome에서는 dither/grain을 더 강하게 적용
 - 홈 화면 이메일은 typewriter 애니메이션으로 표시되고, 완료 후 소셜 아이콘이 순서대로 fade-in
+- About/Photobook/This & That 섹션에서는 글 읽기를 위해 더 어두운 readability overlay 적용
 - 미니멀리즘 — 전체화면 고정 레이아웃, opacity transition으로 섹션 전환
 - Co-designed with ChatGPT
 
