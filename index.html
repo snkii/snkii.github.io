@@ -200,13 +200,14 @@
       .section {
         position: fixed;
         inset: 0;
-        opacity: 0;
         pointer-events: none;
-        transition: opacity 0.4s ease;
+        transform: translateX(100%);
+        transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+        will-change: transform;
       }
 
       .section.active {
-        opacity: 1;
+        transform: translateX(0);
         pointer-events: auto;
       }
 
@@ -871,18 +872,44 @@
       // ===================== ROUTER =====================
       const SECTIONS = ['home', 'about', 'gallery', 'thisthat'];
 
-      function showSection(id) {
+      let currentSectionId = 'home';
+
+      function showSection(id, direction) {
         if (!SECTIONS.includes(id)) id = 'home';
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        if (id === currentSectionId) return;
+
+        const outgoing = document.getElementById(currentSectionId);
         const incoming = document.getElementById(id);
+
+        // determine direction from section order if not provided
+        if (direction === undefined) {
+          direction = SECTIONS.indexOf(id) > SECTIONS.indexOf(currentSectionId) ? 1 : -1;
+        }
+
+        // position incoming off-screen in the direction of travel
+        incoming.style.transition = 'none';
+        incoming.style.transform = `translateX(${direction * 100}%)`;
         incoming.classList.add('active');
 
-        // Absorb any ghost click (~300ms synthetic click on mobile) that fires after navigation
+        // force reflow
+        incoming.getBoundingClientRect();
+
+        // slide both sections
+        incoming.style.transition = '';
+        incoming.style.transform = '';
+        outgoing.style.transform = `translateX(${-direction * 100}%)`;
+
+        // block ghost clicks during animation
         incoming.style.pointerEvents = 'none';
-        setTimeout(() => { incoming.style.pointerEvents = ''; }, 400);
+        setTimeout(() => {
+          incoming.style.pointerEvents = '';
+          outgoing.classList.remove('active');
+          outgoing.style.transform = '';
+        }, 450);
+
+        currentSectionId = id;
 
         if (id === 'thisthat' && !thisthatInitialized) {
-          // small delay so the section is rendered before measuring dimensions
           setTimeout(() => {
             initBubbleTags();
             requestAnimationFrame(animateTags);
@@ -894,9 +921,7 @@
       function navigate(id) {
         try {
           history.pushState({ section: id }, '', id === 'home' ? '/' : '/' + id + '/');
-        } catch (e) {
-          // file:// 프로토콜에서는 경로 변경 불가 — 무시하고 섹션 전환만 수행
-        }
+        } catch (e) {}
         showSection(id);
       }
 
@@ -917,7 +942,9 @@
 
       // browser back / forward
       window.addEventListener('popstate', e => {
-        showSection((e.state && e.state.section) || 'home');
+        const target = (e.state && e.state.section) || 'home';
+        const direction = SECTIONS.indexOf(target) > SECTIONS.indexOf(currentSectionId) ? 1 : -1;
+        showSection(target, direction);
       });
 
       // initial load — derive section from URL path (handles ?r= redirect from 404.html / subpage stubs)
@@ -929,7 +956,16 @@
         const seg = pathname.replace(/\//g, '').trim();
         const id = SECTIONS.includes(seg) ? seg : 'home';
         history.replaceState({ section: id }, '', pathname);
-        showSection(id);
+        // initial load: place directly, no animation
+        const el = document.getElementById(id);
+        el.style.transition = 'none';
+        el.classList.add('active');
+        currentSectionId = id;
+        el.getBoundingClientRect();
+        el.style.transition = '';
+        if (id === 'thisthat') {
+          setTimeout(() => { initBubbleTags(); requestAnimationFrame(animateTags); thisthatInitialized = true; }, 50);
+        }
       })();
 
       // ===================== COLOR RANDOMIZER (Home) =====================
