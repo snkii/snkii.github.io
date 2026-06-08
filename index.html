@@ -1035,9 +1035,15 @@
       // ──────────────────────────────────────────────────────────────────
 
       function getReadableColors() {
-        // pick 3 blobs from 3 different hue groups (no two blobs similar)
-        const groups = [...blobGroups].sort(() => Math.random() - 0.5).slice(0, 3);
-        const blobs = groups.map(g => g[Math.floor(Math.random() * g.length)]);
+        // each blob picks from a group different from its current color
+        const blobs = _blobs.map(b => {
+          const curIdx = blobGroups.findIndex(g =>
+            g.some(c => c[0] === b.target[0] && c[1] === b.target[1] && c[2] === b.target[2])
+          );
+          const others = blobGroups.filter((_, i) => i !== curIdx);
+          const g = others[Math.floor(Math.random() * others.length)];
+          return g[Math.floor(Math.random() * g.length)];
+        });
         return { blobs, fg: "#ebdbb2" };
       }
 
