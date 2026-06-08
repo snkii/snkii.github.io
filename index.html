@@ -154,17 +154,17 @@
       /* ===== BASE ===== */
       @property --bg      { syntax: '<color>'; initial-value: #282828;             inherits: true; }
       @property --fg      { syntax: '<color>'; initial-value: #ebdbb2;             inherits: true; }
-      @property --accent  { syntax: '<color>'; initial-value: #fabd2f;             inherits: true; }
-      @property --hover   { syntax: '<color>'; initial-value: #fe8019;             inherits: true; }
+      @property --accent  { syntax: '<color>'; initial-value: #ebdbb2;             inherits: true; }
+      @property --hover   { syntax: '<color>'; initial-value: #d5c4a1;             inherits: true; }
       @property --divider { syntax: '<color>'; initial-value: rgba(235,219,178,.1); inherits: true; }
 
       :root {
         --bg: #282828;
         --fg: #ebdbb2;
-        --accent: #fabd2f;
-        --hover: #fe8019;
+        --accent: #ebdbb2;
+        --hover: #d5c4a1;
         --divider: rgba(235, 219, 178, 0.1);
-        transition: --bg 0.6s ease, --fg 0.6s ease, --accent 0.6s ease, --hover 0.6s ease, --divider 0.6s ease;
+        transition: --fg 0.6s ease, --accent 0.6s ease, --hover 0.6s ease, --divider 0.6s ease;
       }
 
       *, *::before, *::after {
@@ -190,7 +190,7 @@
         width: 100%;
         overflow: hidden;
         font-family: "DM Sans", sans-serif;
-        background-color: var(--bg);
+        background: var(--bg);
         color: var(--fg);
         user-select: none;
         -webkit-user-select: none;
@@ -203,6 +203,8 @@
         opacity: 0;
         pointer-events: none;
         transition: opacity 0.4s ease;
+        z-index: 1;
+        background: transparent;
       }
 
       .section.active {
@@ -246,7 +248,6 @@
 
       /* ===== HOME ===== */
       #home {
-        background-color: var(--bg);
         color: var(--accent);
       }
 
@@ -275,6 +276,10 @@
 
       #home a:hover {
         transform: translateY(-2px);
+      }
+
+      .social-links a:hover {
+        transform: none;
       }
 
 
@@ -323,16 +328,22 @@
         justify-content: center;
       }
 
+      @keyframes iconAppear {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+      }
+
       .social-links a {
         color: var(--accent);
         font-size: 1.5rem;
-        transition: transform 0.15s ease;
+        opacity: 0;
+        animation: iconAppear 0.5s ease forwards;
       }
 
-      .social-links a:hover {
-        color: var(--hover);
-        transform: translateY(-2px);
-      }
+      .social-links a:nth-child(1) { animation-delay: 0.3s; }
+      .social-links a:nth-child(2) { animation-delay: 0.6s; }
+      .social-links a:nth-child(3) { animation-delay: 0.9s; }
+      .social-links a:nth-child(4) { animation-delay: 1.2s; }
 
       /* home side nav buttons */
       .nav-btn {
@@ -409,7 +420,6 @@
 
       /* ===== ABOUT ===== */
       #about {
-        background-color: var(--bg);
       }
 
       #about .container {
@@ -523,7 +533,6 @@
 
       /* ===== GALLERY ===== */
       #gallery {
-        background-color: var(--bg);
       }
 
       .top-banner {
@@ -577,7 +586,6 @@
 
       /* ===== THIS & THAT ===== */
       #thisthat {
-        background-color: var(--bg);
       }
 
       .tt-title {
@@ -612,6 +620,8 @@
         position: relative;
         width: 100%;
         height: 100%;
+        opacity: 0;
+        transition: opacity 0.4s ease;
       }
 
       .tag {
@@ -717,7 +727,7 @@
       <div class="center">
         <div class="fade-in" style="text-align: center">
           <a href="mailto:sukim@hi.snu.ac.kr" id="email-link">sukim@hi.snu.ac.kr</a>
-          <div class="social-links fade-in">
+          <div class="social-links">
             <a href="https://instagram.com/snkiilog" target="_blank" aria-label="Instagram">
               <i class="fab fa-instagram"></i>
             </a>
@@ -828,7 +838,7 @@
         <div class="nav-label">Home</div>
       </button>
       <div class="top-banner">Photobook</div>
-      <div class="subtitle-alt">GR3x, iPhone,<br />and a few things I love</div>
+      <div class="subtitle-alt">Shots on GR3x & iPhone —<br />and things I love.</div>
       <div class="photo-grid">
         <img src="gallery/images/photo1.jpg"  alt="Photo 1"  style="animation-delay: 1.4s" />
         <img src="gallery/images/photo2.jpg"  alt="Photo 2"  style="animation-delay: 1.8s" />
@@ -849,18 +859,19 @@
 
       <div class="floating-tags-wrapper">
         <div class="floating-tags">
-          <a href="https://en.wikipedia.org/wiki/Jesus"                        class="tag" target="_blank" rel="noopener">#Jesus</a>
-          <a href="https://en.wikipedia.org/wiki/Bible"                        class="tag" target="_blank" rel="noopener">#Bible</a>
-          <a href="https://en.wikipedia.org/wiki/Aquascaping"                  class="tag" target="_blank" rel="noopener">#Aquascaping</a>
-          <a href="https://en.wikipedia.org/wiki/Aquarium"                     class="tag" target="_blank" rel="noopener">#Aquarium</a>
-          <a href="https://en.wikipedia.org/wiki/Moss"                         class="tag" target="_blank" rel="noopener">#MossGarden</a>
-          <a href="https://en.wikipedia.org/wiki/Digital_camera"               class="tag" target="_blank" rel="noopener">#Camera</a>
-          <a href="https://en.wikipedia.org/wiki/Ricoh_GR_digital_cameras"     class="tag" target="_blank" rel="noopener">#GR3x</a>
-          <a href="https://en.wikipedia.org/wiki/Computer_programming"         class="tag" target="_blank" rel="noopener">#VibeCoding</a>
-          <a href="https://en.wikipedia.org/wiki/Interior_design"              class="tag" target="_blank" rel="noopener">#InteriorDesign</a>
-          <a href="https://en.wikipedia.org/wiki/Mechanical_keyboard"          class="tag" target="_blank" rel="noopener">#CustomKeyboard</a>
-          <a href="https://en.wikipedia.org/wiki/Network-attached_storage"     class="tag" target="_blank" rel="noopener">#NAS</a>
-          <a href="https://en.wikipedia.org/wiki/Z_shell"                      class="tag" target="_blank" rel="noopener">#ZSH</a>
+          <a href="https://www.google.com/search?q=Jesus"                       class="tag" target="_blank" rel="noopener">#Jesus</a>
+          <a href="https://www.google.com/search?q=Bible"                      class="tag" target="_blank" rel="noopener">#Bible</a>
+          <a href="https://www.google.com/search?q=Aquascaping"                class="tag" target="_blank" rel="noopener">#Aquascaping</a>
+          <a href="https://www.google.com/search?q=Aquarium"                   class="tag" target="_blank" rel="noopener">#Aquarium</a>
+          <a href="https://www.google.com/search?q=Moss+Garden"                class="tag" target="_blank" rel="noopener">#MossGarden</a>
+          <a href="https://www.google.com/search?q=Ricoh+GR+Camera"            class="tag" target="_blank" rel="noopener">#Camera</a>
+          <a href="https://www.google.com/search?q=Ricoh+GR3x"                 class="tag" target="_blank" rel="noopener">#GR3x</a>
+          <a href="https://www.google.com/search?q=Vibe+Coding"                class="tag" target="_blank" rel="noopener">#VibeCoding</a>
+          <a href="https://www.google.com/search?q=Interior+Design"            class="tag" target="_blank" rel="noopener">#InteriorDesign</a>
+          <a href="https://www.google.com/search?q=Desk+Setup"                  class="tag" target="_blank" rel="noopener">#DeskSetup</a>
+          <a href="https://www.google.com/search?q=Custom+Mechanical+Keyboard"  class="tag" target="_blank" rel="noopener">#CustomKeyboard</a>
+          <a href="https://www.google.com/search?q=NAS+Network+Attached+Storage" class="tag" target="_blank" rel="noopener">#NAS</a>
+          <a href="https://www.google.com/search?q=ZSH+shell"                  class="tag" target="_blank" rel="noopener">#ZSH</a>
         </div>
       </div>
 
@@ -870,6 +881,11 @@
     <script>
       // ===================== ROUTER =====================
       const SECTIONS = ['home', 'about', 'gallery', 'thisthat'];
+
+      // Declared here (before IIFE) to avoid TDZ error on direct /thisthat/ load
+      let thisthatInitialized = false;
+      const tagStates = [];
+      let lastTime = performance.now();
 
       function showSection(id) {
         if (!SECTIONS.includes(id)) id = 'home';
@@ -948,27 +964,90 @@
         return (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05);
       }
 
-      function getReadableColors() {
-        for (let i = 0; i < 100; i++) {
-          const bg = gruvboxColors[Math.floor(Math.random() * gruvboxColors.length)];
-          const fg = gruvboxColors[Math.floor(Math.random() * gruvboxColors.length)];
-          if (bg !== fg && contrastRatio(bg, fg) >= 4.5) {
-            return { bg, fg };
-          }
-        }
-        return { bg: "#282828", fg: "#ebdbb2" };
+      // Colorful Gruvbox colors as RGB for canvas blobs
+      const blobPalette = [
+        [250, 189,  47],  // yellow
+        [254, 128,  25],  // orange
+        [251,  73,  52],  // red
+        [211, 134, 155],  // pink
+        [184, 187,  38],  // green
+        [142, 192, 124],  // aqua
+        [131, 165, 152],  // teal
+        [ 69, 133, 136],  // blue
+        [146, 131, 116],  // gray
+        [215, 153,  33],  // deep yellow
+      ];
+
+      function hexToRgb(hex) {
+        return hex.replace('#','').match(/.{2}/g).map(c => parseInt(c, 16));
       }
 
-      function applyColors({ bg, fg }) {
+      // ── canvas mesh gradient ──────────────────────────────────────────
+      const _canvas = document.createElement('canvas');
+      _canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;';
+      document.body.prepend(_canvas);
+      const _ctx = _canvas.getContext('2d');
+
+      function _resize() { _canvas.width = window.innerWidth; _canvas.height = window.innerHeight; }
+      window.addEventListener('resize', _resize);
+      _resize();
+
+      const _blobs = [
+        { x:0.22, y:0.45, vx: 0.00022, vy: 0.00016, r:0.70, color:[250,189, 47], target:[250,189, 47] },
+        { x:0.78, y:0.20, vx:-0.00018, vy: 0.00021, r:0.65, color:[131,165,152], target:[131,165,152] },
+        { x:0.52, y:0.78, vx: 0.00014, vy:-0.00023, r:0.60, color:[211,134,155], target:[211,134,155] },
+      ];
+      const _bg = { color:[40,40,40], target:[40,40,40] };
+
+      function _lerp(a, b, t) { return a.map((v,i) => v + (b[i]-v)*t); }
+
+      function _drawFrame() {
+        const w = _canvas.width, h = _canvas.height;
+        _bg.color = _lerp(_bg.color, _bg.target, 0.025);
+        const [br,bg2,bb] = _bg.color.map(Math.round);
+        _ctx.fillStyle = `rgb(${br},${bg2},${bb})`;
+        _ctx.fillRect(0, 0, w, h);
+
+        for (const b of _blobs) {
+          b.color = _lerp(b.color, b.target, 0.025);
+          b.x += b.vx; b.y += b.vy;
+          if (b.x < -0.2 || b.x > 1.2) b.vx *= -1;
+          if (b.y < -0.2 || b.y > 1.2) b.vy *= -1;
+          const cx = b.x*w, cy = b.y*h, rad = b.r*Math.min(w,h);
+          const [r,g,bl] = b.color.map(Math.round);
+          const grd = _ctx.createRadialGradient(cx,cy,0,cx,cy,rad);
+          grd.addColorStop(0, `rgba(${r},${g},${bl},0.52)`);
+          grd.addColorStop(1, `rgba(${r},${g},${bl},0)`);
+          _ctx.fillStyle = grd;
+          _ctx.fillRect(0, 0, w, h);
+        }
+        requestAnimationFrame(_drawFrame);
+      }
+      requestAnimationFrame(_drawFrame);
+      // ─────────────────────────────────────────────────────────────────
+
+      function getReadableColors() {
+        // pick 3 distinct blob colors
+        const pool = [...blobPalette];
+        const blobs = [];
+        for (let i = 0; i < 3; i++) {
+          const idx = Math.floor(Math.random() * pool.length);
+          blobs.push(pool.splice(idx, 1)[0]);
+        }
+        // fg: light, low-saturation colors only
+        const fgOptions = ["#ebdbb2", "#d5c4a1", "#bdae93", "#f2ede4", "#e8e0d4"];
+        const fg = fgOptions[Math.floor(Math.random() * fgOptions.length)];
+        return { blobs, fg };
+      }
+
+      function applyColors({ blobs, fg }) {
+        blobs.forEach((col, i) => { _blobs[i].target = [...col]; });
         const root = document.documentElement;
-        root.style.setProperty('--bg', bg);
         root.style.setProperty('--fg', fg);
         root.style.setProperty('--accent', fg);
         root.style.setProperty('--hover', fg);
-        const r = parseInt(fg.slice(1, 3), 16);
-        const g = parseInt(fg.slice(3, 5), 16);
-        const b = parseInt(fg.slice(5, 7), 16);
-        root.style.setProperty('--divider', `rgba(${r}, ${g}, ${b}, 0.1)`);
+        const [r,g,b] = hexToRgb(fg);
+        root.style.setProperty('--divider', `rgba(${r},${g},${b},0.1)`);
       }
 
       applyColors(getReadableColors());
@@ -1002,9 +1081,6 @@
       });
 
       // ===================== FLOATING TAGS (This & That) =====================
-      let thisthatInitialized = false;
-      const tagStates = [];
-      let lastTime = performance.now();
 
       function initBubbleTags() {
         const wrapper = document.querySelector('.floating-tags-wrapper');
@@ -1055,6 +1131,13 @@
             }
           });
         });
+
+        // Apply initial positions before revealing to avoid top-left flash
+        const floatingEl = document.querySelector('.floating-tags');
+        tagStates.forEach(s => {
+          s.el.style.transform = `translate3d(${s.x}px, ${s.y}px, 0)`;
+        });
+        requestAnimationFrame(() => { floatingEl.style.opacity = '1'; });
       }
 
       function animateTags(now) {
