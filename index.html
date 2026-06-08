@@ -300,7 +300,7 @@
 
       @keyframes charJump {
         0%, 100% { transform: translateY(0); }
-        20%      { transform: translateY(-7px); }
+        20%      { transform: translateY(-3px); }
         40%      { transform: translateY(0); }
       }
 
@@ -970,7 +970,7 @@
         instr.innerHTML = [...instr.textContent].map((ch, i) => {
           const delay = (i * 0.07).toFixed(2);
           const content = ch === ' ' ? '&nbsp;' : ch;
-          return `<span style="display:inline-block;animation:charJump 1.8s ease ${delay}s infinite">${content}</span>`;
+          return `<span style="display:inline-block;animation:charJump 2.8s ease ${delay}s infinite">${content}</span>`;
         }).join('');
       })();
 
