@@ -998,12 +998,27 @@
         'inset:0',
         'z-index:0',
         'background:#282828',
-        'background-size:cover',
-        'background-position:center',
         'overflow:hidden',
         'pointer-events:none'
       ].join(';');
       document.body.prepend(_meshBg);
+
+      const _meshLayers = [0, 1].map(() => {
+        const layer = document.createElement('div');
+        layer.style.cssText = [
+          'position:absolute',
+          'inset:0',
+          'z-index:1',
+          'opacity:0',
+          'background-size:cover',
+          'background-position:center',
+          'transition:opacity 520ms ease',
+          'will-change:opacity',
+          'contain:paint'
+        ].join(';');
+        _meshBg.appendChild(layer);
+        return layer;
+      });
 
       function addMeshDitherOverlay() {
         const noise = document.createElement('div');
@@ -1023,10 +1038,14 @@
         _meshBg.appendChild(noise);
       }
 
-      let _meshObjectUrl = '';
       let _meshGeneration = 0;
       let _lastMeshRefresh = 0;
       let _lastMeshSize = '';
+      let _meshActiveLayer = 0;
+      let _meshPreparing = null;
+      let _meshPreparedUrl = '';
+      let _meshPrepareTimer = 0;
+      const _meshLayerUrls = ['', ''];
 
       function createStaticBlob() {
         return {
@@ -1073,36 +1092,152 @@
         ctx.restore();
       }
 
-      function setMeshBackgroundFromCanvas(canvas, generation) {
-        if (canvas.toBlob) {
-          canvas.toBlob(blob => {
-            if (!blob || generation !== _meshGeneration) return;
-            const nextUrl = URL.createObjectURL(blob);
-            const previousUrl = _meshObjectUrl;
-            _meshBg.style.backgroundImage = `url("${nextUrl}")`;
-            _meshObjectUrl = nextUrl;
-            if (previousUrl) URL.revokeObjectURL(previousUrl);
-          }, 'image/png');
-          return;
-        }
-
-        _meshBg.style.backgroundImage = `url("${canvas.toDataURL('image/png')}")`;
+      function revokeMeshUrl(url) {
+        if (url && url.startsWith('blob:')) URL.revokeObjectURL(url);
       }
 
-      function generateStaticMeshBackground() {
-        const generation = ++_meshGeneration;
+      function warmMeshUrl(url) {
+        const image = new Image();
+        image.decoding = 'async';
+        image.src = url;
+        if (image.decode) {
+          return image.decode().catch(() => null).then(() => url);
+        }
+        return new Promise(resolve => {
+          image.onload = () => resolve(url);
+          image.onerror = () => resolve(url);
+        });
+      }
+
+      function canvasToMeshUrl(canvas) {
+        if (!canvas.toBlob) return Promise.resolve(canvas.toDataURL('image/png')).then(warmMeshUrl);
+
+        return new Promise(resolve => {
+          canvas.toBlob(blob => {
+            resolve(blob ? URL.createObjectURL(blob) : canvas.toDataURL('image/png'));
+          }, 'image/png');
+        }).then(warmMeshUrl);
+      }
+
+      function createStaticMeshUrl() {
         const { width, height } = meshCanvasSize();
         const canvas = document.createElement('canvas');
         canvas.width = width;
         canvas.height = height;
 
         const ctx = canvas.getContext('2d');
-        if (!ctx) return;
+        if (!ctx) return Promise.resolve('');
 
         ctx.fillStyle = '#282828';
         ctx.fillRect(0, 0, width, height);
         Array.from({ length: 3 }, createStaticBlob).forEach(blob => drawStaticBlob(ctx, width, height, blob));
-        setMeshBackgroundFromCanvas(canvas, generation);
+        return canvasToMeshUrl(canvas);
+      }
+
+      function releaseUnusedMeshUrl(url) {
+        if (!url || url === _meshPreparedUrl || _meshLayerUrls.includes(url)) return;
+        revokeMeshUrl(url);
+      }
+
+      function assignMeshUrlToLayer(layerIndex, url) {
+        const previousUrl = _meshLayerUrls[layerIndex];
+        _meshLayerUrls[layerIndex] = url;
+        _meshLayers[layerIndex].style.backgroundImage = `url("${url}")`;
+        releaseUnusedMeshUrl(previousUrl);
+      }
+
+      function showMeshUrl(url, smooth) {
+        if (!url) return;
+
+        const currentLayer = _meshLayers[_meshActiveLayer];
+        const nextLayerIndex = _meshLayerUrls[_meshActiveLayer] ? (_meshActiveLayer + 1) % _meshLayers.length : _meshActiveLayer;
+        const nextLayer = _meshLayers[nextLayerIndex];
+
+        assignMeshUrlToLayer(nextLayerIndex, url);
+        nextLayer.style.transition = smooth ? 'opacity 520ms ease' : 'none';
+        currentLayer.style.transition = smooth ? 'opacity 520ms ease' : 'none';
+
+        nextLayer.offsetHeight;
+        nextLayer.style.opacity = '1';
+        if (nextLayerIndex !== _meshActiveLayer) currentLayer.style.opacity = '0';
+        _meshActiveLayer = nextLayerIndex;
+
+        if (!smooth) {
+          requestAnimationFrame(() => {
+            _meshLayers.forEach(layer => {
+              layer.style.transition = 'opacity 520ms ease';
+            });
+          });
+        }
+      }
+
+      function clearPreparedMeshUrl() {
+        const url = _meshPreparedUrl;
+        _meshPreparedUrl = '';
+        releaseUnusedMeshUrl(url);
+      }
+
+      function prepareNextMesh(generation) {
+        if (_meshPreparing) return _meshPreparing;
+
+        const preparing = createStaticMeshUrl().then(url => {
+          if (!url) return '';
+          if (generation !== _meshGeneration) {
+            revokeMeshUrl(url);
+            return '';
+          }
+
+          clearPreparedMeshUrl();
+          _meshPreparedUrl = url;
+          return url;
+        }).finally(() => {
+          if (_meshPreparing === preparing) _meshPreparing = null;
+        });
+
+        _meshPreparing = preparing;
+        return preparing;
+      }
+
+      function scheduleNextMeshPreparation(generation) {
+        window.clearTimeout(_meshPrepareTimer);
+        _meshPrepareTimer = window.setTimeout(() => {
+          if (generation === _meshGeneration) prepareNextMesh(generation);
+        }, 80);
+      }
+
+      function rebuildStaticMeshBackground(smooth) {
+        const generation = ++_meshGeneration;
+        _meshPreparing = null;
+        window.clearTimeout(_meshPrepareTimer);
+        clearPreparedMeshUrl();
+        createStaticMeshUrl().then(url => {
+          if (!url) return;
+          if (generation !== _meshGeneration) {
+            revokeMeshUrl(url);
+            return;
+          }
+          showMeshUrl(url, smooth);
+          scheduleNextMeshPreparation(generation);
+        });
+      }
+
+      function swapToPreparedMesh() {
+        const generation = _meshGeneration;
+        let nextUrl = _meshPreparedUrl;
+
+        if (nextUrl) {
+          _meshPreparedUrl = '';
+          showMeshUrl(nextUrl, true);
+          scheduleNextMeshPreparation(generation);
+          return;
+        }
+
+        prepareNextMesh(generation).then(url => {
+          if (!url || generation !== _meshGeneration) return;
+          if (_meshPreparedUrl === url) _meshPreparedUrl = '';
+          showMeshUrl(url, true);
+          scheduleNextMeshPreparation(generation);
+        });
       }
 
       function shouldRefreshMeshFromEvent(event) {
@@ -1112,9 +1247,9 @@
       function refreshMeshFromEvent(event) {
         if (!shouldRefreshMeshFromEvent(event)) return;
         const now = performance.now();
-        if (now - _lastMeshRefresh < 700) return;
+        if (now - _lastMeshRefresh < 240) return;
         _lastMeshRefresh = now;
-        generateStaticMeshBackground();
+        swapToPreparedMesh();
       }
 
       function refreshMeshForResize() {
@@ -1122,14 +1257,13 @@
         if (nextSize === _lastMeshSize) return;
         _lastMeshSize = nextSize;
         window.clearTimeout(refreshMeshForResize.timer);
-        refreshMeshForResize.timer = window.setTimeout(generateStaticMeshBackground, 120);
+        refreshMeshForResize.timer = window.setTimeout(() => rebuildStaticMeshBackground(false), 120);
       }
 
-      document.addEventListener('click', refreshMeshFromEvent);
-      document.addEventListener('touchstart', refreshMeshFromEvent, { passive: true });
+      document.addEventListener('pointerdown', refreshMeshFromEvent, { passive: true });
       window.addEventListener('resize', refreshMeshForResize);
       _lastMeshSize = `${window.innerWidth}x${window.innerHeight}`;
-      generateStaticMeshBackground();
+      rebuildStaticMeshBackground(false);
       addMeshDitherOverlay();
       // ──────────────────────────────────────────────────────────────────
 
