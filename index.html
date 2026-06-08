@@ -1021,22 +1021,37 @@
         return layer;
       });
 
-      function addMeshDitherOverlay() {
-        const noise = document.createElement('div');
-        const noiseSvg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128' viewBox='0 0 128 128'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.78' numOctaves='1' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='128' height='128' filter='url(%23n)' opacity='.62'/%3E%3C/svg%3E";
-        noise.style.cssText = [
+      function addMeshFilmGrainOverlay() {
+        const tone = document.createElement('div');
+        tone.style.cssText = [
+          'position:absolute',
+          'inset:0',
+          'z-index:3',
+          'pointer-events:none',
+          `opacity:${_isWindowsBrowser ? 0.09 : 0.05}`,
+          'mix-blend-mode:soft-light',
+          'background:radial-gradient(ellipse at 48% 42%, rgba(250,189,47,0.22) 0%, rgba(250,189,47,0.06) 36%, rgba(40,40,40,0) 68%), linear-gradient(135deg, rgba(251,73,52,0.16), rgba(184,187,38,0.07) 45%, rgba(69,133,136,0.14))',
+          'contain:paint'
+        ].join(';');
+        _meshBg.appendChild(tone);
+
+        const grain = document.createElement('div');
+        const fineGrainSvg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128' viewBox='0 0 128 128'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.28' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='1.35' intercept='-.18'/%3E%3CfeFuncG type='linear' slope='1.35' intercept='-.18'/%3E%3CfeFuncB type='linear' slope='1.35' intercept='-.18'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='128' height='128' filter='url(%23n)' opacity='.82'/%3E%3C/svg%3E";
+        const coarseGrainSvg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320' viewBox='0 0 320 320'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.34' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23n)' opacity='.48'/%3E%3C/svg%3E";
+        grain.style.cssText = [
           'position:absolute',
           'inset:0',
           'z-index:4',
           'pointer-events:none',
-          `opacity:${_isWindowsBrowser ? 0.16 : 0.1}`,
-          'mix-blend-mode:soft-light',
-          `background-image:url("${noiseSvg}")`,
-          'background-size:128px 128px',
-          'background-repeat:repeat',
+          `opacity:${_isWindowsBrowser ? 0.2 : 0.1}`,
+          'mix-blend-mode:overlay',
+          `background-image:url("${fineGrainSvg}"), url("${coarseGrainSvg}")`,
+          'background-size:96px 96px, 360px 360px',
+          'background-repeat:repeat, repeat',
+          'filter:contrast(1.08)',
           'contain:paint'
         ].join(';');
-        _meshBg.appendChild(noise);
+        _meshBg.appendChild(grain);
       }
 
       let _meshGeneration = 0;
@@ -1309,7 +1324,7 @@
       window.addEventListener('resize', refreshMeshForResize);
       _lastMeshSize = `${window.innerWidth}x${window.innerHeight}`;
       rebuildStaticMeshBackground(false);
-      addMeshDitherOverlay();
+      addMeshFilmGrainOverlay();
       // ──────────────────────────────────────────────────────────────────
 
       const emailLink = document.getElementById('email-link');
