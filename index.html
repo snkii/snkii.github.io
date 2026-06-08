@@ -87,7 +87,7 @@
         "alternateName": ["Seonuk Kim", "snkii", "snkiilog"],
         "url": "https://seon.uk",
         "image": "https://seon.uk/preview.png",
-        "email": "hello@seonuk.kim",
+        "email": "sukim@hi.snu.ac.kr",
         "telephone": "+82-10-9707-3737",
         "nationality": "Korean",
         "sameAs": [
@@ -282,7 +282,12 @@
         font-size: 1rem;
         color: inherit;
         pointer-events: none;
-        animation: blink 2s infinite alternate;
+      }
+
+      @keyframes charJump {
+        0%, 100% { transform: translateY(0); }
+        20%      { transform: translateY(-7px); }
+        40%      { transform: translateY(0); }
       }
 
       .credit {
@@ -620,7 +625,7 @@
     <noscript>
       <div style="font-family:sans-serif;max-width:680px;margin:0 auto;padding:32px 16px;background:#282828;color:#ebdbb2;min-height:100vh;">
         <h1>Seonuk Kim (김선욱)</h1>
-        <p>From Seoul, Korea — <a href="mailto:hello@seonuk.kim" style="color:#fabd2f;">hello@seonuk.kim</a></p>
+        <p>From Seoul, Korea — <a href="mailto:sukim@hi.snu.ac.kr" style="color:#fabd2f;">sukim@hi.snu.ac.kr</a></p>
         <h2>Education</h2>
         <p>Integrated M.S.–Ph.D., <a href="https://hi.snu.ac.kr" style="color:#fabd2f;">Human Interface Lab (HIL)</a>, ECE, Seoul National University (SNU) (2024–)</p>
         <p>B.S., ECE, Seoul National University (SNU) (2018–2024)</p>
@@ -649,7 +654,7 @@
 
       <div class="center">
         <div class="fade-in" style="text-align: center">
-          <a href="mailto:hello@seonuk.kim" id="email-link">hello@seonuk.kim</a>
+          <a href="mailto:sukim@hi.snu.ac.kr" id="email-link">sukim@hi.snu.ac.kr</a>
           <div class="social-links fade-in">
             <a href="https://instagram.com/snkiilog" target="_blank" aria-label="Instagram">
               <i class="fab fa-instagram"></i>
@@ -743,7 +748,7 @@
 
         <div class="content-section contact">
           <div class="section-title">📱 Contact</div>
-          <p class="indent" style="font-size: 0.95rem;">Email: <a href="mailto:hello@seonuk.kim" class="no-link-style">hello@seonuk.kim</a> / <a href="mailto:sukim@hi.snu.ac.kr" class="no-link-style">sukim@hi.snu.ac.kr</a></p>
+          <p class="indent" style="font-size: 0.95rem;">Email: <a href="mailto:sukim@hi.snu.ac.kr" class="no-link-style">sukim@hi.snu.ac.kr</a></p>
           <p class="indent" style="font-size: 0.95rem;">Website: <a href="https://seon.uk" target="_blank" class="no-link-style">seon.uk</a></p>
           <p class="indent" style="font-size: 0.95rem;">Phone: <a href="tel:+821097073737" class="no-link-style">+82-10-9707-3737</a></p>
         </div>
@@ -899,6 +904,16 @@
       }
 
       applyColors(getReadableColors());
+
+      // wave-jump animation on "Tap or click anywhere"
+      (function () {
+        const instr = document.querySelector('.instruction');
+        instr.innerHTML = [...instr.textContent].map((ch, i) => {
+          const delay = (i * 0.07).toFixed(2);
+          const content = ch === ' ' ? '&nbsp;' : ch;
+          return `<span style="display:inline-block;animation:charJump 1.8s ease ${delay}s infinite">${content}</span>`;
+        }).join('');
+      })();
 
       ['home', 'about', 'gallery', 'thisthat'].forEach(id => {
         document.getElementById(id).addEventListener('click', e => {
