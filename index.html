@@ -1015,13 +1015,13 @@
           if (b.y < -0.2 || b.y > 1.2) b.vy *= -1;
           const cx = b.x*w, cy = b.y*h, rad = b.r*Math.min(w,h);
           const [r,g,bl] = b.color.map(Math.round);
-          const grd = _ctx.createRadialGradient(cx,cy,0,cx,cy,rad);
-          grd.addColorStop(0,    `rgba(${r},${g},${bl},0.52)`);
-          grd.addColorStop(0.45, `rgba(${r},${g},${bl},0.22)`);
-          grd.addColorStop(0.75, `rgba(${r},${g},${bl},0.06)`);
-          grd.addColorStop(1,    `rgba(${r},${g},${bl},0)`);
-          _ctx.fillStyle = grd;
-          _ctx.fillRect(0, 0, w, h);
+          _ctx.save();
+          _ctx.filter = `blur(${Math.round(rad * 0.32)}px)`;
+          _ctx.fillStyle = `rgba(${r},${g},${bl},0.85)`;
+          _ctx.beginPath();
+          _ctx.arc(cx, cy, rad * 0.5, 0, Math.PI * 2);
+          _ctx.fill();
+          _ctx.restore();
         }
         requestAnimationFrame(_drawFrame);
       }
