@@ -212,6 +212,20 @@
         pointer-events: auto;
       }
 
+      .readability-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        background: rgba(0, 0, 0, 0.24);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.45s ease;
+      }
+
+      .readability-overlay.visible {
+        opacity: 1;
+      }
+
       #home, #thisthat {
         overflow: hidden;
       }
@@ -238,7 +252,7 @@
         align-items: center;
         padding: 0;
         z-index: 100;
-        transition: transform 0.15s ease;
+        transition: transform 0.08s ease;
       }
 
       .back-btn:hover {
@@ -258,9 +272,8 @@
         align-items: center;
       }
 
-      .fade-in {
-        opacity: 0;
-        animation: fadeIn 2s ease-in-out forwards;
+      .home-identity {
+        text-align: center;
       }
 
       #home a {
@@ -270,7 +283,7 @@
         display: inline-block;
         user-select: none;
         -webkit-user-select: none;
-        transition: transform 0.15s ease;
+        transition: transform 0.08s ease;
         cursor: pointer;
       }
 
@@ -312,22 +325,32 @@
         justify-content: center;
       }
 
+      @keyframes emailAppear {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+      }
+
       @keyframes iconAppear {
         from { opacity: 0; }
         to   { opacity: 1; }
+      }
+
+      #email-link {
+        opacity: 0;
+        animation: emailAppear 0.55s ease-out 0.2s forwards;
       }
 
       .social-links a {
         color: var(--accent);
         font-size: 1.5rem;
         opacity: 0;
-        animation: iconAppear 0.5s ease forwards;
+        animation: iconAppear 0.28s ease-out forwards;
       }
 
-      .social-links a:nth-child(1) { animation-delay: 0.3s; }
-      .social-links a:nth-child(2) { animation-delay: 0.6s; }
-      .social-links a:nth-child(3) { animation-delay: 0.9s; }
-      .social-links a:nth-child(4) { animation-delay: 1.2s; }
+      .social-links a:nth-child(1) { animation-delay: 0.85s; }
+      .social-links a:nth-child(2) { animation-delay: 0.97s; }
+      .social-links a:nth-child(3) { animation-delay: 1.09s; }
+      .social-links a:nth-child(4) { animation-delay: 1.21s; }
 
       /* home side nav buttons */
       .nav-btn {
@@ -341,7 +364,7 @@
         cursor: pointer;
         display: flex;
         flex-direction: column;
-        transition: transform 0.15s ease;
+        transition: transform 0.08s ease;
         align-items: center;
         pointer-events: auto;
         padding: 0;
@@ -460,7 +483,7 @@
         letter-spacing: 0.04em;
         vertical-align: middle;
         text-decoration: none;
-        transition: opacity 0.15s ease, transform 0.15s ease;
+        transition: opacity 0.08s ease, transform 0.08s ease;
       }
 
       .css-badge:hover {
@@ -476,7 +499,7 @@
       .contact a {
         color: var(--fg);
         text-decoration: none;
-        transition: transform 0.15s ease;
+        transition: transform 0.08s ease;
       }
 
       .contact a:hover {
@@ -484,7 +507,7 @@
       }
 
       #about a {
-        transition: transform 0.15s ease;
+        transition: transform 0.08s ease;
         display: inline-block;
       }
 
@@ -619,7 +642,7 @@
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
         white-space: nowrap;
         backdrop-filter: blur(2px);
-        transition: filter 0.15s ease;
+        transition: filter 0.08s ease;
         will-change: transform;
         backface-visibility: hidden;
         transform-style: preserve-3d;
@@ -700,6 +723,8 @@
       </div>
     </noscript>
 
+    <div class="readability-overlay" aria-hidden="true"></div>
+
     <!-- ===================== HOME ===================== -->
     <div id="home" class="section active">
       <header>
@@ -709,7 +734,7 @@
       <div class="welcome">This is seon.uk</div>
 
       <div class="center">
-        <div class="fade-in" style="text-align: center">
+        <div class="home-identity">
           <a href="mailto:sukim@hi.snu.ac.kr" id="email-link">sukim@hi.snu.ac.kr</a>
           <div class="social-links">
             <a href="https://instagram.com/snkiilog" target="_blank" aria-label="Instagram">
@@ -864,6 +889,7 @@
     <script>
       // ===================== ROUTER =====================
       const SECTIONS = ['home', 'about', 'gallery', 'thisthat'];
+      const readabilityOverlay = document.querySelector('.readability-overlay');
 
       // Declared here (before IIFE) to avoid TDZ error on direct /thisthat/ load
       let thisthatInitialized = false;
@@ -875,6 +901,7 @@
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         const incoming = document.getElementById(id);
         incoming.classList.add('active');
+        readabilityOverlay.classList.toggle('visible', id !== 'home');
 
         incoming.style.pointerEvents = 'none';
         setTimeout(() => { incoming.style.pointerEvents = ''; }, 400);
