@@ -976,7 +976,7 @@
 
       ['home', 'about', 'gallery', 'thisthat'].forEach(id => {
         document.getElementById(id).addEventListener('click', e => {
-          if (e.target.closest('[data-nav]') || e.target.closest('a') || e.target.closest('img') || e.target.closest('button')) return;
+          if (e.target.closest('[data-nav]') || e.target.closest('a') || e.target.closest('img') || e.target.closest('button') || e.target.closest('#tmi-toggle')) return;
           applyColors(getReadableColors());
         });
       });
