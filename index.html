@@ -1045,8 +1045,7 @@
           blobs.push(pool.splice(idx, 1)[0]);
         }
         // fg: light, low-saturation colors only
-        const fgOptions = ["#ebdbb2", "#d5c4a1", "#bdae93", "#cfc5b2", "#c5bba8"];
-        const fg = fgOptions[Math.floor(Math.random() * fgOptions.length)];
+        const fg = "#ebdbb2";
         return { blobs, fg };
       }
 
