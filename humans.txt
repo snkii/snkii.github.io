@@ -2,11 +2,11 @@
 
 /* TEAM */
 Name: 김선욱 (Seonuk Kim)
-Site: hello@seonuk.kim
+Site: hi@seon.uk
 Location: Seoul, Korea
 
 /* SITE */
-Last update: 2025/12/15
+Last update: 2026/10/16
 Standards: HTML5, CSS3
 Components: JavaScript
 Software: VS Code, GitHub Pages

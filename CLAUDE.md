@@ -109,6 +109,6 @@ snkii.github.io/
 - **소속:** 서울대학교 ECE 휴먼인터페이스연구실(HIL) 석박통합과정 (2024–)
 - **학부:** SNU ECE B.S. (2018–2024)
 - **연구:** Voice-based HCI · AI 음성처리 · Spoken Dialogue Systems
-- **이메일:** hello@seonuk.kim · sukim@hi.snu.ac.kr
+- **이메일:** hi@seon.uk (홈페이지 표시) · sukim@hi.snu.ac.kr (연구실)
 - **소셜:** Instagram @snkiilog · GitHub snkii · LinkedIn · until.blog @seonuk
 - **관심사:** GR3x 카메라 · 아쿠아스케이핑 · 이끼정원 · 인테리어 · 커스텀 키보드 · NAS · ZSH · 기독교
